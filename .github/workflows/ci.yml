@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
@@ -36,14 +38,43 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Determine check scope
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            echo "TURBO_FILTER=[${{ github.event.pull_request.base.sha }}]" >> "$GITHUB_ENV"
+          else
+            echo "TURBO_FILTER=" >> "$GITHUB_ENV"
+          fi
+
       - name: Lint
-        run: pnpm lint
+        run: |
+          if [[ -n "${TURBO_FILTER:-}" ]]; then
+            pnpm exec turbo run lint --filter="$TURBO_FILTER"
+          else
+            pnpm lint
+          fi
 
       - name: Type-check
-        run: pnpm typecheck
+        run: |
+          if [[ -n "${TURBO_FILTER:-}" ]]; then
+            pnpm exec turbo run typecheck --filter="$TURBO_FILTER"
+          else
+            pnpm typecheck
+          fi
 
       - name: Test
-        run: pnpm test
+        run: |
+          if [[ -n "${TURBO_FILTER:-}" ]]; then
+            pnpm exec turbo run test --filter="$TURBO_FILTER"
+          else
+            pnpm test
+          fi
 
       - name: Build
-        run: pnpm build
+        run: |
+          if [[ -n "${TURBO_FILTER:-}" ]]; then
+            pnpm exec turbo run build --filter="$TURBO_FILTER"
+          else
+            pnpm build
+          fi

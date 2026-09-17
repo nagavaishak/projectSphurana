@@ -112,7 +112,11 @@ function TodaysUpdateCard() {
   const todayStart = useMemo(() => startOfToday(), []);
   const todayEnd = useMemo(() => endOfToday(), []);
 
-  const { appointments, isLoading: apptsLoading } = useListAppointments({
+  const {
+    appointments,
+    isLoading: apptsLoading,
+    isError: apptsError,
+  } = useListAppointments({
     startDateFrom: todayStart,
     startDateTo: todayEnd,
     status: 'booked',
@@ -154,6 +158,18 @@ function TodaysUpdateCard() {
             <Skeleton className="h-4 w-56" />
             <Skeleton className="h-5 w-40" />
             <Skeleton className="h-4 w-56" />
+          </div>
+        ) : apptsError ? (
+          <div className="flex items-start gap-3">
+            <TriangleAlert className="mt-0.5 size-5 shrink-0 text-destructive" />
+            <div>
+              <p className="text-sm font-semibold text-foreground">
+                Appointments unavailable
+              </p>
+              <p className="text-sm italic text-muted-foreground">
+                We couldn't load today's appointments.
+              </p>
+            </div>
           </div>
         ) : !hasAnything ? (
           <div className="flex items-start gap-3">

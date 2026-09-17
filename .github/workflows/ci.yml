@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Lint, type-check, test, and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Determine check scope
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            changed_workspaces="$({ git diff --name-only "${{ github.event.pull_request.base.sha }}"...HEAD; } | awk -F/ '($1 == "apps" || $1 == "packages") && NF >= 2 { print "--filter=./" $1 "/" $2 }' | sort -u | tr '\n' ' ')"
+            echo "Changed workspaces: ${changed_workspaces:-none}"
+            echo "TURBO_FILTERS=${changed_workspaces}" >> "$GITHUB_ENV"
+          else
+            echo "TURBO_FILTERS=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Lint
+        run: |
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run lint ${TURBO_FILTERS}
+          else
+            pnpm lint
+          fi
+
+      - name: Type-check
+        run: |
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run typecheck ${TURBO_FILTERS}
+          else
+            pnpm typecheck
+          fi
+
+      - name: Test
+        run: |
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run test ${TURBO_FILTERS}
+          else
+            pnpm test
+          fi
+
+      - name: Build
+        run: |
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run build ${TURBO_FILTERS}
+          else
+            pnpm build
+          fi

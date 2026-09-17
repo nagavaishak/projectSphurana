@@ -30,9 +30,10 @@ import {
  */
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../../..');
+const prodEnvPath = resolve(repoRoot, '.github/prod.env');
+const previewEnvPath = resolve(repoRoot, '.github/preview.env');
 const managedEnvFilesPresent =
-  existsSync(resolve(repoRoot, '.github/prod.env')) &&
-  existsSync(resolve(repoRoot, '.github/preview.env'));
+  existsSync(prodEnvPath) && existsSync(previewEnvPath);
 
 // The public practice snapshot deliberately excludes production environment
 // manifests. Keep the comparison tests active in the real repository, but do
@@ -50,8 +51,10 @@ const parseEnvFile = (path: string): Map<string, string> => {
   return out;
 };
 
-const prod = parseEnvFile(resolve(repoRoot, '.github/prod.env'));
-const preview = parseEnvFile(resolve(repoRoot, '.github/preview.env'));
+const prod = managedEnvFilesPresent ? parseEnvFile(prodEnvPath) : new Map();
+const preview = managedEnvFilesPresent
+  ? parseEnvFile(previewEnvPath)
+  : new Map();
 
 /**
  * A var may be present in prod.env and absent from preview.env ONLY if it is

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-update-lead",
+  "recordedAt": "2026-06-03T10:23:17.314Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Mark Aoife Murphy (lead-1) as contacted.",
+      "rounds": [
+        {
+          "modelText": "I'll update Aoife Murphy's status to \"contacted\".",
+          "toolUses": [
+            {
+              "name": "updateLead",
+              "input": {
+                "leadId": "lead-1",
+                "status": "contacted"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "update_lead",
+                  "resourceId": "lead-1",
+                  "token": "synthetic-token-updateLead-lead-1",
+                  "expiresAt": "2026-06-03T10:53:14.707Z",
+                  "summary": {
+                    "title": "Update lead",
+                    "fields": [
+                      {
+                        "label": "Lead",
+                        "value": "Aoife Murphy"
+                      },
+                      {
+                        "label": "Status",
+                        "value": "contacted"
+                      }
+                    ]
+                  },
+                  "executeToolName": "updateLead"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "**Update lead**\n\n- **Lead:** Aoife Murphy\n- **Status:** contacted\n\nApply this change?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

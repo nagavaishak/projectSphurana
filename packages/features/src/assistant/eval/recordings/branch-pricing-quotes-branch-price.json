@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "fixtureId": "branch-pricing-quotes-branch-price",
+  "recordedAt": "2026-08-27T11:28:34.393Z",
+  "skillRegistryVersion": 51,
+  "turns": [
+    {
+      "userMessage": "How much is the Deluxe Facial?",
+      "rounds": [
+        {
+          "modelText": "I'll check that for you.",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [
+                    {
+                      "id": "svc-deluxe-facial",
+                      "name": "Deluxe Facial",
+                      "category": "treatment",
+                      "description": null,
+                      "isActive": true,
+                      "priceType": "fixed",
+                      "priceCents": 22000,
+                      "priceText": null,
+                      "hasVariants": false
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "The Deluxe Facial is €220.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

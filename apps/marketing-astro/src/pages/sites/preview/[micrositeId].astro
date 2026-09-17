@@ -1,0 +1,207 @@
+---
+/**
+ * THE DRAFT PREVIEW — `/sites/preview/{micrositeId}?token=…&path=/about`.
+ *
+ * The one route where edit mode exists (plan §9: "Draft: SSR, no cache,
+ * auth-gated by a signed preview token"). Everything about it is deliberately
+ * the opposite of the published tier: never cached, never indexed, framable
+ * only by the dashboard, and the only page in this app that ships client JS.
+ *
+ * THE TOKEN IS NOT VALIDATED HERE, AND MUST NOT BE. The renderer holds no
+ * signing secret; "valid" means the API served a draft document for it. So the
+ * flow is: no token → do not even ask; token → ask; API refuses → render the
+ * gate, with `editable` false and the edit script absent. A renderer that
+ * decided for itself whether a token was good would be a second, weaker
+ * authority over tenant content.
+ *
+ * A static segment beats a dynamic one in Astro's route ranking, so this wins
+ * over `/sites/[slug]/[...path]` for `/sites/preview/…` and the published tier
+ * is unreachable from here.
+ */
+export const prerender = false;
+
+import type {
+  MicrositeDocument,
+  MicrositePage,
+  MicrositeTheme,
+} from '@borradh-workspace/web-shared';
+import BlockRenderer from '@/components/microsite/BlockRenderer.astro';
+import EditMode from '@/components/microsite/EditMode.astro';
+import type { MicrositeData } from '@/components/microsite';
+import { toOrigin } from '@/components/microsite/edit/editable';
+import MicrositeShell from '@/layouts/MicrositeShell.astro';
+import { getPublicConfig, resolveUpstreamApiUrl } from '@/lib/config';
+
+const FALLBACK_THEME: MicrositeTheme = {
+  brand: {
+    primary: '#111111',
+    accent: '#111111',
+    neutral: '#555555',
+    surface: '#ffffff',
+  },
+  logo: { assetUrl: null },
+  typography: { scale: 'default' },
+  radius: 'md',
+  buttonStyle: 'solid',
+  density: 'comfortable',
+};
+
+const API_TIMEOUT_MS = 8000;
+
+type Outcome =
+  | {
+      kind: 'ok';
+      theme: MicrositeTheme;
+      page: MicrositePage;
+      data: MicrositeData;
+    }
+  | { kind: 'forbidden' }
+  | { kind: 'not-found' }
+  | { kind: 'unavailable' };
+
+const normalisePath = (raw: string | null): string => {
+  const trimmed = (raw ?? '').replace(/^\/+|\/+$/g, '');
+  return trimmed ? `/${trimmed}` : '/';
+};
+
+const apiUrl = resolveUpstreamApiUrl().replace(/\/$/, '');
+const micrositeId = Astro.params.micrositeId ?? '';
+const token = Astro.url.searchParams.get('token') ?? '';
+const path = normalisePath(Astro.url.searchParams.get('path'));
+
+/**
+ * The ONE origin allowed to frame this page and to exchange messages with it.
+ * Environment-driven, never guessed from `document.referrer` — a peer that
+ * names itself is not a peer that has been authenticated.
+ */
+const parentOrigin = toOrigin(getPublicConfig().appUrl);
+
+async function load(): Promise<Outcome> {
+  if (!apiUrl || !micrositeId) return { kind: 'unavailable' };
+  // No token, no request. Not an error worth an API round trip.
+  if (!token) return { kind: 'forbidden' };
+
+  try {
+    const response = await fetch(
+      `${apiUrl}/public/microsites/${encodeURIComponent(micrositeId)}/document?mode=draft&token=${encodeURIComponent(token)}&path=${encodeURIComponent(path)}`,
+      { signal: AbortSignal.timeout(API_TIMEOUT_MS) }
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      return { kind: 'forbidden' };
+    }
+    if (response.status === 404) return { kind: 'not-found' };
+    if (!response.ok) return { kind: 'unavailable' };
+
+    const body = (await response.json()) as Partial<MicrositeDocument> & {
+      data?: MicrositeData;
+    };
+    if (!Array.isArray(body.pages) || !body.theme || !body.data) {
+      return { kind: 'unavailable' };
+    }
+
+    const page = body.pages.find((candidate) => candidate.path === path);
+    if (!page) return { kind: 'not-found' };
+
+    return { kind: 'ok', theme: body.theme, page, data: body.data };
+  } catch {
+    return { kind: 'unavailable' };
+  }
+}
+
+const outcome = await load();
+
+/**
+ * §1, enforced in ONE expression. Edit mode requires a draft document the API
+ * agreed to serve for this token, and a peer origin to report to. Anything
+ * short of that renders read-only.
+ */
+const editable = outcome.kind === 'ok' && !!parentOrigin;
+
+// A draft must never be cached anywhere, by anyone, at any layer: it is
+// unpublished tenant copy behind a bearer token in a URL.
+Astro.response.headers.set(
+  'Cache-Control',
+  'no-store, no-cache, must-revalidate, private'
+);
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+// Only the dashboard may frame the draft. Without this, any page that learns a
+// preview URL could embed it and read the tenant's unpublished site.
+Astro.response.headers.set(
+  'Content-Security-Policy',
+  `frame-ancestors ${parentOrigin ?? "'none'"}`
+);
+
+if (outcome.kind !== 'ok') {
+  Astro.response.status =
+    outcome.kind === 'forbidden' ? 403 : outcome.kind === 'not-found' ? 404 : 503;
+}
+
+const blocks = outcome.kind === 'ok' ? (outcome.page.blocks ?? []) : [];
+
+const title =
+  outcome.kind === 'ok'
+    ? outcome.page.title
+    : outcome.kind === 'forbidden'
+      ? 'Preview link expired'
+      : outcome.kind === 'not-found'
+        ? 'Page not found'
+        : 'Preview temporarily unavailable';
+
+const gateMessage =
+  outcome.kind === 'forbidden'
+    ? 'This preview link is no longer valid. Reopen the site from your dashboard.'
+    : outcome.kind === 'not-found'
+      ? 'That page is not in the current draft.'
+      : 'The draft could not be loaded. Try again in a moment.';
+---
+
+{
+  outcome.kind === 'ok' ? (
+    <MicrositeShell theme={outcome.theme} title={title} seo={outcome.page.seo} noindex>
+      <main>
+        {blocks.map((block, index) => (
+          /*
+           * `display: contents` — the wrapper is a selection handle for the
+           * canvas, not a layout box. Clicking anywhere in a block reports
+           * `selected`; only the §2 fields inside it are editable.
+           */
+          <div data-ms-block={block.id} style="display: contents">
+            <BlockRenderer
+              block={block}
+              data={outcome.data}
+              index={index}
+              editable={editable}
+            />
+          </div>
+        ))}
+      </main>
+      {/*
+        The ONLY client JS this app ships, and it is reachable only from here.
+        The published route does not import this component, so no bundle of it
+        is emitted for a published render.
+      */}
+      {editable && parentOrigin && <EditMode parentOrigin={parentOrigin} />}
+    </MicrositeShell>
+  ) : (
+    <MicrositeShell theme={FALLBACK_THEME} title={title} noindex>
+      <main class="ms-section">
+        <div class="ms-container ms-status">
+          <h1>{title}</h1>
+          <p>{gateMessage}</p>
+        </div>
+      </main>
+    </MicrositeShell>
+  )
+}
+
+<style is:global>
+  body.microsite .ms-status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+    padding-block: 4rem;
+  }
+</style>

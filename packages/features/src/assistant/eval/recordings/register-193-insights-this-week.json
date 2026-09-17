@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "fixtureId": "register-193-insights-this-week",
+  "recordedAt": "2026-07-29T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "How did our ads do this week?",
+      "rounds": [
+        {
+          "modelText": "Let me pull this week's numbers.",
+          "toolUses": [
+            {
+              "name": "getCampaignInsights",
+              "input": {
+                "metaCampaignId": "c-1",
+                "datePreset": "this_week"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "metaCampaignId": "c-1",
+                  "dateRange": { "since": "2026-07-27", "until": "2026-08-02" },
+                  "totals": {
+                    "spend": 210,
+                    "reach": 8400,
+                    "clicks": 190,
+                    "impressions": 12000,
+                    "leads": 14,
+                    "conversions": 3,
+                    "ctr": 1.58,
+                    "cpc": 110,
+                    "cpm": 1750,
+                    "frequency": 1.4,
+                    "cpl": 1500,
+                    "cpa": 7000
+                  },
+                  "ads": []
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "For this week (2026-07-27 to 2026-08-02) your campaign spent €210 and brought in 14 leads, so your cost per lead is about €15. Want me to look at nudging the budget?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

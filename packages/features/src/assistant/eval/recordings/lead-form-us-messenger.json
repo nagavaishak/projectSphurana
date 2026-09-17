@@ -1,0 +1,281 @@
+{
+  "version": 1,
+  "fixtureId": "lead-form-us-messenger",
+  "recordedAt": "2026-06-06T11:10:00.416Z",
+  "skillRegistryVersion": 28,
+  "turns": [
+    {
+      "userMessage": "Run a lip filler campaign for me. I charge €180 a session.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "recommendServiceForAds",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "recommended": {
+                    "serviceId": "s1",
+                    "name": "Lip filler",
+                    "rationale": "Strong demand, short rebooking cycle, ready creative."
+                  },
+                  "alternatives": [
+                    {
+                      "serviceId": "s2",
+                      "name": "Anti-wrinkle treatment"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "suggestIntroOffer",
+              "input": {
+                "serviceId": "s1",
+                "oneSessionPrice": 180
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "advisable": true,
+                  "needsPrice": false,
+                  "suggested": {
+                    "serviceId": "s1",
+                    "serviceName": "Lip filler",
+                    "oneSessionPrice": 180,
+                    "introPrice": 120,
+                    "discountPercent": 33
+                  }
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "previewCampaign",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "created",
+                  "variant": "preview",
+                  "title": "Campaign preview",
+                  "ready": true,
+                  "suggestedName": "Lip filler — June 2026",
+                  "followUpType": "lead_form",
+                  "nurtureChannel": "messenger",
+                  "nurtureChannelFlagged": false,
+                  "canRunLeadForm": true,
+                  "dailyBudgetAmount": 15,
+                  "currencyCode": "EUR",
+                  "distanceKm": 20,
+                  "ageMin": 18,
+                  "ageMax": 65,
+                  "locationName": "500 W 5th St, Austin, TX, USA",
+                  "areaTypeKnown": true,
+                  "fields": [
+                    {
+                      "label": "Name",
+                      "value": "Lip filler — June 2026"
+                    },
+                    {
+                      "label": "Daily budget",
+                      "value": "€15.00/day"
+                    },
+                    {
+                      "label": "How leads reach you",
+                      "value": "Lead form → Messenger follow-up"
+                    },
+                    {
+                      "label": "Targeting",
+                      "value": "Within 20km of 500 W 5th St, Austin, TX, USA"
+                    },
+                    {
+                      "label": "Age range",
+                      "value": "18–65"
+                    }
+                  ],
+                  "actions": []
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "The intro offer is Lip filler at €120 for new clients — 33% below your usual €180.\n\nMost people will fill in the form and then land in your Messenger — I'll be in there picking them up, qualifying them and getting them booked. Anything that needs you, I'll flag.\n\nThat's the intro offer above and the campaign ready to go — want me to set it live?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Perfect — yes, set it live.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createOffer",
+              "input": {
+                "serviceId": "s1",
+                "oneSessionPrice": 180,
+                "introPrice": 120
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "offerId": "o1",
+                  "name": "Lip filler intro",
+                  "offerPriceCents": 12000
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createLeadForm",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "leadFormId": "lf1",
+                  "metaFormId": "m1",
+                  "name": "Lip filler — lead form",
+                  "status": "synced",
+                  "followUpChannel": "messenger",
+                  "ready": true
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createCampaign",
+              "input": {
+                "name": "Lip filler — June 2026",
+                "followUpType": "lead_form",
+                "leadFormId": "lf1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "metaCampaignId": "c1",
+                  "metaAdSetId": "as1",
+                  "followUpType": "lead_form",
+                  "leadFormId": "lf1"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createDraftVideo",
+              "input": {
+                "format": "offer",
+                "offerId": "o1",
+                "serviceId": "s1",
+                "autoRender": true,
+                "suppressCard": true
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v1",
+                  "status": "rendering"
+                }
+              }
+            },
+            {
+              "name": "createAdGraphic",
+              "input": {
+                "serviceId": "s1",
+                "offerId": "o1",
+                "suppressCard": true
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "graphicId": "g1",
+                  "status": "rendering"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createDraftAd",
+              "input": {
+                "metaCampaignId": "c1",
+                "videoId": "v1",
+                "headline": "Your perfect lip shape starts here",
+                "primaryText": "Lips that feel thin or undefined can knock your confidence. Our lip filler treatment is designed to restore natural volume and balance — tailored to your features, delivered with precision. New clients pay €120 for their first session. Message us to book.",
+                "callToAction": "BOOK_NOW",
+                "serviceIds": ["s1"]
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "adId": "a1",
+                  "status": "draft"
+                }
+              }
+            },
+            {
+              "name": "createDraftAd",
+              "input": {
+                "metaCampaignId": "c1",
+                "graphicId": "g1",
+                "headline": "Get the lip shape you've been after",
+                "primaryText": "If your lips feel uneven or lack definition, you're not alone. Expert lip filler at Glow Aesthetics gives you natural-looking fullness that suits your face. First session is €120 for new clients. Message us to book your appointment.",
+                "callToAction": "BOOK_NOW",
+                "serviceIds": ["s1"]
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "adId": "a1",
+                  "status": "draft"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Building your two ads now — they'll fill in below.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

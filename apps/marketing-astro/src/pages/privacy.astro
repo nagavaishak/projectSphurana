@@ -1,0 +1,14 @@
+---
+import { PrivacyPage } from '@/components/pages/privacy';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="Privacy Policy | Borradh"
+  description="Borradh Privacy Policy. Learn how we collect, use, and protect your personal information."
+>
+  <PrivacyPage client:load config={config} />
+</BaseLayout>

@@ -1,0 +1,36 @@
+{
+  "name": "@borradh-workspace/ai",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "test": "vitest run",
+    "lint": "biome check src/ --write"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.91.1",
+    "@borradh-workspace/http": "workspace:*",
+    "@borradh-workspace/observability": "workspace:*",
+    "openai": "4.73.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10"
+  }
+}

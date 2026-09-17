@@ -1,0 +1,13 @@
+---
+export const prerender = false;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+const slug = Astro.params.slug ?? '';
+---
+<BaseLayout title="Order received" description="Shop order confirmation" theme="light">
+  <main class="mx-auto max-w-2xl px-4 py-16 text-center">
+    <p class="text-sm text-muted-foreground">Borradh shop</p>
+    <h1 class="mt-2 font-bold text-3xl">Thanks — your order is received.</h1>
+    <p class="mt-4 text-muted-foreground">The clinic will prepare it for collection. We’ll email you when it is ready.</p>
+    <a class="mt-8 inline-block underline" href={`/sites/${slug}/shop`}>Back to shop</a>
+  </main>
+</BaseLayout>

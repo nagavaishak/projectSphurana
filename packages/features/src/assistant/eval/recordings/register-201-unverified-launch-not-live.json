@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fixtureId": "register-201-unverified-launch-not-live",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Launch it and let me know it went live.",
+      "rounds": [
+        {
+          "modelText": "Publishing now and verifying the status with Meta.",
+          "toolUses": [
+            {
+              "name": "executeLaunchAd",
+              "input": { "adId": "ad-3", "adName": "Skin-boost bundle" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "created",
+                  "title": "Ad submitted: Skin-boost bundle",
+                  "adId": "ad-3",
+                  "name": "Skin-boost bundle",
+                  "launchState": "unverified",
+                  "launchStateDetail": "The launch request was submitted, but the read-back from Meta failed — the ad must not be reported as live until verified.",
+                  "message": "The launch request was submitted, but the read-back from Meta failed — the ad must not be reported as live until verified."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I've submitted it to Meta, but I couldn't read its status back just now, so I can't yet confirm whether it started — I won't tell you it's on until I've verified it. I'll re-check and let you know as soon as the status comes through.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

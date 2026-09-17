@@ -1,0 +1,96 @@
+{
+  "name": "@borradh-workspace/env",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./database": {
+      "types": "./dist/database.d.ts",
+      "import": "./dist/database.js",
+      "default": "./dist/database.js"
+    },
+    "./api": {
+      "types": "./dist/api.d.ts",
+      "import": "./dist/api.js",
+      "default": "./dist/api.js"
+    },
+    "./web": {
+      "types": "./dist/web.d.ts",
+      "import": "./dist/web.js",
+      "default": "./dist/web.js"
+    },
+    "./auth": {
+      "types": "./dist/auth.d.ts",
+      "import": "./dist/auth.js",
+      "default": "./dist/auth.js"
+    },
+    "./observability": {
+      "types": "./dist/observability.d.ts",
+      "import": "./dist/observability.js",
+      "default": "./dist/observability.js"
+    },
+    "./email": {
+      "types": "./dist/email.d.ts",
+      "import": "./dist/email.js",
+      "default": "./dist/email.js"
+    },
+    "./redis": {
+      "types": "./dist/redis.d.ts",
+      "import": "./dist/redis.js",
+      "default": "./dist/redis.js"
+    },
+    "./storage": {
+      "types": "./dist/storage.d.ts",
+      "import": "./dist/storage.js",
+      "default": "./dist/storage.js"
+    },
+    "./video-processing": {
+      "types": "./dist/video-processing.d.ts",
+      "import": "./dist/video-processing.js",
+      "default": "./dist/video-processing.js"
+    },
+    "./voice": {
+      "types": "./dist/voice.d.ts",
+      "import": "./dist/voice.js",
+      "default": "./dist/voice.js"
+    },
+    "./loops": {
+      "types": "./dist/loops.d.ts",
+      "import": "./dist/loops.js",
+      "default": "./dist/loops.js"
+    },
+    "./notion": {
+      "types": "./dist/notion.d.ts",
+      "import": "./dist/notion.js",
+      "default": "./dist/notion.js"
+    },
+    "./vercel": {
+      "types": "./dist/vercel.d.ts",
+      "import": "./dist/vercel.js",
+      "default": "./dist/vercel.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev": "tsc --build tsconfig.lib.json --watch --preserveWatchOutput",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "test": "vitest run",
+    "lint": "biome check src/ --write"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "^0.13.8",
+    "zod": "^4.1.13"
+  }
+}

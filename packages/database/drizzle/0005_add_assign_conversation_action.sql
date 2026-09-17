@@ -1,0 +1,1 @@
+ALTER TYPE "public"."claire_confirmation_action" ADD VALUE 'assign_conversation' BEFORE 'queue_video_export';

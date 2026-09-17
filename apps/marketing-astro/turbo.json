@@ -1,0 +1,27 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "public/**",
+        "astro.config.*",
+        "tsconfig.json",
+        "package.json"
+      ],
+      "outputs": ["dist/**", ".vercel/output/**"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "vite.config.ts", "package.json"],
+      "cache": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "inputs": ["src/**", "astro.config.*", "tsconfig.json"],
+      "cache": true
+    }
+  }
+}

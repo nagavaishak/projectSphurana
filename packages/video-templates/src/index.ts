@@ -1,0 +1,32 @@
+// Note: this file is a build input for the turbo `video-templates:build` task;
+// editing it invalidates the remote-cache artifact (see 2026-07-03 CI incident
+// where a stale cached artifact restored without dist/, breaking remotion:build).
+export * from './slot.js';
+export * from './template-doc.js';
+export * from './render-doc.js';
+export * from './music-registry.js';
+export * from './educational-1.js';
+export * from './educational-2.js';
+export * from './educational-3.js';
+export * from './authority-1.js';
+export * from './authority-2.js';
+export * from './authority-3.js';
+export * from './before-after-1.js';
+export * from './before-after-2.js';
+export * from './before-after-3.js';
+export * from './offer-square-1.js';
+export * from './caption-tease-1.js';
+export * from './fade-benefits-1.js';
+export * from './aesthetic-line-1.js';
+export * from './numbered-list-1.js';
+export * from './ins-outs-1.js';
+export * from './question-cta-1.js';
+export * from './improves-1.js';
+export * from './template-registry.js';
+export * from './schemas.js';
+export * from './registries/index.js';
+export * from './block-def.js';
+export * from './block-registry.js';
+export * from './duration.js';
+export * from './theme.js';
+export * from './synthesis-overrides.js';

@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-tray-empty-claire-asks",
+  "recordedAt": "2026-04-26T00:00:00.000Z",
+  "skillRegistryVersion": 9,
+  "turns": [
+    {
+      "userMessage": "Let me make a video for the lip filler service.",
+      "rounds": [
+        {
+          "modelText": "Setting up the draft.",
+          "toolUses": [
+            {
+              "name": "createDraftVideo",
+              "input": {
+                "templateId": "before-after",
+                "title": "Lip filler"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-tray-empty-1",
+                  "templateId": "before-after",
+                  "variationId": "before-after-1",
+                  "status": "draft",
+                  "narrationMode": "recorded",
+                  "recommendedClipCount": 3
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Checking what's already in the clip tray.",
+          "toolUses": [
+            {
+              "name": "listDraftClips",
+              "input": {
+                "videoId": "v-tray-empty-1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-tray-empty-1",
+                  "clipCount": 0,
+                  "emptyBeats": null,
+                  "clips": []
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Right — the tray's empty. How do you want to handle the clips? I can pick from your library, you can drop a few in, or both — whatever's easiest.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

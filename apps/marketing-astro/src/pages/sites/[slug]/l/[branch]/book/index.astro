@@ -1,0 +1,62 @@
+---
+/**
+ * `/sites/{org}/l/{branch}/book` — THE WIZARD, SCOPED TO ONE BRANCH.
+ *
+ * The branch is in the PATH, not in a query string and not in client state, so
+ * it survives a refresh, a share and a back-button — and every API call the
+ * wizard makes below carries it (`config`, `slots`, `submit` all take an
+ * optional branch handle).
+ *
+ * WHY `l/{branch}` IS A PREFIX, NOT A SUFFIX. It sits ahead of `book` rather
+ * than inside it so ONE convention covers every tenant surface: the venue page
+ * next door takes the same segment, and it mirrors `/dashboard/l/…` on the
+ * other half of the product. Under the old `/book/l/{slug}` shape the branch
+ * was a property of the booking flow, which is why `/venue` had no branch
+ * concept at all and a three-branch clinic showed one venue with no way to
+ * reach the others.
+ *
+ * `{branch}` is `slug ?? id` — see `branchSegmentFor`. Accepting the id is what
+ * lets a branch be addressed before the slug backfill has run.
+ *
+ * NO server-side validation of the segment here on purpose. The API resolves it
+ * per request and 404s a handle that names no branch — a second check in the
+ * route would be a second authority that can disagree with the first, which is
+ * exactly the failure mode `_resolve-org.ts` was written to avoid. It would
+ * also cost a serial round trip before the page could paint.
+ *
+ * The TITLE names only the org. It used to `humaniseSlug(locationSlug)`, which
+ * silently became garbage the moment the segment could be a cuid — and even for
+ * a real slug it is a guess at a name the API already knows. The wizard renders
+ * the branch's actual name from `config`.
+ */
+export const prerender = false;
+
+import { BookingWizardPage } from '@/components/booking';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+import { resolveBookingOrg } from '../../../_resolve-org';
+import { humaniseSlug } from '../../../_humanise-slug';
+
+const { slug: organizationSlug, orgContext } = resolveBookingOrg(
+  Astro.url,
+  Astro.params.slug
+);
+const branch = Astro.params.branch ?? '';
+const config = getPublicConfig();
+
+const displayName = humaniseSlug(organizationSlug);
+---
+
+<BaseLayout
+  title={`Book at ${displayName}`}
+  description={`Book an appointment at ${displayName}.`}
+  theme="light"
+>
+  <BookingWizardPage
+    client:load
+    config={config}
+    organizationSlug={organizationSlug}
+    orgContext={orgContext}
+    locationSlug={branch}
+  />
+</BaseLayout>

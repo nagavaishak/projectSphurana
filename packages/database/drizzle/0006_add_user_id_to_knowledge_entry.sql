@@ -1,0 +1,2 @@
+ALTER TABLE "knowledge_entry" ADD COLUMN "user_id" text;--> statement-breakpoint
+ALTER TABLE "knowledge_entry" ADD CONSTRAINT "knowledge_entry_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;

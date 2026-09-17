@@ -1,0 +1,1 @@
+ALTER TABLE "organization" ADD COLUMN "customer_rescheduling_enabled" boolean DEFAULT true NOT NULL;

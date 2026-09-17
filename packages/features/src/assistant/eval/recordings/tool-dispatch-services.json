@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-services",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "What services do I offer?",
+      "rounds": [
+        {
+          "modelText": "Let me check the list.",
+          "toolUses": [
+            {
+              "name": "context_listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [
+                    {
+                      "id": "s1",
+                      "name": "Lip filler",
+                      "category": "injectables",
+                      "description": null,
+                      "isActive": true,
+                      "priceText": "From €240"
+                    },
+                    {
+                      "id": "s2",
+                      "name": "Anti-wrinkle treatment",
+                      "category": "injectables",
+                      "description": null,
+                      "isActive": true,
+                      "priceText": "From €180"
+                    },
+                    {
+                      "id": "s3",
+                      "name": "Skin booster",
+                      "category": "injectables",
+                      "description": null,
+                      "isActive": true,
+                      "priceText": null
+                    },
+                    {
+                      "id": "s4",
+                      "name": "PRP facial",
+                      "category": "facials",
+                      "description": null,
+                      "isActive": true,
+                      "priceText": null
+                    }
+                  ],
+                  "total": 4
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You're offering four services right now: Lip filler, Anti-wrinkle treatment, Skin booster, and PRP facial. Lip filler and Anti-wrinkle have starting prices set; the other two don't yet — worth filling those in if you want them surfaced in marketing copy.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

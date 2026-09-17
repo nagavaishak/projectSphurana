@@ -1,0 +1,1 @@
+ALTER TABLE "organization" ADD COLUMN "brand_style_guide" text;

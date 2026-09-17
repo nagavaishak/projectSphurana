@@ -1,0 +1,265 @@
+---
+/**
+ * THE PATH TIER — `www.borradh.io/sites/{slug}` (plan §9).
+ *
+ * Three tiers serve the same document: a tenant custom domain, `{slug}.borradh.io`,
+ * and this one. The first two depend on DNS, a Vercel domain and a certificate;
+ * this one depends on nothing but a deploy, which is exactly why it exists. It
+ * is the URL we can put in an ad the moment a microsite is created, and the URL
+ * that still works when a tenant's nameservers are wrong. So it resolves by
+ * `microsite.slug` and never by a synthesised hostname — that would make the
+ * fallback fail in the same conditions as the tier it is falling back from.
+ *
+ * SSR, published-only. Draft preview is a separate token-gated route.
+ *
+ * Nothing here touches the database: the marketing app reads through the API,
+ * same rule as the booking flow.
+ *
+ * Ships ZERO client JavaScript — no islands, no `client:*`. The budget is
+ * LCP < 2.0s on 4G, and these are ad landing pages where a slow load is a
+ * directly measurable cost.
+ */
+export const prerender = false;
+
+import type {
+  MicrositeDocument,
+  MicrositePage,
+  MicrositeTheme,
+} from '@borradh-workspace/web-shared';
+import BlockRenderer from '@/components/microsite/BlockRenderer.astro';
+import {
+  type MicrositeData,
+  withMicrositeAttribution,
+} from '@/components/microsite';
+import MicrositeShell from '@/layouts/MicrositeShell.astro';
+import { resolveUpstreamApiUrl } from '@/lib/config';
+import {
+  MICROSITE_NO_STORE_HEADERS,
+  micrositeDocumentUrl,
+  micrositePublishedCacheHeaders,
+} from '../_microsite-cache';
+
+/**
+ * Used only by the 404 / 503 shells, which have to render before (or instead
+ * of) a document. `theme.ts` allowlists every value it emits, so this is about
+ * having a legible page, not about trusting it.
+ */
+const FALLBACK_THEME: MicrositeTheme = {
+  brand: {
+    primary: '#111111',
+    accent: '#111111',
+    neutral: '#555555',
+    surface: '#ffffff',
+  },
+  logo: { assetUrl: null },
+  typography: { scale: 'default' },
+  radius: 'md',
+  buttonStyle: 'solid',
+  density: 'comfortable',
+};
+
+/**
+ * A hung API must not hold a lambda open for 30s and blow the LCP budget for
+ * every visitor behind it. Failing fast into the 503 shell is the better
+ * outcome — it is at least a page.
+ */
+const API_TIMEOUT_MS = 4000;
+
+type Outcome =
+  | {
+      kind: 'ok';
+      micrositeId: string;
+      theme: MicrositeTheme;
+      page: MicrositePage;
+      data: MicrositeData;
+      /** Meta's domain-verification token for this host, from the document call. */
+      metaDomainVerifyToken: string | null;
+    }
+  | { kind: 'not-found' }
+  | { kind: 'unavailable' };
+
+/** `undefined` → `/`, `about/` → `/about`. Paths are stored leading-slash. */
+const normalisePath = (raw: string | undefined): string => {
+  const trimmed = (raw ?? '').replace(/^\/+|\/+$/g, '');
+  return trimmed ? `/${trimmed}` : '/';
+};
+
+const apiUrl = resolveUpstreamApiUrl().replace(/\/$/, '');
+const slug = Astro.params.slug ?? '';
+const path = normalisePath(Astro.params.path);
+
+/**
+ * HOST IMPLIES ORG (plan §2.2), so the API is told the host and the request
+ * path rather than a slug: `resolveMicrositeHost` reads `/sites/{slug}` out of
+ * the path and matches this tier. `Astro.url.host` behind Vercel is the
+ * rewritten internal host, so the forwarded header wins.
+ */
+const requestHost = Astro.request.headers.get('host') ?? Astro.url.host;
+/** Always the path-tier shape, on every tier — it is the only one the resolver reads a slug out of. */
+const resolvePath = `/sites/${slug}${path === '/' ? '' : path}`;
+
+/**
+ * ONE upstream call, not two.
+ *
+ * The middleware has ALREADY resolved this host on the wildcard and custom
+ * tiers (see `pages/_microsite-routing.ts`) and rewritten onto this route, and
+ * the path tier had to resolve it here. Either way the document endpoint
+ * re-resolves the host itself — it must, because the host and not the route id
+ * is what names the org (plan §2.2) — so a separate `/resolve` hop was a second
+ * serial Vercel→Fly round trip that answered a question the next call asked
+ * again. It is gone; `micrositeDocumentUrl` fetches both at once.
+ *
+ * `Astro.locals.microsite` is still set by the middleware and still read by the
+ * portal pages; this route no longer needs it.
+ */
+
+async function load(): Promise<Outcome> {
+  if (!apiUrl || !slug) return { kind: 'unavailable' };
+
+  try {
+    const response = await fetch(
+      micrositeDocumentUrl(apiUrl, { host: requestHost, path: resolvePath }),
+      { signal: AbortSignal.timeout(API_TIMEOUT_MS) }
+    );
+
+    // An unknown host/slug is a 404, not an outage — and never a redirect. A
+    // redirect here is how a fallback tier turns one bad link into a loop. 400
+    // is an unusable host header, which is the same "there is no site here".
+    // A site that exists but has never been published also 404s: that is a 404
+    // to a visitor, not a broken deploy.
+    if (response.status === 404 || response.status === 400) {
+      return { kind: 'not-found' };
+    }
+    if (!response.ok) return { kind: 'unavailable' };
+
+    const body = (await response.json()) as Partial<MicrositeDocument> & {
+      micrositeId?: string;
+      data?: MicrositeData;
+      metaDomainVerifyToken?: string | null;
+    };
+    if (
+      !body.micrositeId ||
+      !Array.isArray(body.pages) ||
+      !body.theme ||
+      !body.data
+    ) {
+      return { kind: 'unavailable' };
+    }
+
+    const page = body.pages.find((candidate) => candidate.path === path);
+    if (!page) return { kind: 'not-found' };
+
+    return {
+      kind: 'ok',
+      micrositeId: body.micrositeId,
+      theme: body.theme,
+      page,
+      data: body.data,
+      metaDomainVerifyToken: body.metaDomainVerifyToken ?? null,
+    };
+  } catch {
+    // Timeout, DNS, connection reset, malformed JSON. The visitor gets a clean
+    // page and a 503; never a stack trace, never a blank white screen.
+    return { kind: 'unavailable' };
+  }
+}
+
+const outcome = await load();
+
+if (outcome.kind === 'ok') {
+  // Short edge window, NO stale-while-revalidate: this page renders live
+  // prices and hours, so a long stale window makes the site confidently wrong.
+  // The full reasoning — and why a revision-keyed cache key is not available on
+  // this platform — is in `_microsite-cache.ts`. Read it before widening this.
+  for (const [name, value] of Object.entries(
+    micrositePublishedCacheHeaders(outcome.micrositeId)
+  )) {
+    Astro.response.headers.set(name, value);
+  }
+} else {
+  // Never cache a miss or an outage — a cached 503 outlives the outage.
+  Astro.response.status = outcome.kind === 'not-found' ? 404 : 503;
+  for (const [name, value] of Object.entries(MICROSITE_NO_STORE_HEADERS)) {
+    Astro.response.headers.set(name, value);
+  }
+}
+
+/**
+ * ATTRIBUTION TRAVELS WITH THE BOOKING LINK (plan §9, §11).
+ *
+ * The lead is created under `/book`, which is its own Astro route and so never
+ * runs the microsite resolve above — it cannot know which site, or which ad,
+ * sent the visitor. Tagging the one booking link here is what carries
+ * `micrositeId` and this request's UTMs across that boundary. Resolved once by
+ * the page, like `bookingUrl` itself.
+ *
+ * (Booking now sits UNDER the microsite base, `/sites/{slug}/book`, rather
+ * than at a top-level `/book/{slug}` — but it is still a separate route, so
+ * the hand-off is still needed.)
+ *
+ * `micrositeId`, never the host: a tenant moving from `salon.borradh.io` to
+ * `salon.com` keeps one attribution history.
+ */
+if (outcome.kind === 'ok') {
+  outcome.data.bookingUrl = withMicrositeAttribution(outcome.data.bookingUrl, {
+    micrositeId: outcome.micrositeId,
+    search: Astro.url.search,
+  });
+}
+
+const blocks = outcome.kind === 'ok' ? (outcome.page.blocks ?? []) : [];
+const seo = outcome.kind === 'ok' ? outcome.page.seo : undefined;
+const ogImageUrl =
+  outcome.kind === 'ok' && seo?.ogImageAssetId
+    ? (outcome.data.assets[seo.ogImageAssetId]?.url ?? null)
+    : null;
+
+const title =
+  outcome.kind === 'ok'
+    ? outcome.page.title
+    : outcome.kind === 'not-found'
+      ? 'Page not found'
+      : 'Temporarily unavailable';
+---
+
+{
+  outcome.kind === 'ok' ? (
+    <MicrositeShell
+      theme={outcome.theme}
+      title={title}
+      seo={seo}
+      ogImageUrl={ogImageUrl}
+      metaDomainVerifyToken={outcome.metaDomainVerifyToken}
+    >
+      <main>
+        {blocks.map((block, index) => (
+          <BlockRenderer block={block} data={outcome.data} index={index} />
+        ))}
+      </main>
+    </MicrositeShell>
+  ) : (
+    <MicrositeShell theme={FALLBACK_THEME} title={title} noindex>
+      <main class="ms-section">
+        <div class="ms-container ms-status">
+          <h1>{title}</h1>
+          <p>
+            {outcome.kind === 'not-found'
+              ? 'That page does not exist.'
+              : "This site is temporarily unavailable. Please try again in a moment."}
+          </p>
+        </div>
+      </main>
+    </MicrositeShell>
+  )
+}
+
+<style is:global>
+  body.microsite .ms-status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+    padding-block: 4rem;
+  }
+</style>

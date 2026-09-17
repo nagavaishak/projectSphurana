@@ -1,0 +1,122 @@
+---
+import { BLOCK_VARIANTS } from '@borradh-workspace/web-shared';
+import type { GalleryProps } from '@borradh-workspace/web-shared';
+import { resolveVariant, type MicrositeData } from '../data';
+import { editableAttrs } from '../edit/editable';
+
+const VARIANTS = BLOCK_VARIANTS['gallery'];
+
+interface Props {
+  props: GalleryProps;
+  variant: string;
+  data: MicrositeData;
+  /** True ONLY on a token-gated draft preview. Never on a published render. */
+  editable?: boolean;
+  blockId?: string;
+}
+
+const { props, variant, data, editable = false, blockId } = Astro.props;
+
+/** §2: `title` only. */
+const attrs = (field: string) => editableAttrs(editable, blockId, 'gallery', field);
+
+// `variant` is the only layout authority. There used to be a `props.layout`
+// as well; two sources for one concept is how a block ends up rendering one
+// layout while the agent believes it set another, so the prop was removed
+// from the contract.
+const layout = resolveVariant(variant, VARIANTS);
+
+const ids = Array.isArray(props?.assetIds) ? props.assetIds : [];
+// Explicit ids, in the order the author gave them; otherwise the org gallery.
+const images = ids.length
+  ? ids.map((id) => data.assets?.[id]).filter((a) => !!a)
+  : (data.gallery ?? []);
+
+const title = props?.title?.trim();
+---
+
+{
+  images.length > 0 && (
+    <section class:list={['ms-section', 'ms-gallery', `ms-gallery--${layout}`]}>
+      <div class="ms-container">
+        {title && <h2 class="ms-gallery__title" {...attrs('title')}>
+            {title}
+          </h2>}
+        <ul class="ms-gallery__list">
+          {images.map((image) => (
+            <li class="ms-gallery__item">
+              <img
+                src={image.url}
+                alt={image.alt ?? `${data.businessName} gallery image`}
+                width={image.width ?? 800}
+                height={image.height ?? 800}
+                loading="lazy"
+                decoding="async"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .ms-gallery {
+    background: var(--brand-surface);
+  }
+
+  .ms-gallery__title {
+    margin-bottom: calc(var(--ms-gap) * 1.25);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .ms-gallery__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: calc(var(--ms-gap) * 0.6);
+  }
+
+  .ms-gallery__item img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--ms-radius);
+    object-fit: cover;
+    background: var(--brand-subtle);
+  }
+
+  .ms-gallery--grid .ms-gallery__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 48rem) {
+    .ms-gallery--grid .ms-gallery__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /*
+   * Carousel is CSS scroll-snap, not a JS widget. An ad landing page should
+   * not ship a hydrated island for a row of photos.
+   */
+  .ms-gallery--carousel .ms-gallery__list {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    padding-bottom: 0.5rem;
+  }
+
+  .ms-gallery--carousel .ms-gallery__item {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+
+  @media (min-width: 48rem) {
+    .ms-gallery--carousel .ms-gallery__item {
+      flex-basis: 32%;
+    }
+  }
+</style>

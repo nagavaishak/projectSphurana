@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-leads",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 3,
+  "turns": [
+    {
+      "userMessage": "Show me my leads from this week.",
+      "rounds": [
+        {
+          "modelText": "Pulling the most recent set.",
+          "toolUses": [
+            {
+              "name": "listLeads",
+              "input": {
+                "limit": 20,
+                "offset": 0
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "leads": [
+                    {
+                      "id": "lead-1",
+                      "firstName": "Aoife",
+                      "lastName": "Murphy",
+                      "email": "aoife@example.com",
+                      "phone": null,
+                      "status": "new",
+                      "source": "facebook",
+                      "sequenceId": null,
+                      "assignedToId": null,
+                      "createdAt": "2026-04-22T10:00:00.000Z",
+                      "updatedAt": "2026-04-22T10:00:00.000Z"
+                    },
+                    {
+                      "id": "lead-2",
+                      "firstName": "Cian",
+                      "lastName": "Walsh",
+                      "email": null,
+                      "phone": "+353871234567",
+                      "status": "contacted",
+                      "source": "facebook",
+                      "sequenceId": null,
+                      "assignedToId": null,
+                      "createdAt": "2026-04-21T10:00:00.000Z",
+                      "updatedAt": "2026-04-21T10:00:00.000Z"
+                    }
+                  ],
+                  "pageCount": 2,
+                  "limit": 20,
+                  "offset": 0
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You've got two leads from this week — Aoife Murphy from Facebook (still in 'new') and Cian Walsh, also from Facebook (already contacted). Want me to look at any one in particular?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

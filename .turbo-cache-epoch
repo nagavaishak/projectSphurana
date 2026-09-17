@@ -1,0 +1,16 @@
+3
+# Bump the number above to invalidate every turbo remote-cache artifact at once.
+# Epoch 2 (2026-07-03): remote cache held artifacts that restored without dist/
+# (video-templates, runtime-config, ...), breaking downstream builds in CI.
+# Epoch 3 (2026-07-24): RECURRENCE, same package. CI run 30123966398 failed with
+#   Cannot find module '.../runtime-config/dist/env-map.js'
+# while turbo reported `cache hit ... f3e4cc379415c106` for runtime-config:build.
+# Ruled out: ordering (app#build does resolve dependsOn ['^build'] and does list
+# runtime-config among its 5 deps) and the source (restoring that exact hash
+# locally yields a complete dist/). So the REMOTE artifact for that key was
+# incomplete while the local one was fine — a poisoned upload, not a stale key.
+#
+# Twice now, same package, so treat it as a pattern rather than a one-off:
+# `tsc -p tsconfig.lib.json` emitting into dist/ looks capturable mid-write. If
+# it recurs, the fix is to make the emit atomic (build to a temp dir, then
+# rename) rather than to keep bumping this file.

@@ -1,0 +1,161 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "importHelpers": true,
+    "isolatedModules": true,
+    "lib": ["es2022"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es2022",
+    "baseUrl": ".",
+    "paths": {
+      "@borradh-workspace/ai": ["packages/ai/src/index.ts"],
+      "@borradh-workspace/api-client": ["packages/api-client/src/index.ts"],
+      "@borradh-workspace/api-client/*": ["packages/api-client/src/*/index.ts"],
+      "@borradh-workspace/auth": ["packages/auth/src/index.ts"],
+      "@borradh-workspace/auth/patient": ["packages/auth/src/patient.ts"],
+      "@borradh-workspace/auth/magic-link-binding": [
+        "packages/auth/src/magic-link-binding.ts"
+      ],
+      "@borradh-workspace/auth/server": ["packages/auth/src/server.ts"],
+      "@borradh-workspace/auth/*": ["packages/auth/src/*.ts"],
+      "@borradh-workspace/contracts": ["packages/contracts/src/index.ts"],
+      "@borradh-workspace/contracts/*": ["packages/contracts/src/*/index.ts"],
+      "@borradh-workspace/database": ["packages/database/src/index.ts"],
+      "@borradh-workspace/database/*": ["packages/database/src/*/index.ts"],
+      "@borradh-workspace/email": ["packages/email/src/index.ts"],
+      "@borradh-workspace/env": ["packages/env/src/index.ts"],
+      "@borradh-workspace/env/*": ["packages/env/src/*.ts"],
+      "@borradh-workspace/env/stripe": ["packages/env/src/stripe.ts"],
+      "@borradh-workspace/env/loops": ["packages/env/src/loops.ts"],
+      "@borradh-workspace/env/notion": ["packages/env/src/notion.ts"],
+      "@borradh-workspace/features": ["packages/features/src/index.ts"],
+      "@borradh-workspace/features/shared": [
+        "packages/features/src/shared/public.ts"
+      ],
+      "@borradh-workspace/features/*": ["packages/features/src/*/index.ts"],
+      "@borradh-workspace/features/shared/oauth": [
+        "packages/features/src/shared/oauth-server.ts"
+      ],
+      "@borradh-workspace/features/shared/queue": [
+        "packages/features/src/shared/queue/index.ts"
+      ],
+      "@borradh-workspace/features/auth/schemas": [
+        "packages/features/src/auth/schemas.ts"
+      ],
+      "@borradh-workspace/features/videos/templates": [
+        "packages/features/src/videos/templates.ts"
+      ],
+      "@borradh-workspace/features/graphics/carousel-slides": [
+        "packages/features/src/graphics/utils/carousel-slides.ts"
+      ],
+      "@borradh-workspace/features/booking-forms/payment": [
+        "packages/features/src/booking-forms/shared/resolve-booking-payment.ts"
+      ],
+      "@borradh-workspace/features/organizations/schemas": [
+        "packages/features/src/organizations/schemas.ts"
+      ],
+      "@borradh-workspace/features/meta-ads/nurture": [
+        "packages/features/src/meta-ads/services/_shared/nurture-channel-for-country.ts"
+      ],
+      "@borradh-workspace/features/campaigns/content": [
+        "packages/features/src/campaigns/_shared/campaign-content.ts"
+      ],
+      "@borradh-workspace/features/recommendations/models": [
+        "packages/features/src/recommendations/models/index.ts"
+      ],
+      "@borradh-workspace/features/assistant/models": [
+        "packages/features/src/assistant/models.ts"
+      ],
+      "@borradh-workspace/features/assistant/prompts": [
+        "packages/features/src/assistant/prompts/index.ts"
+      ],
+      "@borradh-workspace/features/admin-terminal": [
+        "packages/features/src/admin-terminal/index.ts"
+      ],
+      "@borradh-workspace/features/voice-cloning": [
+        "packages/features/src/voice-cloning/index.ts"
+      ],
+      "@borradh-workspace/features/places": [
+        "packages/features/src/places/index.ts"
+      ],
+      "@borradh-workspace/integrations": ["packages/integrations/src/index.ts"],
+      "@borradh-workspace/integrations/domains": [
+        "packages/integrations/src/vercel-domains/index.ts"
+      ],
+      "@borradh-workspace/integrations/*": [
+        "packages/integrations/src/*/index.ts"
+      ],
+      "@borradh-workspace/observability": [
+        "packages/observability/src/index.ts"
+      ],
+      "@borradh-workspace/redis": ["packages/redis/src/index.ts"],
+      "@borradh-workspace/rekognition": ["packages/rekognition/src/index.ts"],
+      "@borradh-workspace/remotion": ["packages/remotion/src/index.ts"],
+      "@borradh-workspace/remotion/*": ["packages/remotion/src/*/index.ts"],
+      "@borradh-workspace/http": ["packages/http/src/index.ts"],
+      "@borradh-workspace/storage": ["packages/storage/src/index.ts"],
+      "@borradh-workspace/testing": ["packages/testing/src/index.ts"],
+      "@borradh-workspace/video-processing": [
+        "packages/video-processing/src/index.ts"
+      ],
+      "@borradh-workspace/video-processing/*": [
+        "packages/video-processing/src/*/index.ts"
+      ],
+      "@borradh-workspace/video-templates": [
+        "packages/video-templates/src/index.ts"
+      ],
+      "@borradh-workspace/video-templates/music-registry": [
+        "packages/video-templates/src/music-registry.ts"
+      ],
+      "@borradh-workspace/video-templates/authority-1": [
+        "packages/video-templates/src/authority-1.ts"
+      ],
+      "@borradh-workspace/video-templates/authority-2": [
+        "packages/video-templates/src/authority-2.ts"
+      ],
+      "@borradh-workspace/video-templates/authority-3": [
+        "packages/video-templates/src/authority-3.ts"
+      ],
+      "@borradh-workspace/video-templates/before-after-1": [
+        "packages/video-templates/src/before-after-1.ts"
+      ],
+      "@borradh-workspace/video-templates/before-after-2": [
+        "packages/video-templates/src/before-after-2.ts"
+      ],
+      "@borradh-workspace/video-templates/before-after-3": [
+        "packages/video-templates/src/before-after-3.ts"
+      ],
+      "@borradh-workspace/video-templates/offer-square-1": [
+        "packages/video-templates/src/offer-square-1.ts"
+      ],
+      "@borradh-workspace/video-templates/educational-2": [
+        "packages/video-templates/src/educational-2.ts"
+      ],
+      "@borradh-workspace/video-templates/educational-3": [
+        "packages/video-templates/src/educational-3.ts"
+      ],
+      "@borradh-workspace/graphics-ai": ["packages/graphics-ai/src/index.ts"],
+      "@borradh-workspace/runtime-config/server": [
+        "packages/runtime-config/src/server.ts"
+      ],
+      "@borradh-workspace/runtime-config/client": [
+        "packages/runtime-config/src/client.tsx"
+      ],
+      "@borradh-workspace/runtime-config/schema": [
+        "packages/runtime-config/src/schema.ts"
+      ]
+    }
+  }
+}

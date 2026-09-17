@@ -1,0 +1,6 @@
+CREATE INDEX "idx_appointment_org_start" ON "appointment" USING btree ("organization_id","start_date") WHERE "appointment"."deleted_at" IS NULL;--> statement-breakpoint
+CREATE INDEX "idx_appointment_org_practitioner_start" ON "appointment" USING btree ("organization_id","practitioner_id","start_date") WHERE "appointment"."deleted_at" IS NULL;--> statement-breakpoint
+CREATE INDEX "idx_appointment_reminder_24h" ON "appointment" USING btree ("start_date") WHERE "appointment"."deleted_at" IS NULL AND "appointment"."reminder_sent_at_24h" IS NULL;--> statement-breakpoint
+CREATE INDEX "idx_appointment_reminder_1h" ON "appointment" USING btree ("start_date") WHERE "appointment"."deleted_at" IS NULL AND "appointment"."reminder_sent_at_1h" IS NULL;--> statement-breakpoint
+CREATE INDEX "idx_appointment_deposit_org_created" ON "appointment_deposit" USING btree ("organization_id","created_at");--> statement-breakpoint
+CREATE INDEX "idx_appointment_deposit_status_expires" ON "appointment_deposit" USING btree ("status","expires_at");

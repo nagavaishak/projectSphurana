@@ -1,0 +1,62 @@
+# NIGHTLY-ONLY (not a per-PR gate). Native gap: profile updateUser save
+# (Linear MOBILE-9).
+#
+# Why nightly, not per-PR: reaching the Profile screen requires the "Personal
+# area" header avatar, so the flow transits the post-login HomeNew render that
+# crashes the software-GPU CI emulator (see 03-dashboard.yaml). Promote to
+# per-PR once HomeNew is emulator-stable or a testID'd mobile nav lands (ENG-7).
+#
+# Exercises the full edit-your-own-profile round-trip inside the native WebView:
+# Profile screen → change the Name field → "Save changes" → Better Auth
+# update-user → success toast. The browser app-e2e suite covers the same form,
+# but never inside the Capacitor WebView where the auth token is read from
+# native storage and the request goes out over the bundled origin — MOBILE-9 is
+# the failure that only reproduces there.
+#
+# Screen: src/routes/_authed/dashboard/settings/index.tsx (ProfileCard).
+# Save handler: src/features/user/api/update-user/update-user.hook.ts →
+#   toast.success('User updated successfully') on success.
+#
+# androidWebViewHierarchy: devtools — required (WebView DOM; see
+# scripts/maestro-android.sh which waits for the DevTools socket).
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# Reuse the shared login → lands authenticated on /dashboard/home (header shown).
+# Path is relative to this file (.maestro/nightly/) → the shared login flow.
+- runFlow: ../02-sign-in.yaml
+# Open the mobile "Personal area" hub via the header avatar, selected by its
+# stable data-testid="mobile-header-user-menu" (ENG-7); see
+# src/features/mobile-dashboard-header/mobile-header-user-menu.tsx.
+- tapOn:
+    id: 'mobile-header-user-menu'
+# /dashboard/account → tap the "Profile" menu link (→ /dashboard/settings),
+# selected by its stable data-testid (ENG-7); see
+# src/routes/_authed/dashboard/account.tsx (MenuLink testId prop).
+- extendedWaitUntil:
+    visible:
+      id: 'account-menu-profile'
+    timeout: 20000
+- tapOn:
+    id: 'account-menu-profile'
+# Profile screen rendered: the Name field (id="name") and "Save changes" button.
+- extendedWaitUntil:
+    visible: 'Save changes'
+    timeout: 20000
+- takeScreenshot: profile-screen
+# Edit the Name field. "Save changes" is disabled until the form is dirty
+# (disabled={!form.formState.isDirty}), so we must actually change the value.
+# Clear then type a stable, idempotent name so re-runs don't accumulate noise.
+- tapOn:
+    id: 'name'
+- eraseText
+- inputText: 'Borradh QA Bare'
+# Dismiss the keyboard so the Save button is on-screen and tappable.
+- hideKeyboard
+- tapOn: 'Save changes'
+# Success = the update-user hook's success toast. Generous timeout for the
+# Better Auth update round-trip.
+- extendedWaitUntil:
+    visible: 'User updated successfully'
+    timeout: 30000
+- takeScreenshot: profile-saved

@@ -1,0 +1,23 @@
+ext {
+    // Bumped 23 -> 26: the Stripe Terminal Android SDK (@capacitor-community/
+    // stripe-terminal) requires minSdk 26. Tap to Pay itself needs Android 11+
+    // (API 30) and is gated at runtime. See docs/fresha-tap-to-pay.md.
+    minSdkVersion = 26
+    // Google Play requires targetSdk 36 (Android 16) for all app updates from
+    // 2026-08-31. Uploads below it are rejected at the edit-commit step with
+    // 403 "Target SDK of artifact is too low", AFTER the bundle has uploaded —
+    // which is what broke the 2026-09-01 and 2026-09-02 release dispatches.
+    compileSdkVersion = 36
+    targetSdkVersion = 36
+    androidxActivityVersion = '1.9.2'
+    androidxAppCompatVersion = '1.7.0'
+    androidxCoordinatorLayoutVersion = '1.2.0'
+    androidxCoreVersion = '1.15.0'
+    androidxFragmentVersion = '1.8.4'
+    coreSplashScreenVersion = '1.0.1'
+    androidxWebkitVersion = '1.12.1'
+    junitVersion = '4.13.2'
+    androidxJunitVersion = '1.2.1'
+    androidxEspressoCoreVersion = '3.6.1'
+    cordovaAndroidVersion = '10.1.1'
+}

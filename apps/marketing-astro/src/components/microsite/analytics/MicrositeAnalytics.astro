@@ -1,0 +1,208 @@
+---
+/**
+ * THE CONSENT BANNER AND THE META PIXEL.
+ *
+ * The shell mounts this ONLY when `resolveMicrositeAnalytics()` returned a
+ * config — i.e. only when the microsite actually has a valid pixel id. A tenant
+ * with no pixel never renders this component, so Astro emits no script bundle,
+ * no markup and no styles on their pages. That is what keeps "zero client JS"
+ * the default rather than a promise (plan §9 budget, §11 consent).
+ *
+ * What ships, and when:
+ *
+ * | State                        | On the page                                  |
+ * |------------------------------|----------------------------------------------|
+ * | no pixel configured          | nothing — this component is not rendered     |
+ * | pixel, no decision yet       | banner + runtime. NO Meta request, NO cookie |
+ * | pixel, declined              | runtime + a "Cookie settings" reopener       |
+ * | pixel, accepted              | runtime + fbevents.js + init + PageView      |
+ *
+ * `fbevents.js` is fetched by the runtime after a click, never by a tag in this
+ * markup. There is no version of this page that requests Meta on load.
+ */
+import type { MicrositeAnalyticsConfig } from './consent';
+
+interface Props {
+  config: MicrositeAnalyticsConfig;
+  /** Linked from the banner when the tenant has one. */
+  privacyHref?: string | null;
+  /** Shown in the banner copy so the visitor knows whose site is asking. */
+  businessName?: string | null;
+}
+
+const { config, privacyHref = null, businessName = null } = Astro.props;
+
+const who = businessName?.trim() || 'This site';
+---
+
+{/*
+  Config travels as data attributes, exactly as EditMode.astro does: escaped by
+  the templating rather than interpolated into JS, so the page needs no
+  `unsafe-inline` allowance for it. Both values are additionally re-validated
+  against a strict character class on the way in (`consent.ts`) and again on the
+  way out (`readConfigElement`).
+*/}
+<div
+  id="ms-analytics-config"
+  data-pixel-id={config.pixelId}
+  data-event-id={config.pageViewEventId}
+  data-ldu={config.limitedDataUse ? '1' : undefined}
+  hidden
+></div>
+
+{/*
+  Rendered `hidden`, and unhidden by the runtime only when there is no stored
+  decision. Visitors who already answered never see it flash.
+
+  Accept and Decline are the SAME element, the SAME size and the SAME visual
+  weight, side by side, one click each. A banner where refusing is the harder
+  path is the specific pattern regulators object to.
+*/}
+<div
+  id="ms-consent"
+  class="ms-consent"
+  role="region"
+  aria-label="Cookie and tracking choices"
+  hidden
+>
+  <div class="ms-consent__inner">
+    <p class="ms-consent__text">
+      {who} would like to use Meta's advertising pixel to measure which ads bring
+      people here. It is not used unless you say yes, and you can change your
+      mind at any time.
+      {
+        privacyHref && (
+          <>
+            {' '}
+            <a class="ms-consent__link" href={privacyHref}>
+              Privacy policy
+            </a>
+          </>
+        )
+      }
+    </p>
+    <div class="ms-consent__actions">
+      <button type="button" class="ms-consent__button" data-ms-consent-action="decline">
+        Decline
+      </button>
+      <button type="button" class="ms-consent__button" data-ms-consent-action="accept">
+        Accept
+      </button>
+    </div>
+  </div>
+</div>
+
+{/* Withdrawal must stay as available as consent was. */}
+<button
+  id="ms-consent-reopen"
+  type="button"
+  class="ms-consent-reopen"
+  data-ms-consent-action="reopen"
+  hidden
+>
+  Cookie settings
+</button>
+
+<script>
+  import { startMicrositeAnalytics } from './pixel-runtime';
+
+  startMicrositeAnalytics();
+</script>
+
+{/*
+  `is:inline`, not a scoped or global style, and the reason is the hard
+  requirement above: a bundled stylesheet is emitted for the ROUTE, so a scoped
+  `<style>` here would add bytes (and possibly a stylesheet link) to every
+  microsite page including the ones with no pixel. Inline means these rules
+  exist only in responses that actually carry the banner. Every selector is
+  `ms-consent`-prefixed, so losing Astro's scoping costs nothing.
+*/}
+<style is:inline>
+  .ms-consent {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2147483000;
+    background: var(--brand-surface, #fff);
+    border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    box-shadow: 0 -8px 24px rgb(0 0 0 / 12%);
+    color: var(--brand-neutral, #333);
+  }
+
+  .ms-consent[hidden],
+  .ms-consent-reopen[hidden] {
+    display: none;
+  }
+
+  .ms-consent__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    max-width: var(--ms-max-width, 72rem);
+    margin-inline: auto;
+    padding: 1rem 1.25rem;
+  }
+
+  .ms-consent__text {
+    flex: 1 1 20rem;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .ms-consent__link {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .ms-consent__actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  /*
+    Identical treatment for both choices, on purpose. No "primary" accept and
+    greyed decline — equal size, equal contrast, equal number of clicks.
+  */
+  .ms-consent__button {
+    min-width: 8rem;
+    padding: 0.625rem 1.25rem;
+    border: 1px solid currentColor;
+    border-radius: var(--ms-button-radius, 0.375rem);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+
+  .ms-consent__button:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
+  }
+
+  .ms-consent-reopen {
+    position: fixed;
+    inset-inline-start: 1rem;
+    bottom: 1rem;
+    z-index: 2147482999;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+    border-radius: 999px;
+    background: var(--brand-surface, #fff);
+    color: var(--brand-muted, #666);
+    font: inherit;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    cursor: pointer;
+    opacity: 0.75;
+  }
+
+  .ms-consent-reopen:hover {
+    opacity: 1;
+  }
+</style>

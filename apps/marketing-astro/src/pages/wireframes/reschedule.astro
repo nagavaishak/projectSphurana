@@ -1,0 +1,20 @@
+---
+/**
+ * Wireframe: Reschedule a booking
+ *
+ * Static review page — see `components/wireframes/mock.ts`. Not linked from
+ * anywhere in the product and safe to delete once the surface is built for real.
+ */
+export const prerender = false;
+
+import { RescheduleBooking } from '@/components/wireframes/reschedule';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Reschedule a booking — wireframe"
+  description="Static wireframe for review. Not a live page."
+  theme="light"
+>
+  <RescheduleBooking client:load />
+</BaseLayout>

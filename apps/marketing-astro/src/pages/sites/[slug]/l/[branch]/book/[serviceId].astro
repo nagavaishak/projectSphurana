@@ -1,0 +1,49 @@
+---
+/**
+ * `/sites/{org}/l/{branch}/book/{serviceId}` — A SERVICE DEEP LINK INSIDE ONE
+ * BRANCH.
+ *
+ * The shape the chooser sends a customer to when they arrived on a legacy
+ * `/book/{serviceId}` link and then picked a branch, and the shape a
+ * branch-aware CTA (an ad, a microsite button, Claire) should use from now on.
+ *
+ * Both facts live in the path for the same reason: the wizard is a client
+ * island, and anything it is told through client state alone is lost on a
+ * refresh or a share.
+ *
+ * As with the branch index beside it, the segment is NOT validated here — the
+ * API is the one authority on whether it names a branch.
+ */
+export const prerender = false;
+
+import { BookingWizardPage } from '@/components/booking';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+import { resolveBookingOrg } from '../../../_resolve-org';
+import { humaniseSlug } from '../../../_humanise-slug';
+
+const { slug: organizationSlug, orgContext } = resolveBookingOrg(
+  Astro.url,
+  Astro.params.slug
+);
+const branch = Astro.params.branch ?? '';
+const serviceId = Astro.params.serviceId ?? '';
+const config = getPublicConfig();
+
+const displayName = humaniseSlug(organizationSlug);
+---
+
+<BaseLayout
+  title={`Book a treatment at ${displayName}`}
+  description={`Book your treatment at ${displayName}. Pick a time that suits you.`}
+  theme="light"
+>
+  <BookingWizardPage
+    client:load
+    config={config}
+    organizationSlug={organizationSlug}
+    orgContext={orgContext}
+    locationSlug={branch}
+    initialServiceId={serviceId}
+  />
+</BaseLayout>

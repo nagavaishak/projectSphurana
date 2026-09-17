@@ -1,0 +1,14 @@
+---
+import { AboutPage } from '@/components/pages/about';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="About Us | Borradh"
+  description="Learn about Borradh, the all-in-one marketing platform helping clinics get more booked appointments on autopilot."
+>
+  <AboutPage client:load config={config} />
+</BaseLayout>

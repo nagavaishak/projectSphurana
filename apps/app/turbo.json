@@ -1,0 +1,31 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputs": ["dist/**"]
+    },
+    // Root `typecheck` only declares src/** + tsconfigs as inputs, but this
+    // package also typechecks its Vercel edge functions under api/ (see the
+    // package.json script). Without api/** here, turbo would serve a CACHED
+    // PASS for a run where an edge function is the only thing that changed —
+    // the check would exist and never actually run.
+    //
+    // A package-level task REPLACES the root definition rather than merging
+    // into it, so dependsOn/outputs are restated deliberately.
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "tsconfig.json",
+        "tsconfig.*.json",
+        "api/**/*.ts",
+        "api/tsconfig.json"
+      ],
+      "outputs": ["dist/**/*.tsbuildinfo", "out-tsc/**/*.tsbuildinfo"]
+    }
+  }
+}

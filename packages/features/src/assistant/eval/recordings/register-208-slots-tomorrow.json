@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "fixtureId": "register-208-slots-tomorrow",
+  "recordedAt": "2026-07-29T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Any openings tomorrow?",
+      "rounds": [
+        {
+          "modelText": "Let me check tomorrow's availability.",
+          "toolUses": [
+            {
+              "name": "findOpenSlots",
+              "input": {
+                "date": "tomorrow",
+                "duration": 30
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "available": true,
+                  "queryDate": "2026-07-30",
+                  "slots": [
+                    {
+                      "date": "2026-07-30",
+                      "startTime": "10:00",
+                      "endTime": "10:45",
+                      "displayTime": "10:00 AM",
+                      "isoStart": "2026-07-30T09:00:00.000Z",
+                      "isoEnd": "2026-07-30T09:45:00.000Z",
+                      "practitionerName": "Niamh"
+                    }
+                  ],
+                  "provider": "google_calendar",
+                  "message": "One open slot tomorrow."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Tomorrow (2026-07-30) you've a 10:00 slot open with Niamh. Want me to pencil someone in?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

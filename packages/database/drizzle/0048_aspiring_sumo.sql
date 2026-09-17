@@ -1,0 +1,1 @@
+ALTER TABLE "meta_ad" ADD COLUMN "graphic_id" text;

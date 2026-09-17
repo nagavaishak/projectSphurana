@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-summarise-conversations-this-week",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 5,
+  "turns": [
+    {
+      "userMessage": "How did customer chats go this week?",
+      "rounds": [
+        {
+          "modelText": "Pulling the weekly digest.",
+          "toolUses": [
+            {
+              "name": "summariseConversationsThisWeek",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "timeframe": {
+                    "since": "2026-04-18T00:00:00.000Z",
+                    "until": "2026-04-25T00:00:00.000Z"
+                  },
+                  "counts": {
+                    "totalThreads": 12,
+                    "openThreads": 5,
+                    "escalatedThreads": 2,
+                    "closedThreads": 5
+                  },
+                  "byChannel": {
+                    "whatsapp": 7,
+                    "facebook_messenger": 3,
+                    "instagram_dm": 2
+                  },
+                  "topIntents": [],
+                  "responseTime": { "p50Ms": 4500, "p95Ms": 65000 },
+                  "oldestPending": {
+                    "conversationId": "conv-stale",
+                    "customerName": "James Carter",
+                    "hoursPending": 38
+                  }
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "12 threads this week — 5 still open, 2 escalated, 5 closed. WhatsApp's the busy channel with 7. Median reply time was 4.5 seconds, the slowest 5% took over a minute. The oldest waiting one is James Carter — 38 hours unanswered. That's the one I'd look at first.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

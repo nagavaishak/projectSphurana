@@ -1,0 +1,13 @@
+import { createFileRoute } from '@tanstack/react-router';
+
+import { WfReviews } from '@/features/wireframes/growth/reviews';
+
+/**
+ * Wireframe: Review management.
+ *
+ * Static review page — fixtures only, no queries, no writes. Not linked from
+ * anywhere in the product; delete it once the surface ships for real.
+ */
+export const Route = createFileRoute('/_authed/dashboard/wireframes/reviews')({
+  component: WfReviews,
+});

@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-budget",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Increase the lip filler campaign budget from €10 to €15 per day.",
+      "rounds": [
+        {
+          "modelText": "Right, let me line up the budget update — I'll show you what's about to change before I touch anything.",
+          "toolUses": [
+            {
+              "name": "confirmUpdateBudget",
+              "input": {
+                "campaignId": "campaign-lip-filler",
+                "currentBudget": "10",
+                "newBudget": "15"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "update_budget",
+                  "resourceId": "campaign-lip-filler",
+                  "token": "synthetic-token-confirmUpdateBudget-campaign-lip-filler",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Update campaign budget",
+                    "fields": [
+                      { "label": "Campaign", "value": "campaign-lip-filler" },
+                      { "label": "Current daily budget", "value": "€10" },
+                      { "label": "New daily budget", "value": "€15" }
+                    ]
+                  },
+                  "executeToolName": "confirmUpdateBudget"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's the change — the lip-filler campaign goes from €10/day to €15/day. Confirm and I'll push it through.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

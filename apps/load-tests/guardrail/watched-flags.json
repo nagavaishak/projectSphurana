@@ -1,0 +1,141 @@
+{
+  "$comment": [
+    "Watched-flags config for the flag-rollout guardrail (.github/workflows/flag-rollout-guardrail.yml).",
+    "Each entry is a flag whose live PostHog SLOs are polled; on an SLO breach the guardrail",
+    "halts the ramp (sets rollout_percentage to 0) or fully disables the flag via the PostHog API.",
+    "",
+    "HOW ATTRIBUTION WORKS",
+    "  Call sites MUST wrap flag-gated code with withFlag(key, fn) from @borradh-workspace/observability.",
+    "  This stamps feature_flag_key on every trackedResult/tracked PostHog event inside that scope.",
+    "  The guardrail queries only events tagged with each flag's own key, so a breach on flag A",
+    "  never triggers a rollback of flag B.",
+    "",
+    "  Pattern at every gate site:",
+    "    if (await isFeatureOn('my-flag')) {",
+    "      return withFlag('my-flag', () => newCodePath());",
+    "    }",
+    "    return oldCodePath();",
+    "",
+    "FIELDS",
+    "  key            (string)  PostHog flag key.",
+    "  flagId         (number)  PostHog numeric feature-flag id (from the flag URL). Required to PATCH.",
+    "  enabled        (boolean) Whether the guardrail evaluates this flag. false = skipped.",
+    "  owner          (string)  Flag owner — must have an expiry + cleanup PR planned.",
+    "  expiry         (string)  ISO date the flag is expected to be removed by (audit only).",
+    "  lookbackHours  (number)  Window the SLO query measures over (default 2).",
+    "  action         (string)  'halt' (rollout_percentage -> 0) or 'disable' (active -> false).",
+    "  thresholds     (object)  SLO bounds:",
+    "                   maxErrorRate   breach if flag-on error rate exceeds this (fraction, e.g. 0.05)",
+    "                   maxP95Ms       breach if flag-on p95 latency exceeds this (ms)",
+    "                   minConversion  breach if a key conversion rate falls below this (fraction)",
+    "                   minSampleSize  below this many events the window is ignored",
+    "  conversionEvent (string, optional) PostHog event name for the conversion check."
+  ],
+  "flags": [
+    {
+      "key": "_example-new-campaign-flow",
+      "flagId": 0,
+      "enabled": false,
+      "owner": "unassigned@borradh.io",
+      "expiry": "2026-12-31",
+      "lookbackHours": 2,
+      "action": "halt",
+      "conversionEvent": "campaign.created",
+      "thresholds": {
+        "maxErrorRate": 0.05,
+        "maxP95Ms": 2000,
+        "minConversion": 0.2,
+        "minSampleSize": 100
+      }
+    },
+    {
+      "key": "bulk-create",
+      "flagId": 200489,
+      "enabled": true,
+      "owner": "daniel@borradh.io",
+      "expiry": "2026-12-31",
+      "lookbackHours": 2,
+      "action": "halt",
+      "thresholds": {
+        "maxErrorRate": 0.05,
+        "maxP95Ms": 3000,
+        "minSampleSize": 50
+      }
+    },
+    {
+      "key": "claire-assistant-sidebar",
+      "flagId": 183135,
+      "enabled": true,
+      "owner": "daniel@borradh.io",
+      "expiry": "2026-12-31",
+      "lookbackHours": 2,
+      "action": "halt",
+      "thresholds": {
+        "maxErrorRate": 0.08,
+        "maxP95Ms": 5000,
+        "minSampleSize": 30
+      }
+    },
+    {
+      "key": "messenger-campaign-objective",
+      "flagId": 159477,
+      "enabled": true,
+      "owner": "daniel@borradh.io",
+      "expiry": "2026-12-31",
+      "lookbackHours": 2,
+      "action": "halt",
+      "conversionEvent": "campaign.created",
+      "thresholds": {
+        "maxErrorRate": 0.05,
+        "maxP95Ms": 3000,
+        "minConversion": 0.15,
+        "minSampleSize": 30
+      }
+    },
+    {
+      "key": "rollout-resumable-uploads",
+      "flagId": 209116,
+      "enabled": false,
+      "owner": "daniel@borradh.io",
+      "expiry": "2026-09-16",
+      "lookbackHours": 2,
+      "action": "halt",
+      "conversionEvent": "upload.completeMultipartUpload.success",
+      "thresholds": {
+        "maxErrorRate": 0.05,
+        "maxP95Ms": 2000,
+        "minConversion": 0.2,
+        "minSampleSize": 100
+      }
+    },
+    {
+      "key": "killswitch-soft-deletes",
+      "flagId": 0,
+      "enabled": false,
+      "owner": "daniel@borradh.io",
+      "expiry": "2026-09-17",
+      "lookbackHours": 2,
+      "action": "disable",
+      "thresholds": {
+        "maxErrorRate": 0.05,
+        "maxP95Ms": 2000,
+        "minSampleSize": 100
+      }
+    },
+    {
+      "key": "rollout-claire-build-with-defaults",
+      "flagId": 0,
+      "enabled": false,
+      "owner": "daniel@borradh.io",
+      "expiry": "2026-09-16",
+      "lookbackHours": 2,
+      "action": "halt",
+      "thresholds": {
+        "maxErrorRate": 0.05,
+        "maxP95Ms": 2000,
+        "minConversion": 0.2,
+        "minSampleSize": 100
+      }
+    }
+  ]
+}

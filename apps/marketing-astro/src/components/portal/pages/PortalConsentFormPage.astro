@@ -1,0 +1,31 @@
+---
+import { PortalConsentFormIsland } from '../islands/consent-form.island';
+import { resolvePortalContextFromRequest } from '../portal-context';
+import PortalLayout from '../PortalLayout.astro';
+import PortalUnavailable from '../PortalUnavailable.astro';
+
+interface Props {
+  submissionId: string;
+}
+
+const { submissionId } = Astro.props;
+const ctx = resolvePortalContextFromRequest(
+  Astro.request,
+  Astro.url,
+  Astro.locals.microsite ?? null
+);
+---
+
+{
+  ctx && submissionId ? (
+    <PortalLayout title="Your form">
+      <PortalConsentFormIsland
+        client:load
+        ctx={ctx}
+        submissionId={submissionId}
+      />
+    </PortalLayout>
+  ) : (
+    <PortalUnavailable />
+  )
+}

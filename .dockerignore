@@ -1,0 +1,62 @@
+# Dependencies
+node_modules
+**/node_modules
+
+# Build outputs
+**/dist
+.next
+.turbo
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Apps not needed in video-worker Docker build
+# (turbo prune handles filtering, but excluding these reduces build context transfer)
+apps/api-e2e
+apps/load-tests
+
+# Other
+.DS_Store
+*.tsbuildinfo
+coverage
+playwright-report
+test-results
+storybook-static
+docs
+.claude
+infra
+.github
+
+# --- context-size reduction (server images never need these) ---
+# marketing-astro is not a dependency of api/worker/webhook-router.
+# Keep its package.json (turbo prune needs the full workspace graph) but drop
+# its heavy static assets + build output (~110MB of audio/images/.vercel).
+apps/marketing-astro/public
+apps/marketing-astro/.vercel
+apps/marketing-astro/.astro
+**/.astro
+# Native mobile shells — never part of a backend image build.
+apps/*/android
+apps/*/ios
+# Repo-root scratch artifacts (screenshots, icon bundles).
+*.png
+apple-icon.icon
+# Carousel inspiration seed images (not needed to build/prune server bundles).
+templates/carousel-inspiration

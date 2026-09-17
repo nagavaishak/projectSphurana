@@ -1,0 +1,128 @@
+/**
+ * Capability ports. Hand-written; the atom generator writes only to
+ * `src/generated/`, so nothing here is regenerated.
+ *
+ * See `src/ports/README.md` for the rules, and
+ * `docs/engineering/ports-as-capability-contracts.md` for why the same artifact
+ * carries both the build-graph decoupling and the compile-time tool contract.
+ */
+export type {
+  AvailabilityBlockedReason,
+  AvailabilityBlocker,
+  AvailabilityPort,
+  AvailabilitySource,
+  AvailabilityWindow,
+  ExplainAvailabilityInput,
+  ExplainAvailabilityResult,
+  ResourceCheckOutcome,
+  ResourceContention,
+} from './availability.port.js';
+export type {
+  Sellable,
+  CatalogBlockedReason,
+  CatalogPort,
+  ListSellablesInput,
+  ListSellablesResult,
+  SellableKind,
+  SellableOption,
+  SellablePrice,
+  SellableSource,
+} from './catalog.port.js';
+export type {
+  FindPractitionersForServiceInput,
+  ListPractitionersInput,
+  PractitionerRosterResult,
+  PractitionersPort,
+  RosterBlockedReason,
+  RosterScope,
+  TeamMember,
+} from './practitioners.port.js';
+export type {
+  AllocatableResource,
+  CategoryDeleteBlockedReason,
+  CategoryDeleteResult,
+  CategoryWriteBlockedReason,
+  CategoryWriteResult,
+  CreateResourceCategoryRequest,
+  CreateResourceRequest,
+  ReorderBlockedReason,
+  ReorderResourcesRequest,
+  ReorderResourcesResult,
+  RequirementCheck,
+  RequirementUnsatisfiableReason,
+  RequirementsBlockedReason,
+  ResourceCategoryRecord,
+  ResourceDeleteBlockedReason,
+  ResourceDeleteResult,
+  ResourceOpenInterval,
+  ResourceRecord,
+  ResourceUnallocatableReason,
+  ResourceWeeklyHours,
+  ResourceWriteBlockedReason,
+  ResourceWriteResult,
+  ResourcesPort,
+  ServiceResourceRule,
+  SetServiceRequirementsRequest,
+  SetAppointmentResourceRequest,
+  SetAppointmentResourceResult,
+  SetServiceRequirementsResult,
+  UpdateResourceCategoryRequest,
+  UpdateResourceRequest,
+} from './resources.port.js';
+export type {
+  DepositTakings,
+  GetTakingsInput,
+  GetTakingsResult,
+  MoneyAmount,
+  PosTakings,
+  SalesPort,
+  TakingsBlockedReason,
+  TakingsChannel,
+  TakingsGap,
+  TakingsWindow,
+  TenderTotal,
+} from './sales.port.js';
+export type {
+  CreateLeadFormRequest,
+  CreateLeadFormResult,
+  GetLeadFormResult,
+  LeadFormBlockedReason,
+  LeadFormFollowUpChannel,
+  LeadFormLifecycleStatus,
+  LeadFormQuestion,
+  LeadFormRecord,
+  LeadFormSyncBlockedReason,
+  LeadFormWriteBlockedReason,
+  LeadFormsPort,
+  SyncedLeadForm,
+  UpdateLeadFormRequest,
+  UpdateLeadFormResult,
+} from './lead-forms.port.js';
+export type {
+  AdCopy,
+  AdCopyBlockedReason,
+  AdCopyField,
+  AdCopyViolation,
+  AdSnapshot,
+  AdUpdateBlockedReason,
+  BudgetBlockedReason,
+  GenerateAdCopyResult,
+  MetaAdsPort,
+  UpdatableAdField,
+  UpdateAdResult,
+  UpdateBudgetResult,
+} from './meta-ads.port.js';
+export type {
+  AvailableAsset,
+  CreateBlockedReason,
+  CreateDraftResult,
+  ExportResult,
+  PatchResult,
+  RenderBlockedReason,
+  VideoDraft,
+  VideoDraftRequest,
+  VideoLifecycleStatus,
+  VideoStatusResult,
+  VideoTextFrame,
+  VideosPort,
+} from './videos.port.js';

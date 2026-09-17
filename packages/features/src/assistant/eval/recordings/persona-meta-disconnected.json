@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "fixtureId": "persona-meta-disconnected",
+  "recordedAt": "2026-06-03T10:22:21.155Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Run a lip filler ad for me.",
+      "rounds": [
+        {
+          "modelText": "I'll get that going.",
+          "toolUses": [
+            {
+              "name": "checkMetaIntegration",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "connected": false,
+                  "hasAdAccount": false,
+                  "hasFacebookPage": false,
+                  "configurationComplete": false
+                }
+              }
+            },
+            {
+              "name": "listRecentVideos",
+              "input": {},
+              "result": {
+                "ok": false,
+                "error": "No stub registered for tool \"listRecentVideos\".",
+                "code": "STUB_MISSING"
+              }
+            },
+            {
+              "name": "listCampaigns",
+              "input": {},
+              "result": {
+                "ok": false,
+                "error": "No stub registered for tool \"listCampaigns\".",
+                "code": "STUB_MISSING"
+              }
+            },
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": false,
+                "error": "No stub registered for tool \"listServices\".",
+                "code": "STUB_MISSING"
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Meta isn't connected for this org, Cian. Open Settings → Integrations to connect it, then ask me again.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

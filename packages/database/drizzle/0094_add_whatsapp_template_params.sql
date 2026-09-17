@@ -1,0 +1,1 @@
+ALTER TABLE "campaign_message" ADD COLUMN "whatsapp_template_params" jsonb;

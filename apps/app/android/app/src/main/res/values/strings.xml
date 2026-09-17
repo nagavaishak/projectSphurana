@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Borradh</string>
+    <string name="title_activity_main">Borradh</string>
+    <string name="package_name">com.borradh.mobile</string>
+    <string name="custom_url_scheme">com.borradh.mobile</string>
+</resources>

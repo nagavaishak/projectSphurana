@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-tray-mixed-fill",
+  "recordedAt": "2026-04-26T00:00:00.000Z",
+  "skillRegistryVersion": 9,
+  "turns": [
+    {
+      "userMessage": "I dropped two clips in already — fill the rest from the library for the lip filler video draft.",
+      "rounds": [
+        {
+          "modelText": "Reading the tray to see what you've got.",
+          "toolUses": [
+            {
+              "name": "listDraftClips",
+              "input": {
+                "videoId": "v-tray-mixed-1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-tray-mixed-1",
+                  "clipCount": 2,
+                  "emptyBeats": null,
+                  "clips": [
+                    {
+                      "id": "tc-1",
+                      "assetId": "a-dropped-1",
+                      "source": "uploaded",
+                      "processingStatus": "ready",
+                      "beatOrder": 0,
+                      "name": "closeup-procedure.mp4",
+                      "duration": 12,
+                      "tags": ["procedure"]
+                    },
+                    {
+                      "id": "tc-2",
+                      "assetId": "a-dropped-2",
+                      "source": "uploaded",
+                      "processingStatus": "ready",
+                      "beatOrder": 1,
+                      "name": "environment.mp4",
+                      "duration": 8,
+                      "tags": ["environment"]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Filling the last beat from your library.",
+          "toolUses": [
+            {
+              "name": "autoSelectClips",
+              "input": {
+                "videoId": "v-tray-mixed-1",
+                "serviceId": "svc-1",
+                "templateId": "before-after",
+                "excludeIds": ["a-dropped-1", "a-dropped-2"],
+                "fillToCount": 1
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "selectedClips": [
+                    {
+                      "assetId": "a-suggest-1",
+                      "name": "after-shot.mov",
+                      "duration": 6,
+                      "blobUrl": null
+                    }
+                  ],
+                  "totalAvailable": 12,
+                  "videoId": "v-tray-mixed-1",
+                  "excluded": 2,
+                  "trayUpdated": true
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Added one suggested after-shot to round it out — your two are still up front. Want me to keep going to script and music?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

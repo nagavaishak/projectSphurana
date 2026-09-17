@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fixtureId": "register-105-launch-into-paused-campaign",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Launch that lip-filler ad — is it running for customers now?",
+      "rounds": [
+        {
+          "modelText": "Launching it now — let me confirm the live status with Meta.",
+          "toolUses": [
+            {
+              "name": "executeLaunchAd",
+              "input": { "adId": "ad-1", "adName": "Lip filler winter promo" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "created",
+                  "title": "Ad submitted: Lip filler winter promo",
+                  "adId": "ad-1",
+                  "name": "Lip filler winter promo",
+                  "launchState": "live_but_campaign_paused",
+                  "launchStateDetail": "Verified with Meta: the ad is approved, but its campaign is PAUSED — nothing is delivering until the campaign is resumed.",
+                  "message": "Verified with Meta: the ad is approved, but its campaign is PAUSED — nothing is delivering until the campaign is resumed. Resuming the campaign is a separate confirmed action."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Not yet — the ad is approved, but its campaign is currently paused, so it isn't showing to anyone. Want me to resume the campaign so it starts delivering?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

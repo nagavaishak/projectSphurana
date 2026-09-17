@@ -1,0 +1,7 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'infra'
+  - 'infra/policy'
+  - 'server'
+  - 'server-e2e'

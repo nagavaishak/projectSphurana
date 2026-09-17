@@ -1,0 +1,8 @@
+ios/
+android/
+*.iml
+.gradle/
+.idea/
+.xcode.env
+DerivedData/
+node_modules/

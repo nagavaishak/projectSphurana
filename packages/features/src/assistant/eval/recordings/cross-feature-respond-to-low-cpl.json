@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "fixtureId": "cross-feature-respond-to-low-cpl",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 8,
+  "turns": [
+    {
+      "userMessage": "My CPL is up this week, what's going on?",
+      "rounds": [
+        {
+          "modelText": "Pulling the picture before recommending anything.",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "optimise-ads" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "optimise-ads",
+                  "newToolsAvailable": [
+                    "checkMetaIntegration",
+                    "listCampaigns",
+                    "listRecentAds",
+                    "getAdInsights",
+                    "getCampaignInsights",
+                    "suggestAdOptimizations",
+                    "confirmPauseAd",
+                    "executePauseAd",
+                    "confirmUpdateBudget",
+                    "executeUpdateBudget"
+                  ],
+                  "promptFragment": "## Reviewing and optimising ads"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "suggestAdOptimizations",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "timeframe": "last_7_days",
+                  "activeCampaigns": 2,
+                  "totals": {
+                    "spend": 720,
+                    "leads": 12,
+                    "cplAverage": 60
+                  },
+                  "recommendations": [
+                    {
+                      "adId": "ad-anti-wrinkle-2",
+                      "adName": "Anti-wrinkle quick result",
+                      "kind": "pause",
+                      "reason": "CPL €78 (target €25); 14 days post-learning, frequency 2.1, only 4 leads on €420 spend.",
+                      "severity": "high",
+                      "inLearningPhase": false,
+                      "daysSinceLaunch": 21,
+                      "frequency": 2.1,
+                      "spend": 420,
+                      "leads": 4,
+                      "cpl": 78
+                    },
+                    {
+                      "adId": "ad-skin-booster-1",
+                      "adName": "Skin booster — Q2",
+                      "kind": "maintain",
+                      "reason": "CPL €32, performing within range.",
+                      "severity": "low",
+                      "inLearningPhase": false,
+                      "daysSinceLaunch": 18,
+                      "frequency": 1.8,
+                      "spend": 300,
+                      "leads": 8,
+                      "cpl": 32
+                    }
+                  ],
+                  "warnings": []
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's what's driving the spike.\n\n**Anti-wrinkle quick result** — €420 spend, 4 leads, CPL €78. It's 21 days in (so well past learning), frequency only 2.1, and the leads have collapsed to a trickle. This is the one dragging the average up.\n\n**Skin booster — Q2** — €300 spend, 8 leads, CPL €32. Steady; leave it alone.\n\nMy call: pause Anti-wrinkle quick result. Frequency is low so it's not creative fatigue — the offer or audience just isn't landing. €78 a lead at this volume isn't worth keeping it on. Want me to pause it?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Yeah, pause the worst one.",
+      "rounds": [
+        {
+          "modelText": "Loading the pause flow.",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "pause-ad" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "pause-ad",
+                  "newToolsAvailable": [
+                    "listCampaigns",
+                    "confirmPauseAd",
+                    "executePauseAd"
+                  ],
+                  "promptFragment": "## Pausing an ad"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Lining up the pause summary so you can sign off.",
+          "toolUses": [
+            {
+              "name": "confirmPauseAd",
+              "input": {
+                "adId": "ad-anti-wrinkle-2",
+                "campaignName": "Anti-wrinkle quick result"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "pause_ad",
+                  "resourceId": "ad-anti-wrinkle-2",
+                  "token": "synthetic-token-confirmPauseAd-ad-anti-wrinkle-2",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Pause campaign",
+                    "fields": [
+                      {
+                        "label": "Campaign",
+                        "value": "Anti-wrinkle quick result"
+                      },
+                      { "label": "Spend last 7 days", "value": "€420" },
+                      { "label": "Leads", "value": "4" },
+                      { "label": "CPL", "value": "€78" }
+                    ]
+                  },
+                  "executeToolName": "confirmPauseAd"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Anti-wrinkle quick result, ready to pause — €420 spend and 4 leads over the last 7 days. Confirm and I'll stop it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

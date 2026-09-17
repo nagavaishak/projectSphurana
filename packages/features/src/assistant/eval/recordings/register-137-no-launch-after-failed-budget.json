@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "fixtureId": "register-137-no-launch-after-failed-budget",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Set the winter campaign budget to $50 a day, then launch the lip-filler ad.",
+      "rounds": [
+        {
+          "modelText": "Updating the budget to $50/day first, then I'll launch.",
+          "toolUses": [
+            {
+              "name": "executeUpdateBudget",
+              "input": {
+                "metaCampaignId": "mc-1",
+                "dailyBudget": 5000,
+                "confirmationToken": "tok"
+              },
+              "result": {
+                "ok": false,
+                "error": "That budget change didn't go through — Meta rejected it."
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Checking whether I can still launch.",
+          "toolUses": [
+            {
+              "name": "executeLaunchAd",
+              "input": { "adId": "ad-1", "adName": "Lip filler winter promo" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "blocked": "unacknowledged_budget_failure",
+                  "error": "I'm holding this launch: the budget change for this campaign didn't go through, so launching now would run the ad at the old budget."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I've held off launching. The budget change to $50/day didn't go through, so launching now would run the ad at the old budget. Want me to launch it anyway at the current budget, or should I retry the budget change first?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

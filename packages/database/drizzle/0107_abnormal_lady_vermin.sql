@@ -1,0 +1,2 @@
+ALTER TABLE "technique" ADD COLUMN "parent_slug" text;--> statement-breakpoint
+ALTER TABLE "technique" ADD CONSTRAINT "technique_parent_slug_technique_slug_fk" FOREIGN KEY ("parent_slug") REFERENCES "public"."technique"("slug") ON DELETE set null ON UPDATE no action;

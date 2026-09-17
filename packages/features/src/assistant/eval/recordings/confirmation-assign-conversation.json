@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-assign-conversation",
+  "recordedAt": "2026-06-03T10:21:56.231Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Assign the conv-1 thread with Sarah to Niamh.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "confirmAssignConversation",
+              "input": {
+                "conversationId": "conv-1",
+                "assigneeName": "Niamh"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "assign_conversation",
+                  "resourceId": "conv-1",
+                  "token": "synthetic-token-confirmAssignConversation-conv-1",
+                  "expiresAt": "2026-06-03T10:51:52.168Z",
+                  "summary": {
+                    "title": "Assign conversation",
+                    "fields": [
+                      {
+                        "label": "Customer",
+                        "value": "Sarah Murphy"
+                      },
+                      {
+                        "label": "Assign to",
+                        "value": "Niamh"
+                      },
+                      {
+                        "label": "Channel",
+                        "value": "WhatsApp"
+                      }
+                    ]
+                  },
+                  "executeToolName": "confirmAssignConversation"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I'm about to assign Sarah Murphy's WhatsApp conversation to Niamh. Ready to go ahead?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

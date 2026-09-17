@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="app.borradh.io" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--
+      READ_MEDIA_IMAGES / READ_MEDIA_VIDEO and ACCESS_FINE/COARSE_LOCATION
+      were declared speculatively but nothing uses them: media is picked via
+      the WebView <input type="file"> picker (no permission needed) and there
+      is no geolocation plugin or navigator.geolocation call. Declaring
+      READ_MEDIA_* triggers Google Play's Photo and Video Permissions policy,
+      which 403s the release commit until a declaration is filed. Re-add (with
+      the matching Play Console declaration) only when a feature needs them.
+    -->
+
+    <!--
+      Stripe Terminal / Tap to Pay (agent B6, docs/fresha-tap-to-pay.md).
+      The Stripe Terminal Android SDK requires location + Bluetooth permissions
+      even for the on-device Tap to Pay reader (used for reader discovery and
+      fraud checks). ACCESS_FINE_LOCATION re-triggers Google Play's Location
+      permission policy — file the matching Play Console declaration
+      ("used for in-person card payments via Stripe Terminal") before release.
+      Tap to Pay itself is gated to Android 11+ (API 30) at runtime and only
+      enabled in the native mobile POS surface.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.microphone" android:required="true" />
+</manifest>

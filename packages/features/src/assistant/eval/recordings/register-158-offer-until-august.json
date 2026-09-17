@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "fixtureId": "register-158-offer-until-august",
+  "recordedAt": "2026-07-29T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Set up a 20% intro offer on Hydrafacials, valid until August 7th.",
+      "rounds": [
+        {
+          "modelText": "Setting that up now.",
+          "toolUses": [
+            {
+              "name": "createOffer",
+              "input": {
+                "name": "Hydrafacial intro",
+                "discountType": "percentage",
+                "discountPercent": 20,
+                "validUntil": "until August 7th"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "id": "off-1",
+                  "name": "Hydrafacial intro",
+                  "state": "active",
+                  "discountType": "percentage",
+                  "discountPercent": 20,
+                  "originalPriceCents": null,
+                  "offerPriceCents": null,
+                  "validFrom": "2026-07-29T00:00:00.000Z",
+                  "validUntil": "2026-08-07T22:59:00.000Z"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Done — Hydrafacial intro at 20% off for new clients, running until 2026-08-07. Tell me if you want it different.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

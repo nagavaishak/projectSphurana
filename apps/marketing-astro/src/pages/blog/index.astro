@@ -1,0 +1,64 @@
+---
+// SSR: blog content stays fresh without rebuilds, and Contentful is not
+// fetched during `astro build`.
+export const prerender = false;
+
+import { BlogListPage } from '@/components/pages/blog-list';
+import type { BlogPost } from '@/components/shadcn-studio/blocks/blog-component-15/blog-component-15';
+import {
+  type CMSPost,
+  formatDate,
+  getCategoryFields,
+  getImageAlt,
+  getImageUrl,
+} from '@/features/blog/types';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { fetchEntries } from '@/lib/cms';
+import { getPublicConfig } from '@/lib/config';
+import type { Entry } from 'contentful';
+
+const config = getPublicConfig();
+
+function mapPostToBlogPost(post: CMSPost): BlogPost {
+  const category = getCategoryFields(post.category as Entry | null);
+  return {
+    title: post.title,
+    description: post.excerpt || '',
+    imageUrl: getImageUrl(post.featuredImage, 768),
+    imageAlt: getImageAlt(post.featuredImage) || post.title,
+    date: formatDate(post.publishedAt),
+    category: category?.name || '',
+    author: post.author || 'Borradh',
+    authorLink: '#',
+    blogLink: `/blog/${post.slug}`,
+    categoryLink: category ? `/blog?category=${category.slug}` : '/blog',
+  };
+}
+
+const [postsResponse, categoriesResponse] = await Promise.all([
+  fetchEntries<CMSPost>('blogPost', {
+    order: ['-fields.publishedAt'],
+    include: 2,
+    limit: 50,
+  }),
+  fetchEntries<{ name: string; slug: string }>('category', {
+    order: ['fields.name'],
+    limit: 100,
+  }),
+]);
+
+const blogPosts = postsResponse.items.map(mapPostToBlogPost);
+const categories = categoriesResponse.items.map((c) => c.name);
+---
+
+<BaseLayout
+  title="Blog | Borradh"
+  description="Insights, tips, and stories to help your clinic attract more clients and grow."
+>
+  <BlogListPage
+    client:load
+    config={config}
+    blogPosts={blogPosts}
+    categories={categories}
+  />
+</BaseLayout>

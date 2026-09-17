@@ -1,0 +1,1 @@
+ALTER TYPE "public"."claire_confirmation_action" ADD VALUE 'mark_no_show' BEFORE 'create_offer';

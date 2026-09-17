@@ -1,0 +1,41 @@
+# Core flow — sign in with the bare-org test user (ported from
+# apps/app-e2e/src/auth/sign-in.spec.ts "successful sign-in redirects to
+# dashboard"). Validates the real auth round-trip inside the native WebView:
+# Better Auth call → session cookie → SPA navigation away from /sign-in.
+#
+# androidWebViewHierarchy: devtools — required (the whole UI is a WebView whose
+# a11y nodes are important-for-accessibility=false; see scripts/maestro-android.sh
+# which waits for the DevTools socket before Maestro runs).
+#
+# Creds come from MAESTRO_EMAIL / MAESTRO_PASSWORD, passed via `maestro -e ...`
+# from the TEST_BARE_USER_* secrets (same creds the Playwright app-e2e bare
+# suite uses).
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# stopApp:false — the app is already launched + on /sign-in (01-boot ran first
+# and didn't log in); restarting would kill the WebView DevTools socket.
+- launchApp:
+    stopApp: false
+# Wait for first paint rather than asserting immediately: `/sign-in`'s beforeLoad
+# gates the heading on the cold-boot session round-trip, which is slow on the CI
+# emulator (see 01-boot). A bare assertVisible here reads the blank/splash page
+# before the form mounts and fails — the exact flake this replaces. The app
+# bounds the gate to ~8s (apps/app/src/lib/session.ts); 20s is the ceiling.
+- extendedWaitUntil:
+    visible: 'Sign in to your account'
+    timeout: 20000
+- tapOn:
+    id: 'email'
+- inputText: ${MAESTRO_EMAIL}
+- tapOn:
+    id: 'password'
+- inputText: ${MAESTRO_PASSWORD}
+- tapOn: 'Sign in'
+# Success = the SPA navigates off /sign-in. A WebView has no address bar to
+# assert a URL, so assert the sign-in heading is gone (generous timeout for the
+# Better Auth round-trip + redirect to dashboard/home/onboarding/billing).
+- extendedWaitUntil:
+    notVisible: 'Sign in to your account'
+    timeout: 30000
+- takeScreenshot: signed-in

@@ -1,0 +1,163 @@
+---
+import { BLOCK_VARIANTS } from '@borradh-workspace/web-shared';
+import type { HeroProps } from '@borradh-workspace/web-shared';
+import { asset, resolveVariant, type MicrositeData } from '../data';
+import { resolveBookingHref } from '../booking-href';
+import { editableAttrs } from '../edit/editable';
+
+/** First entry is the fallback for unknown variants. */
+const VARIANTS = BLOCK_VARIANTS['hero'];
+
+interface Props {
+  props: HeroProps;
+  variant: string;
+  data: MicrositeData;
+  /**
+   * The hero is usually the LCP element. When it is the first block on the
+   * page its image loads eagerly with high priority — lazy-loading the LCP
+   * image is the single easiest way to blow a 2.0s budget.
+   */
+  priority?: boolean;
+  /** True ONLY on a token-gated draft preview. Never on a published render. */
+  editable?: boolean;
+  /** `block.id` — the address the canvas commits against. */
+  blockId?: string;
+}
+
+const { props, variant, data, priority = false, editable = false, blockId } = Astro.props;
+
+/** §2: headline, subheadline, ctaLabel. Nothing else on this block. */
+const attrs = (field: string) => editableAttrs(editable, blockId, 'hero', field);
+const v = resolveVariant(variant, VARIANTS);
+
+const headline = props?.headline?.trim() ?? '';
+const subheadline = props?.subheadline?.trim();
+const image = asset(data, props?.imageAssetId);
+const ctaLabel = props?.ctaLabel?.trim();
+// A stored `ctaHref` is an override for a bespoke link — but the values
+// provisioning used to bake in ('/book') are not that, they are the booking
+// flow named in a shape that 404s on the path tier. See booking-href.ts.
+const ctaHref = resolveBookingHref(props?.ctaHref, data.bookingUrl);
+const showCta = !!ctaLabel && !!ctaHref;
+
+// No headline and no image is not a hero — render nothing rather than an
+// empty band.
+const empty = !headline && !image;
+const layout = image ? v : 'text-only';
+---
+
+{
+  !empty && (
+    <section class:list={['ms-section', 'ms-hero', `ms-hero--${layout}`]}>
+      <div class="ms-container ms-hero__inner">
+        <div class="ms-hero__copy">
+          {headline && <h1 {...attrs('headline')}>{headline}</h1>}
+          {subheadline && <p class="ms-hero__sub" {...attrs('subheadline')}>
+              {subheadline}
+            </p>}
+          {showCta && (
+            <a class="ms-button ms-hero__cta" href={ctaHref} {...attrs('ctaLabel')}>
+              {ctaLabel}
+            </a>
+          )}
+        </div>
+
+        {image && (
+          <div class="ms-hero__media">
+            <img
+              src={image.url}
+              alt={image.alt ?? headline ?? data.businessName}
+              width={image.width ?? 1200}
+              height={image.height ?? 800}
+              loading={priority ? 'eager' : 'lazy'}
+              fetchpriority={priority ? 'high' : 'auto'}
+              decoding={priority ? 'sync' : 'async'}
+            />
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .ms-hero {
+    background: var(--brand-surface);
+  }
+
+  .ms-hero__inner {
+    display: grid;
+    gap: calc(var(--ms-gap) * 1.5);
+    align-items: center;
+  }
+
+  .ms-hero__copy h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+  }
+
+  .ms-hero__sub {
+    margin-top: 1rem;
+    max-width: 46ch;
+    color: var(--brand-muted);
+    font-size: 1.125rem;
+  }
+
+  .ms-hero__cta {
+    margin-top: 1.75rem;
+  }
+
+  .ms-hero__media img {
+    width: 100%;
+    border-radius: var(--ms-radius);
+    object-fit: cover;
+  }
+
+  /* full-bleed: image behind the copy, scrimmed with the brand primary. */
+  .ms-hero--full-bleed {
+    position: relative;
+    isolation: isolate;
+    padding-block: calc(var(--ms-section-y) * 1.6);
+  }
+
+  .ms-hero--full-bleed .ms-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .ms-hero--full-bleed .ms-hero__media img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .ms-hero--full-bleed .ms-hero__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--brand-primary) 62%, transparent);
+  }
+
+  .ms-hero--full-bleed .ms-hero__copy h1 {
+    color: var(--brand-surface);
+  }
+
+  .ms-hero--full-bleed .ms-hero__sub {
+    color: color-mix(in srgb, var(--brand-surface) 85%, transparent);
+  }
+
+  .ms-hero--text-only .ms-hero__inner {
+    text-align: center;
+    justify-items: center;
+  }
+
+  .ms-hero--text-only .ms-hero__sub {
+    margin-inline: auto;
+  }
+
+  @media (min-width: 48rem) {
+    .ms-hero--image-right .ms-hero__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

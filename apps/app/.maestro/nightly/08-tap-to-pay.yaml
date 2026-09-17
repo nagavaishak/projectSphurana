@@ -1,0 +1,103 @@
+# NIGHTLY-ONLY (not a per-PR gate). Native gap: Tap to Pay / Stripe Terminal —
+# the "1 money flow" TAB-SUITE.md §6.D calls for (NATIVE-LANE.md §5 Gap 1 + §6).
+#
+# WHAT THIS PROVES (the deterministic green gate):
+#   The APK's built Tap to Pay code path resolves to the **simulated** reader.
+#   Tap to Pay is dead code in browser app-e2e (Capacitor.isNativePlatform() is
+#   false), and the built APK is a `vite build` where import.meta.env.DEV is
+#   false — so WITHOUT the VITE_TAP_TO_PAY_SIMULATE override the app would demand
+#   real Tap to Pay hardware and no emulator could ever exercise the flow. This
+#   flow lands on the Tap to Pay debug card and asserts its reader badge reads
+#   "simulated", i.e. usesSimulatedReader() === true in a production-mode native
+#   build — proving the env flag (terminal-service.ts) baked correctly. That is
+#   the one native assertion that browser e2e structurally cannot make.
+#
+# WHY NIGHTLY: reaching the debug page transits the post-login HomeNew render
+# that OOM-kills the software-GPU CI emulator (see nightly/03-dashboard.yaml).
+# Parked nightly with its siblings (05/06 navigate the same header→account hub)
+# until HomeNew is emulator-stable (ENG-7); only then consider a per-PR variant.
+#
+# NAVIGATION: the debug bench has no production nav entry, so account.tsx renders
+# a testID'd "Debug" MenuLink (account-menu-debug) ONLY when
+# import.meta.env.DEV || VITE_TAP_TO_PAY_SIMULATE === 'true' — i.e. in dev and in
+# this E2E build, never in a real Play Store build. We reach it through the app's
+# own UI (header avatar → account hub → Debug), the same tap-path 05/06 use — NOT
+# a deep link. (Deep-linking to /dashboard/debug via the app.borradh.io App Link
+# does NOT work on a debug APK: autoVerify is unverified against the debug signing
+# cert, so an implicit VIEW intent — what Maestro `openLink` issues — opens Chrome
+# instead of the app. Verified on a local emulator; hence the in-app tap-path.)
+#
+# DRIVING A REAL (SIMULATED-CARD) CHARGE — follow-up, needs a backend seam:
+# the debug card's "Charge on this phone" button stays disabled until a
+# `card_terminal` PaymentIntent **client secret** is entered, and Stripe Terminal
+# collects against a REAL PaymentIntent on the connected account even with the
+# simulated card. Obtaining a fresh (short-lived) client secret needs a testing
+# seed endpoint, so the charge leg is documented turnkey below rather than run
+# here. Its assertion target — data-testid="tap-to-pay-charge-success" — is
+# already wired in tap-to-pay-debug-card.tsx, ready for when the seed exists.
+#
+# androidWebViewHierarchy: devtools — required (WebView DOM; see
+# scripts/maestro-android.sh which waits for the DevTools socket).
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# Reuse the shared login → lands authenticated on /dashboard/home (header shown).
+# Path is relative to this file (.maestro/nightly/) → the shared login flow.
+- runFlow: ../02-sign-in.yaml
+# Open the mobile "Personal area" hub via the header avatar (data-testid, ENG-7);
+# see src/features/mobile-dashboard-header/mobile-header-user-menu.tsx. Wait for
+# it first: the post-login HomeNew render is heavy, so the header mounts a beat
+# after 02-sign-in's redirect settles — tapping immediately misses it.
+- extendedWaitUntil:
+    visible:
+      id: 'mobile-header-user-menu'
+    timeout: 30000
+- tapOn:
+    id: 'mobile-header-user-menu'
+# /dashboard/account → the dev-only "Debug" menu link (→ /dashboard/debug); see
+# src/routes/_authed/dashboard/account.tsx. The Developer section is the LAST
+# group on the account page — below the fold on a phone — and a tap on an
+# off-viewport element lands on wrong coordinates (silently "completes" without
+# navigating), so scroll it into view first.
+- extendedWaitUntil:
+    visible:
+      id: 'account-menu-profile'
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: 'account-menu-debug'
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: 'account-menu-debug'
+# Debug page rendered. The Tap to Pay card sits below several other debug
+# cards, off-screen on a phone viewport — scroll it into view first
+# (assertVisible only matches in-viewport elements in devtools mode).
+- extendedWaitUntil:
+    visible: 'Error-tracking test bench'
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      text: 'Tap to Pay (Stripe Terminal)'
+    direction: DOWN
+    timeout: 30000
+- takeScreenshot: tap-to-pay-debug-card
+# THE GREEN GATE: the reader badge reads "simulated", proving
+# VITE_TAP_TO_PAY_SIMULATE flipped usesSimulatedReader() true in this
+# production-mode native build. If the flag failed to bake, the badge would read
+# "tap-to-pay" (real reader) and this assertion fails.
+- assertVisible: 'simulated'
+- takeScreenshot: tap-to-pay-simulated-reader
+#
+# --- TURNKEY CHARGE LEG (see header) — enable once a card_terminal PaymentIntent
+#     client secret is seeded and injected as MAESTRO_TTP_CLIENT_SECRET ---------
+# - tapOn:
+#     id: 'ttp-secret'
+# - inputText: ${MAESTRO_TTP_CLIENT_SECRET}
+# - hideKeyboard
+# - tapOn: 'Charge on this phone'
+# - extendedWaitUntil:
+#     visible:
+#       id: 'tap-to-pay-charge-success'
+#     timeout: 60000
+# - takeScreenshot: tap-to-pay-charge-approved

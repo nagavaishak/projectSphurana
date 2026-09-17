@@ -1,0 +1,30 @@
+{
+  "name": "@borradh-workspace/redis",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json"],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev": "docker-compose up redis -d",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "lint": "biome check src/ --write"
+  },
+  "dependencies": {
+    "ioredis": "^5.8.2",
+    "tslib": "^2.3.0"
+  }
+}

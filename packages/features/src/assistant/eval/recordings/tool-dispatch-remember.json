@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-remember",
+  "recordedAt": "2026-06-03T10:30:26.111Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Remember that we never run ads on Sundays.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "meta_remember",
+              "input": {
+                "content": "Never run ads on Sundays"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "stored": true,
+                  "scope": "personal",
+                  "content": "Never run ads on Sundays"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Got it. I've noted that — no ads running on Sundays for Glow Aesthetics.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Which day did I say we skip ads on?",
+      "rounds": [
+        {
+          "modelText": "Sunday.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

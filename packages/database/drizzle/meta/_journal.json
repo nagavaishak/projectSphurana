@@ -1,0 +1,1210 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1777119874142,
+      "tag": "0000_baseline",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777119874143,
+      "tag": "0001_add_assistant_recommendation_and_escalation",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777119874144,
+      "tag": "0002_claire_confirmation_token",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1777124063517,
+      "tag": "0003_assistant_conversation_skill_state",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1777130701704,
+      "tag": "0004_add_queue_video_export_action",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1777134175757,
+      "tag": "0005_add_assign_conversation_action",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1777146946611,
+      "tag": "0006_add_user_id_to_knowledge_entry",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1777149532508,
+      "tag": "0007_add_preference_knowledge_entry_type",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1777149669494,
+      "tag": "0008_add_conversation_summary_knowledge_entry_type",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1777150546163,
+      "tag": "0009_add_operational_snapshot_knowledge_entry_type",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1777152010110,
+      "tag": "0010_add_lifecycle_recommendation_kinds",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1777188829889,
+      "tag": "0011_add_perf_recommendation_kinds",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1777200774028,
+      "tag": "0012_add_video_draft_clip_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1777300000000,
+      "tag": "0013_add_claire_confirmation_actions",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1777400000000,
+      "tag": "0014_add_delete_claire_confirmation_actions",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1778517964558,
+      "tag": "0015_add_device_push_token_token_type",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1778779050511,
+      "tag": "0016_lyrical_malice",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1778779430671,
+      "tag": "0017_purple_starfox",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1778781491243,
+      "tag": "0018_lowly_mantis",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1778787912272,
+      "tag": "0019_solid_boom_boom",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1778836357266,
+      "tag": "0020_left_george_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1778838778731,
+      "tag": "0021_black_katie_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1778936890395,
+      "tag": "0022_claire_engine_and_offer_rework",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1778969661847,
+      "tag": "0023_add_org_defaults_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1779034839793,
+      "tag": "0024_lumpy_spitfire",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1779035107620,
+      "tag": "0025_pink_lester",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1779098624677,
+      "tag": "0026_colorful_the_hood",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1779107804181,
+      "tag": "0027_add_promotion_discount_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1779357559943,
+      "tag": "0028_appointment_service_id_and_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1779562615870,
+      "tag": "0029_add_video_engine_v2_schema_and_audio_asset",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1779615590618,
+      "tag": "0030_graphics_foundation_unified",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1779616420778,
+      "tag": "0031_add_synthesis_overrides_to_video",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1779632614659,
+      "tag": "0032_clean_sumo",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1779713720601,
+      "tag": "0033_solid_black_bolt",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1779716631388,
+      "tag": "0034_overjoyed_warpath",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1779718738430,
+      "tag": "0035_sudden_mariko_yashida",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1779722061207,
+      "tag": "0036_mature_magus",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1779726273301,
+      "tag": "0037_unique_bedlam",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1779903072990,
+      "tag": "0038_illegal_logan",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1779959127008,
+      "tag": "0039_minor_purple_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1779967060479,
+      "tag": "0040_useful_bloodstorm",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1779970680449,
+      "tag": "0041_thankful_spacker_dave",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1779982750819,
+      "tag": "0042_useful_layla_miller",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1780402677525,
+      "tag": "0043_melodic_zeigeist",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1780410317930,
+      "tag": "0044_rare_blob",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1780416571294,
+      "tag": "0045_confused_tomorrow_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1780483820394,
+      "tag": "0046_flawless_thaddeus_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1780504647935,
+      "tag": "0047_lean_paibok",
+      "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1780564224062,
+      "tag": "0048_aspiring_sumo",
+      "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1780607228111,
+      "tag": "0049_rls_roles",
+      "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1780649019403,
+      "tag": "0050_glossy_arclight",
+      "breakpoints": true
+    },
+    {
+      "idx": 51,
+      "version": "7",
+      "when": 1780654927320,
+      "tag": "0051_violet_proteus",
+      "breakpoints": true
+    },
+    {
+      "idx": 52,
+      "version": "7",
+      "when": 1780657660469,
+      "tag": "0052_same_vertigo",
+      "breakpoints": true
+    },
+    {
+      "idx": 53,
+      "version": "7",
+      "when": 1780740939284,
+      "tag": "0053_icy_young_avengers",
+      "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1781187627373,
+      "tag": "0054_chunky_microchip",
+      "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "7",
+      "when": 1781458151027,
+      "tag": "0055_add_soft_deletes_and_audit_log",
+      "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "7",
+      "when": 1782043155929,
+      "tag": "0056_numerous_masked_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 57,
+      "version": "7",
+      "when": 1782832793984,
+      "tag": "0057_add_social_post_media_urls",
+      "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "7",
+      "when": 1782832793985,
+      "tag": "0058_tough_marvex",
+      "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "7",
+      "when": 1784135024157,
+      "tag": "0059_fresha_scheduling",
+      "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "7",
+      "when": 1784135025157,
+      "tag": "0060_fresha_memberships",
+      "breakpoints": true
+    },
+    {
+      "idx": 61,
+      "version": "7",
+      "when": 1784135026157,
+      "tag": "0061_fresha_inventory",
+      "breakpoints": true
+    },
+    {
+      "idx": 62,
+      "version": "7",
+      "when": 1784135027157,
+      "tag": "0062_fresha_sales",
+      "breakpoints": true
+    },
+    {
+      "idx": 63,
+      "version": "7",
+      "when": 1784135028157,
+      "tag": "0063_fresha_timesheets",
+      "breakpoints": true
+    },
+    {
+      "idx": 64,
+      "version": "7",
+      "when": 1784135029157,
+      "tag": "0064_availability_public_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 65,
+      "version": "7",
+      "when": 1784135030157,
+      "tag": "0065_add_org_timezone",
+      "breakpoints": true
+    },
+    {
+      "idx": 66,
+      "version": "7",
+      "when": 1784135031157,
+      "tag": "0066_backfill_unavailability_to_blocked_time",
+      "breakpoints": true
+    },
+    {
+      "idx": 67,
+      "version": "7",
+      "when": 1784135032157,
+      "tag": "0067_drop_practitioner_unavailability",
+      "breakpoints": true
+    },
+    {
+      "idx": 68,
+      "version": "7",
+      "when": 1784135033157,
+      "tag": "0068_add_sale_payment_link_and_refunded",
+      "breakpoints": true
+    },
+    {
+      "idx": 69,
+      "version": "7",
+      "when": 1784135034157,
+      "tag": "0069_backfill_location_opening_hours",
+      "breakpoints": true
+    },
+    {
+      "idx": 70,
+      "version": "7",
+      "when": 1784135035157,
+      "tag": "0070_appointment_timestamptz",
+      "breakpoints": true
+    },
+    {
+      "idx": 71,
+      "version": "7",
+      "when": 1784135036157,
+      "tag": "0071_location_hours_public_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 72,
+      "version": "7",
+      "when": 1784135037157,
+      "tag": "0072_outgoing_mongoose",
+      "breakpoints": true
+    },
+    {
+      "idx": 73,
+      "version": "7",
+      "when": 1784135038157,
+      "tag": "0073_appointment_no_overlap_exclusion",
+      "breakpoints": true
+    },
+    {
+      "idx": 74,
+      "version": "7",
+      "when": 1784135039157,
+      "tag": "0074_bent_rafael_vega",
+      "breakpoints": true
+    },
+    {
+      "idx": 75,
+      "version": "7",
+      "when": 1784135040157,
+      "tag": "0075_absurd_masque",
+      "breakpoints": true
+    },
+    {
+      "idx": 76,
+      "version": "7",
+      "when": 1784135041157,
+      "tag": "0076_add_org_reschedule_policy_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 77,
+      "version": "7",
+      "when": 1784135042157,
+      "tag": "0077_add_campaigns_and_consent",
+      "breakpoints": true
+    },
+    {
+      "idx": 78,
+      "version": "7",
+      "when": 1784135043157,
+      "tag": "0078_stiff_whistler",
+      "breakpoints": true
+    },
+    {
+      "idx": 79,
+      "version": "7",
+      "when": 1784135044157,
+      "tag": "0079_colorful_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 80,
+      "version": "7",
+      "when": 1784135045157,
+      "tag": "0080_rich_captain_britain",
+      "breakpoints": true
+    },
+    {
+      "idx": 81,
+      "version": "7",
+      "when": 1784135046157,
+      "tag": "0081_nasty_harry_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 82,
+      "version": "7",
+      "when": 1784135047157,
+      "tag": "0082_powerful_chat",
+      "breakpoints": true
+    },
+    {
+      "idx": 83,
+      "version": "7",
+      "when": 1784135048157,
+      "tag": "0083_nasty_bloodstrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 84,
+      "version": "7",
+      "when": 1784135049157,
+      "tag": "0084_qualify_rls_child_fk",
+      "breakpoints": true
+    },
+    {
+      "idx": 85,
+      "version": "7",
+      "when": 1784135050157,
+      "tag": "0085_same_captain_flint",
+      "breakpoints": true
+    },
+    {
+      "idx": 86,
+      "version": "7",
+      "when": 1784135051157,
+      "tag": "0086_broken_thunderball",
+      "breakpoints": true
+    },
+    {
+      "idx": 87,
+      "version": "7",
+      "when": 1784135052157,
+      "tag": "0087_rainy_agent_zero",
+      "breakpoints": true
+    },
+    {
+      "idx": 88,
+      "version": "7",
+      "when": 1784135053157,
+      "tag": "0088_great_blazing_skull",
+      "breakpoints": true
+    },
+    {
+      "idx": 89,
+      "version": "7",
+      "when": 1784135054157,
+      "tag": "0089_conscious_solo",
+      "breakpoints": true
+    },
+    {
+      "idx": 90,
+      "version": "7",
+      "when": 1784291038870,
+      "tag": "0090_narrow_public_availability_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 91,
+      "version": "7",
+      "when": 1784294987744,
+      "tag": "0091_lyrical_jimmy_woo",
+      "breakpoints": true
+    },
+    {
+      "idx": 92,
+      "version": "7",
+      "when": 1784394619113,
+      "tag": "0092_oval_master_mold",
+      "breakpoints": true
+    },
+    {
+      "idx": 93,
+      "version": "7",
+      "when": 1784457184767,
+      "tag": "0093_superb_doctor_spectrum",
+      "breakpoints": true
+    },
+    {
+      "idx": 94,
+      "version": "7",
+      "when": 1784733613346,
+      "tag": "0094_add_whatsapp_template_params",
+      "breakpoints": true
+    },
+    {
+      "idx": 95,
+      "version": "7",
+      "when": 1784763640913,
+      "tag": "0095_stock_footage_and_graphic_provenance",
+      "breakpoints": true
+    },
+    {
+      "idx": 96,
+      "version": "7",
+      "when": 1785187254827,
+      "tag": "0096_add_resume_campaign_confirmation_action",
+      "breakpoints": true
+    },
+    {
+      "idx": 97,
+      "version": "7",
+      "when": 1785340727690,
+      "tag": "0097_romantic_winter_soldier",
+      "breakpoints": true
+    },
+    {
+      "idx": 98,
+      "version": "7",
+      "when": 1785362838567,
+      "tag": "0098_treatment_taxonomy_and_footage_descriptors",
+      "breakpoints": true
+    },
+    {
+      "idx": 99,
+      "version": "7",
+      "when": 1785435957854,
+      "tag": "0099_busy_celestials",
+      "breakpoints": true
+    },
+    {
+      "idx": 100,
+      "version": "7",
+      "when": 1785438568099,
+      "tag": "0100_seed_technique_taxonomy",
+      "breakpoints": true
+    },
+    {
+      "idx": 101,
+      "version": "7",
+      "when": 1785440069612,
+      "tag": "0101_daily_captain_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 102,
+      "version": "7",
+      "when": 1785440091515,
+      "tag": "0102_reset_legacy_stock_clip_source",
+      "breakpoints": true
+    },
+    {
+      "idx": 103,
+      "version": "7",
+      "when": 1785444938793,
+      "tag": "0103_split_energy_contact_into_modalities",
+      "breakpoints": true
+    },
+    {
+      "idx": 104,
+      "version": "7",
+      "when": 1785446953242,
+      "tag": "0104_add_rf_microneedling_headspa_shockwave",
+      "breakpoints": true
+    },
+    {
+      "idx": 105,
+      "version": "7",
+      "when": 1785456280710,
+      "tag": "0105_seed_treatment_agents",
+      "breakpoints": true
+    },
+    {
+      "idx": 106,
+      "version": "7",
+      "when": 1785456765752,
+      "tag": "0106_puzzling_albert_cleary",
+      "breakpoints": true
+    },
+    {
+      "idx": 107,
+      "version": "7",
+      "when": 1785457552707,
+      "tag": "0107_abnormal_lady_vermin",
+      "breakpoints": true
+    },
+    {
+      "idx": 108,
+      "version": "7",
+      "when": 1785457560357,
+      "tag": "0108_link_energy_modalities_add_electrolysis",
+      "breakpoints": true
+    },
+    {
+      "idx": 109,
+      "version": "7",
+      "when": 1785541256843,
+      "tag": "0109_majestic_mother_askani",
+      "breakpoints": true
+    },
+    {
+      "idx": 110,
+      "version": "7",
+      "when": 1785555599339,
+      "tag": "0110_low_albert_cleary",
+      "breakpoints": true
+    },
+    {
+      "idx": 111,
+      "version": "7",
+      "when": 1785618443625,
+      "tag": "0111_young_norman_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 112,
+      "version": "7",
+      "when": 1785628762704,
+      "tag": "0112_steep_sentinels",
+      "breakpoints": true
+    },
+    {
+      "idx": 113,
+      "version": "7",
+      "when": 1785676958173,
+      "tag": "0113_jittery_catseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 114,
+      "version": "7",
+      "when": 1785726527837,
+      "tag": "0114_smart_talisman",
+      "breakpoints": true
+    },
+    {
+      "idx": 115,
+      "version": "7",
+      "when": 1785771582076,
+      "tag": "0115_smooth_king_cobra",
+      "breakpoints": true
+    },
+    {
+      "idx": 116,
+      "version": "7",
+      "when": 1785781007015,
+      "tag": "0116_content_item_org_scope",
+      "breakpoints": true
+    },
+    {
+      "idx": 117,
+      "version": "7",
+      "when": 1785781007016,
+      "tag": "0117_content_item_rename",
+      "breakpoints": true
+    },
+    {
+      "idx": 118,
+      "version": "7",
+      "when": 1785857406351,
+      "tag": "0118_lethal_franklin_richards",
+      "breakpoints": true
+    },
+    {
+      "idx": 119,
+      "version": "7",
+      "when": 1785947240301,
+      "tag": "0119_notification_preferences_add_leads_category",
+      "breakpoints": true
+    },
+    {
+      "idx": 120,
+      "version": "7",
+      "when": 1785951289920,
+      "tag": "0120_claire_action_toggle_chatbot",
+      "breakpoints": true
+    },
+    {
+      "idx": 121,
+      "version": "7",
+      "when": 1785968207271,
+      "tag": "0121_add_technique_classified_at",
+      "breakpoints": true
+    },
+    {
+      "idx": 122,
+      "version": "7",
+      "when": 1785974482584,
+      "tag": "0122_budget_failure_campaign_ids",
+      "breakpoints": true
+    },
+    {
+      "idx": 123,
+      "version": "7",
+      "when": 1786036147299,
+      "tag": "0123_remarkable_zaran",
+      "breakpoints": true
+    },
+    {
+      "idx": 124,
+      "version": "7",
+      "when": 1786037908279,
+      "tag": "0124_far_talisman",
+      "breakpoints": true
+    },
+    {
+      "idx": 125,
+      "version": "7",
+      "when": 1786038501440,
+      "tag": "0125_brown_blue_shield",
+      "breakpoints": true
+    },
+    {
+      "idx": 126,
+      "version": "7",
+      "when": 1786045685244,
+      "tag": "0126_youthful_penance",
+      "breakpoints": true
+    },
+    {
+      "idx": 127,
+      "version": "7",
+      "when": 1786113616064,
+      "tag": "0127_natural_jazinda",
+      "breakpoints": true
+    },
+    {
+      "idx": 128,
+      "version": "7",
+      "when": 1786115360801,
+      "tag": "0128_overconfident_zaran",
+      "breakpoints": true
+    },
+    {
+      "idx": 129,
+      "version": "7",
+      "when": 1786222980627,
+      "tag": "0129_wet_red_hulk",
+      "breakpoints": true
+    },
+    {
+      "idx": 130,
+      "version": "7",
+      "when": 1786389696922,
+      "tag": "0130_patient_portal",
+      "breakpoints": true
+    },
+    {
+      "idx": 131,
+      "version": "7",
+      "when": 1786397184143,
+      "tag": "0131_portal_v2",
+      "breakpoints": true
+    },
+    {
+      "idx": 132,
+      "version": "7",
+      "when": 1786531115163,
+      "tag": "0132_demonic_miracleman",
+      "breakpoints": true
+    },
+    {
+      "idx": 133,
+      "version": "7",
+      "when": 1786579505955,
+      "tag": "0133_patient_better_auth",
+      "breakpoints": true
+    },
+    {
+      "idx": 134,
+      "version": "7",
+      "when": 1786676783391,
+      "tag": "0134_add_lead_portal_note",
+      "breakpoints": true
+    },
+    {
+      "idx": 135,
+      "version": "7",
+      "when": 1786961760134,
+      "tag": "0135_narrow_patient_lead_grant",
+      "breakpoints": true
+    },
+    {
+      "idx": 136,
+      "version": "7",
+      "when": 1786962789668,
+      "tag": "0136_protect_signed_consent",
+      "breakpoints": true
+    },
+    {
+      "idx": 137,
+      "version": "7",
+      "when": 1786971754328,
+      "tag": "0137_one_membership_per_person_per_clinic",
+      "breakpoints": true
+    },
+    {
+      "idx": 138,
+      "version": "7",
+      "when": 1786982545360,
+      "tag": "0138_patient_policies_check_org",
+      "breakpoints": true
+    },
+    {
+      "idx": 139,
+      "version": "7",
+      "when": 1786982826498,
+      "tag": "0139_consent_pdf_attempts",
+      "breakpoints": true
+    },
+    {
+      "idx": 140,
+      "version": "7",
+      "when": 1787078636268,
+      "tag": "0140_add_set_chatbot_directive_action",
+      "breakpoints": true
+    },
+    {
+      "idx": 141,
+      "version": "7",
+      "when": 1787130251804,
+      "tag": "0141_far_luckman",
+      "breakpoints": true
+    },
+    {
+      "idx": 142,
+      "version": "7",
+      "when": 1787133691883,
+      "tag": "0142_add_microsites",
+      "breakpoints": true
+    },
+    {
+      "idx": 143,
+      "version": "7",
+      "when": 1787214278983,
+      "tag": "0143_luxuriant_havok",
+      "breakpoints": true
+    },
+    {
+      "idx": 144,
+      "version": "7",
+      "when": 1787222553657,
+      "tag": "0144_add_customer_lifecycle_and_conversation_lead",
+      "breakpoints": true
+    },
+    {
+      "idx": 145,
+      "version": "7",
+      "when": 1787222569808,
+      "tag": "0145_backfill_customer_lifecycle",
+      "breakpoints": true
+    },
+    {
+      "idx": 146,
+      "version": "7",
+      "when": 1787222571613,
+      "tag": "0146_backfill_conversation_lead_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 147,
+      "version": "7",
+      "when": 1787255621379,
+      "tag": "0147_add_document_imports",
+      "breakpoints": true
+    },
+    {
+      "idx": 148,
+      "version": "7",
+      "when": 1787255621380,
+      "tag": "0148_practitioner_invitation_pending",
+      "breakpoints": true
+    },
+    {
+      "idx": 149,
+      "version": "7",
+      "when": 1787584209834,
+      "tag": "0149_hard_moon_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 150,
+      "version": "7",
+      "when": 1787653864655,
+      "tag": "0150_pale_stature",
+      "breakpoints": true
+    },
+    {
+      "idx": 151,
+      "version": "7",
+      "when": 1787665400924,
+      "tag": "0151_location_dimension_phase1",
+      "breakpoints": true
+    },
+    {
+      "idx": 152,
+      "version": "7",
+      "when": 1787685514737,
+      "tag": "0152_add_offer_description",
+      "breakpoints": true
+    },
+    {
+      "idx": 153,
+      "version": "7",
+      "when": 1787732903808,
+      "tag": "0153_location_slug_unique_per_org",
+      "breakpoints": true
+    },
+    {
+      "idx": 154,
+      "version": "7",
+      "when": 1787733317741,
+      "tag": "0154_campaign_location_fk",
+      "breakpoints": true
+    },
+    {
+      "idx": 155,
+      "version": "7",
+      "when": 1787738860097,
+      "tag": "0155_service_variant_location_price",
+      "breakpoints": true
+    },
+    {
+      "idx": 156,
+      "version": "7",
+      "when": 1787760735383,
+      "tag": "0156_app_public_read_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 157,
+      "version": "7",
+      "when": 1787761720270,
+      "tag": "0157_narrow_public_intake_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 158,
+      "version": "7",
+      "when": 1787832738829,
+      "tag": "0158_flowery_colleen_wing",
+      "breakpoints": true
+    },
+    {
+      "idx": 159,
+      "version": "7",
+      "when": 1787832798829,
+      "tag": "0159_public_grant_availability_location_id",
+      "breakpoints": true
+    },
+    {
+      "idx": 160,
+      "version": "7",
+      "when": 1787847387820,
+      "tag": "0160_add_resource_scheduling",
+      "breakpoints": true
+    },
+    {
+      "idx": 161,
+      "version": "7",
+      "when": 1787847447820,
+      "tag": "0161_public_grant_org_defaults_assignment_mode",
+      "breakpoints": true
+    },
+    {
+      "idx": 162,
+      "version": "7",
+      "when": 1788185655063,
+      "tag": "0162_mushy_ken_ellis",
+      "breakpoints": true
+    },
+    {
+      "idx": 163,
+      "version": "7",
+      "when": 1788190873721,
+      "tag": "0163_simple_tattoo",
+      "breakpoints": true
+    },
+    {
+      "idx": 164,
+      "version": "7",
+      "when": 1788192952097,
+      "tag": "0164_warm_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 165,
+      "version": "7",
+      "when": 1788371595084,
+      "tag": "0165_chemical_madrox",
+      "breakpoints": true
+    },
+    {
+      "idx": 166,
+      "version": "7",
+      "when": 1788372867216,
+      "tag": "0166_hot_lenny_balinger",
+      "breakpoints": true
+    },
+    {
+      "idx": 167,
+      "version": "7",
+      "when": 1788374575100,
+      "tag": "0167_closed_omega_red",
+      "breakpoints": true
+    },
+    {
+      "idx": 168,
+      "version": "7",
+      "when": 1788375037703,
+      "tag": "0168_eminent_the_twelve",
+      "breakpoints": true
+    },
+    {
+      "idx": 169,
+      "version": "7",
+      "when": 1788375038703,
+      "tag": "0169_public_form_grants",
+      "breakpoints": true
+    },
+    {
+      "idx": 170,
+      "version": "7",
+      "when": 1788446074979,
+      "tag": "0170_watery_mach_iv",
+      "breakpoints": true
+    },
+    {
+      "idx": 171,
+      "version": "7",
+      "when": 1788532897278,
+      "tag": "0171_public_red_wolf",
+      "breakpoints": true
+    }
+  ]
+}

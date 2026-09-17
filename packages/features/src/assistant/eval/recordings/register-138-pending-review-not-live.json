@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fixtureId": "register-138-pending-review-not-live",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Great, launch it. Is it live now?",
+      "rounds": [
+        {
+          "modelText": "On it — publishing now and checking the status with Meta.",
+          "toolUses": [
+            {
+              "name": "executeLaunchAd",
+              "input": {
+                "adId": "ad-2",
+                "adName": "Anti-wrinkle spring offer"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "created",
+                  "title": "Ad submitted: Anti-wrinkle spring offer",
+                  "adId": "ad-2",
+                  "name": "Anti-wrinkle spring offer",
+                  "launchState": "pending_review",
+                  "launchStateDetail": "Verified with Meta: the ad is in Meta review. It is not live yet and will not deliver until Meta approves it.",
+                  "message": "Verified with Meta: the ad is in Meta review. It is not live yet and will not deliver until Meta approves it."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "It's submitted, but not live yet — Meta is still in review on it, and it won't deliver until they approve it (usually within a day). I'll flag the moment it goes live.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

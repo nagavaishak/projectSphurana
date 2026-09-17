@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-list-no-shows",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Who were my no-shows this week?",
+      "rounds": [
+        {
+          "modelText": "Pulling this week's no-shows.",
+          "toolUses": [
+            {
+              "name": "listAppointments",
+              "input": {
+                "status": "no_show",
+                "startDateFrom": "2026-05-11T00:00:00.000Z",
+                "startDateTo": "2026-05-17T23:59:59.000Z"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "items": [
+                    {
+                      "id": "appt-7",
+                      "title": "Facial with Aoife",
+                      "startDate": "2026-05-12T10:00:00.000Z",
+                      "endDate": "2026-05-12T10:30:00.000Z",
+                      "status": "no_show"
+                    },
+                    {
+                      "id": "appt-8",
+                      "title": "Lip filler with Niamh",
+                      "startDate": "2026-05-14T15:00:00.000Z",
+                      "endDate": "2026-05-14T15:30:00.000Z",
+                      "status": "no_show"
+                    }
+                  ],
+                  "total": 2,
+                  "limit": 50,
+                  "offset": 0
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You had two no-shows this week: Aoife's facial on Tuesday and Niamh's lip filler on Thursday. Want me to flag either for a no-show fee?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

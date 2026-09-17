@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-create-service-variants",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Add a Dermal Filler service with options: 1 area €200, 2 areas €350, 3 areas €480.",
+      "rounds": [
+        {
+          "modelText": "Adding Dermal Filler with the three area options.",
+          "toolUses": [
+            {
+              "name": "createService",
+              "input": {
+                "name": "Dermal Filler",
+                "category": "treatment",
+                "priceType": "from",
+                "priceCents": 20000,
+                "variants": [
+                  { "name": "1 area", "priceCents": 20000 },
+                  { "name": "2 areas", "priceCents": 35000 },
+                  { "name": "3 areas", "priceCents": 48000 }
+                ]
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "create_service",
+                  "resourceId": "service:Dermal Filler",
+                  "token": "synthetic-token-createService-dermal-filler",
+                  "expiresAt": "2026-07-15T00:30:00.000Z",
+                  "summary": {
+                    "title": "Create service \"Dermal Filler\"",
+                    "fields": [
+                      { "label": "Service name", "value": "Dermal Filler" },
+                      {
+                        "label": "Variants",
+                        "value": "1 area, 2 areas, 3 areas"
+                      }
+                    ]
+                  },
+                  "executeToolName": "createService"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Dermal Filler with three options — 1 area €200, 2 areas €350, 3 areas €480 (shows as \"From €200\"). Confirm and I'll add it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

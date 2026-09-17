@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "fixtureId": "lead-form-ie-whatsapp",
+  "recordedAt": "2026-06-06T11:09:06.753Z",
+  "skillRegistryVersion": 28,
+  "turns": [
+    {
+      "userMessage": "Run a lip filler campaign for me. I charge €180 a session.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "suggestIntroOffer",
+              "input": {
+                "serviceId": "lip_filler",
+                "oneSessionPrice": 180
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "advisable": true,
+                  "needsPrice": false,
+                  "suggested": {
+                    "serviceId": "s1",
+                    "serviceName": "Lip filler",
+                    "oneSessionPrice": 180,
+                    "introPrice": 120,
+                    "discountPercent": 33
+                  }
+                }
+              }
+            },
+            {
+              "name": "previewCampaign",
+              "input": {
+                "serviceId": "lip_filler"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "created",
+                  "variant": "preview",
+                  "title": "Campaign preview",
+                  "ready": true,
+                  "suggestedName": "Lip filler — June 2026",
+                  "followUpType": "lead_form",
+                  "nurtureChannel": "whatsapp",
+                  "nurtureChannelFlagged": false,
+                  "canRunLeadForm": true,
+                  "dailyBudgetAmount": 15,
+                  "currencyCode": "EUR",
+                  "distanceKm": 20,
+                  "ageMin": 18,
+                  "ageMax": 65,
+                  "locationName": "12 Grafton Street, Dublin 2, Ireland",
+                  "areaTypeKnown": true,
+                  "fields": [
+                    {
+                      "label": "Name",
+                      "value": "Lip filler — June 2026"
+                    },
+                    {
+                      "label": "Daily budget",
+                      "value": "€15.00/day"
+                    },
+                    {
+                      "label": "How leads reach you",
+                      "value": "Lead form → WhatsApp follow-up"
+                    },
+                    {
+                      "label": "Targeting",
+                      "value": "Within 20km of 12 Grafton Street, Dublin 2, Ireland"
+                    },
+                    {
+                      "label": "Age range",
+                      "value": "18–65"
+                    }
+                  ],
+                  "actions": []
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "The intro offer is lip filler at €120 for new clients — 33% below your usual €180.\n\nMost people will fill in the form and then land in your WhatsApp — I'll be in there picking them up, qualifying them and getting them booked. Anything that needs you, I'll flag.\n\nThat's the intro offer above and the campaign ready to go — want me to set it live?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Perfect — yes, set it live.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createOffer",
+              "input": {
+                "serviceId": "lip_filler",
+                "offerPrice": 120,
+                "oneSessionPrice": 180
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "offerId": "o1",
+                  "name": "Lip filler intro",
+                  "offerPriceCents": 12000
+                }
+              }
+            },
+            {
+              "name": "createLeadForm",
+              "input": {
+                "serviceId": "lip_filler"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "leadFormId": "lf1",
+                  "metaFormId": "m1",
+                  "name": "Lip filler — lead form",
+                  "status": "synced",
+                  "followUpChannel": "whatsapp",
+                  "ready": true
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createCampaign",
+              "input": {
+                "serviceId": "lip_filler",
+                "name": "Lip filler — June 2026",
+                "followUpType": "lead_form",
+                "leadFormId": "lf1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "metaCampaignId": "c1",
+                  "metaAdSetId": "as1",
+                  "followUpType": "lead_form",
+                  "leadFormId": "lf1"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createDraftVideo",
+              "input": {
+                "format": "offer",
+                "serviceId": "lip_filler",
+                "offerId": "o1",
+                "autoRender": true,
+                "suppressCard": true
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v1",
+                  "status": "rendering"
+                }
+              }
+            },
+            {
+              "name": "createAdGraphic",
+              "input": {
+                "serviceId": "lip_filler",
+                "offerId": "o1",
+                "suppressCard": true
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "graphicId": "g1",
+                  "status": "rendering"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createDraftAd",
+              "input": {
+                "metaCampaignId": "c1",
+                "videoId": "v1",
+                "serviceIds": ["lip_filler"],
+                "headline": "Natural-looking lip filler — €120 for new clients",
+                "primaryText": "Thin or uneven lips holding you back? Our lip filler treatment adds volume and shape that looks like you — just enhanced. Expertly placed, natural results. Book your session for €120. Message us to book.",
+                "callToAction": "BOOK_NOW"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "adId": "a1",
+                  "status": "draft"
+                }
+              }
+            },
+            {
+              "name": "createDraftAd",
+              "input": {
+                "metaCampaignId": "c1",
+                "graphicId": "g1",
+                "serviceIds": ["lip_filler"],
+                "headline": "Get started with lip filler — intro offer €120",
+                "primaryText": "Want fuller, balanced lips without the overdone look? We specialise in subtle, expert lip filler that enhances what you have. New clients start at €120. Message us to book your consultation.",
+                "callToAction": "BOOK_NOW"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "adId": "a1",
+                  "status": "draft"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Building your two ads now — they'll fill in below.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

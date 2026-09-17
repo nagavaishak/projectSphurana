@@ -1,0 +1,45 @@
+# app is intentionally omitted — set per-deploy via `--app`. The per-PR
+# preview workflow uses borradh-worker-pr-<N>; locking to a static name
+# caused confusion when borradh-worker-staging was destroyed.
+primary_region = "lhr"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  LOG_LEVEL = "info"
+  # Internal port the worker's liveness HTTP server binds to (not published).
+  # Worker-specific so it never collides with the API's shared PORT in local dev.
+  WORKER_HEALTH_PORT = "8080"
+
+[processes]
+  worker = "node dist/main.js"
+
+# Liveness check so Fly auto-recycles a hung/wedged worker instead of leaving it
+# `started` until the BetterStack heartbeat alerts (which only alerts, never
+# recovers — see PRD-44). The worker has no public service, so this is a machine
+# check against the internal liveness server in src/health-server.ts. It fails —
+# triggering a Fly restart — when the event loop wedges (handler stops
+# responding) or the Redis/BullMQ connection isn't ready (non-draining worker).
+[checks]
+  [checks.alive]
+    type = "http"
+    port = 8080
+    method = "GET"
+    path = "/health"
+    interval = "30s"
+    timeout = "5s"
+    # Generous: worker boot runs FFmpeg/transcription/Remotion init before the
+    # health server starts listening.
+    grace_period = "60s"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "2gb"
+  processes = ["worker"]
+
+# Worker is always-on in staging (no HTTP service, no auto-stop based on requests)
+# Job throughput keeps the machine busy; idle compute time is minimal
+[deploy]
+  strategy = "rolling"

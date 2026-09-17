@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "fixtureId": "register-92-ad-graphic-not-organic",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 37,
+  "turns": [
+    {
+      "userMessage": "Make me an ad graphic for my Botox offer.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [{ "id": "svc-botox", "name": "Botox" }],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listOffers",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "offers": [
+                    {
+                      "id": "offer-1",
+                      "name": "Botox intro",
+                      "serviceId": "svc-botox"
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createAdGraphic",
+              "input": { "serviceId": "svc-botox", "offerId": "offer-1" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "graphicId": "adg-1",
+                  "status": "rendering",
+                  "serviceId": "svc-botox",
+                  "offerId": "offer-1",
+                  "uiState": "created",
+                  "title": "Ad graphic"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "On it — building your Botox offer ad graphic now. It'll appear in a few seconds.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

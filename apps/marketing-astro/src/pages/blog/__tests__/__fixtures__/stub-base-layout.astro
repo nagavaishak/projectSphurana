@@ -1,0 +1,35 @@
+---
+/**
+ * Test-only stand-in for `@/layouts/BaseLayout.astro`, used by
+ * `[slug].render.test.ts`.
+ *
+ * The real layout does `new URL(Astro.url.pathname, Astro.site).href` for
+ * the canonical link tag. `Astro.site` is populated from `astro.config.mjs`
+ * at build/dev/serve time, but Astro's `experimental_AstroContainer.create()`
+ * (astro@6.3.6) does not thread a `site` through to the manifest it builds —
+ * there is no supported way to set it for a container-rendered test — so the
+ * real layout throws `Invalid URL` under the container. This stub keeps the
+ * props/slot contract the page relies on (title, description, a rendered
+ * child) without touching `Astro.site`, so the test exercises the actual
+ * `[slug].astro` logic (status code, cache header, which component renders)
+ * rather than an unrelated Astro container gap.
+ */
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: string;
+}
+
+const { title = '', description = '' } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

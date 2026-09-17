@@ -1,0 +1,20 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "extends": ["../../biome.json"],
+  "linter": {
+    "rules": {
+      "nursery": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "@borradh-workspace/database": "apps/marketing cannot import from database. Call the NestJS API instead.",
+              "@borradh-workspace/database/schema": "apps/marketing cannot import from database. Call the NestJS API instead.",
+              "@borradh-workspace/auth": "apps/marketing cannot import auth (server-only). Call the NestJS API instead."
+            }
+          }
+        }
+      }
+    }
+  }
+}

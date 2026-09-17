@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "fixtureId": "register-213-video-duration-claim",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 37,
+  "turns": [
+    {
+      "userMessage": "Make me a 15 second video about lip filler.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [{ "id": "svc-lip", "name": "Lip filler" }],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createDraftVideo",
+              "input": { "format": "educational", "serviceId": "svc-lip" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "vid-1",
+                  "serviceId": "svc-lip",
+                  "status": "draft",
+                  "uiState": "created",
+                  "title": "Lip filler explainer",
+                  "fields": [
+                    {
+                      "label": "Format",
+                      "value": "Educational (text on screen)"
+                    },
+                    {
+                      "label": "Length",
+                      "value": "Automatic (set by the template)"
+                    },
+                    {
+                      "label": "Status",
+                      "value": "Draft — awaiting your go-ahead to render"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Draft's ready. One heads-up: I can't set an exact runtime — video length is automatic, set by the template and its clips. Want me to render it?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "notification_preference" ALTER COLUMN "preferences" SET DEFAULT '{"appointments":{"scope":"mine","channels":{"email":true,"push":true}},"inbox":{"scope":"mine","channels":{"email":true,"push":true}},"advertising":{"enabled":true,"channels":{"email":true,"push":true}},"leads":{"scope":"all","channels":{"email":false,"push":true}}}'::jsonb;

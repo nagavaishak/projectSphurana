@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../database"
+    },
+    {
+      "path": "../remotion"
+    },
+    {
+      "path": "../storage"
+    },
+    {
+      "path": "../env"
+    },
+    {
+      "path": "../http"
+    },
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}

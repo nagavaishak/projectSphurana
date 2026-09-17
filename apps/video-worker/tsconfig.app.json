@@ -1,0 +1,60 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "nodenext",
+    "types": ["node"],
+    "rootDir": "src",
+    "moduleResolution": "nodenext",
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
+    "baseUrl": ".",
+    "paths": {}
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "dist",
+    "out-tsc",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/editor-state-builder.ts",
+    "src/editor-state-assembler.ts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/video-processing/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/remotion/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/video-templates/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/redis/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/env/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/http/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/integrations/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/database/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/ai/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/features/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/observability/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/storage/tsconfig.lib.json"
+    }
+  ]
+}

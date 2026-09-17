@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-tray-full-skip",
+  "recordedAt": "2026-04-26T00:00:00.000Z",
+  "skillRegistryVersion": 9,
+  "turns": [
+    {
+      "userMessage": "I've already loaded the clips for that lip filler video — finish it.",
+      "rounds": [
+        {
+          "modelText": "Reading the tray.",
+          "toolUses": [
+            {
+              "name": "listDraftClips",
+              "input": {
+                "videoId": "v-tray-full-1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-tray-full-1",
+                  "clipCount": 3,
+                  "emptyBeats": null,
+                  "clips": [
+                    {
+                      "id": "tc-1",
+                      "assetId": "a-1",
+                      "source": "uploaded",
+                      "processingStatus": "ready",
+                      "beatOrder": 0,
+                      "name": "before.mp4",
+                      "duration": 5,
+                      "tags": []
+                    },
+                    {
+                      "id": "tc-2",
+                      "assetId": "a-2",
+                      "source": "library",
+                      "processingStatus": "ready",
+                      "beatOrder": 1,
+                      "name": "middle.mp4",
+                      "duration": 4,
+                      "tags": []
+                    },
+                    {
+                      "id": "tc-3",
+                      "assetId": "a-3",
+                      "source": "uploaded",
+                      "processingStatus": "ready",
+                      "beatOrder": 2,
+                      "name": "after.mp4",
+                      "duration": 6,
+                      "tags": []
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "All three beats are filled — moving on to music. I'll auto-pick one that suits the template mood.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

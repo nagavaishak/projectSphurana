@@ -1,0 +1,34 @@
+---
+/**
+ * Magic-link landing. The single-use token is read from the query string HERE,
+ * server-side — TanStack Router did the same job via `validateSearch`, and the
+ * point is unchanged: components are handed their inputs, they never parse the
+ * URL themselves.
+ */
+import { PortalAccessIsland } from '../islands/access.island';
+import { resolvePortalContextFromRequest } from '../portal-context';
+import PortalLayout from '../PortalLayout.astro';
+import PortalUnavailable from '../PortalUnavailable.astro';
+
+const ctx = resolvePortalContextFromRequest(
+  Astro.request,
+  Astro.url,
+  Astro.locals.microsite ?? null
+);
+const token = Astro.url.searchParams.get('token');
+
+// A token in a URL is a credential. Never let a shared cache hold this
+// response, and never let it reach a referrer.
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+---
+
+{
+  ctx ? (
+    <PortalLayout title="Signing you in">
+      <PortalAccessIsland client:load ctx={ctx} token={token} />
+    </PortalLayout>
+  ) : (
+    <PortalUnavailable />
+  )
+}

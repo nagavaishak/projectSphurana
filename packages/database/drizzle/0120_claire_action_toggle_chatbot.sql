@@ -1,0 +1,1 @@
+ALTER TYPE "public"."claire_confirmation_action" ADD VALUE IF NOT EXISTS 'toggle_chatbot';

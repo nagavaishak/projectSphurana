@@ -1,0 +1,4 @@
+# Per-run testcontainer connection URLs written by global-setup, removed by
+# global-teardown. Ignored so an interrupted run never leaves them staged.
+.int-db-url
+.int-redis-url

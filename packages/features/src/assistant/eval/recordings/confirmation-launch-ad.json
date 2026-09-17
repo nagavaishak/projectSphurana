@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-launch-ad",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Launch the lip-filler video ad I drafted.",
+      "rounds": [
+        {
+          "modelText": "Let me line up the launch summary so you can sign off.",
+          "toolUses": [
+            {
+              "name": "confirmLaunchAd",
+              "input": {
+                "adId": "ad-1",
+                "headline": "Lip filler that suits your face"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "launch_ad",
+                  "resourceId": "ad-1",
+                  "token": "synthetic-token-confirmLaunchAd-ad-1",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Launch ad",
+                    "fields": [
+                      {
+                        "label": "Headline",
+                        "value": "Lip filler that suits your face"
+                      },
+                      { "label": "Daily budget", "value": "€10" },
+                      { "label": "Targeting", "value": "30km, ages 25–55" },
+                      {
+                        "label": "Destination",
+                        "value": "https://glowaesthetics.ie/book"
+                      }
+                    ]
+                  },
+                  "executeToolName": "confirmLaunchAd"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's the summary — €10/day, 30km radius, ages 25 to 55, linking to your booking page. Confirm and I'll launch.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

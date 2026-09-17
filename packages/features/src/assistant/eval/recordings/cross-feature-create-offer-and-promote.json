@@ -1,0 +1,263 @@
+{
+  "version": 1,
+  "fixtureId": "cross-feature-create-offer-and-promote",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 7,
+  "turns": [
+    {
+      "userMessage": "I want to run a promo for our new lip-filler service — 20% off for the next two weeks, and get the word out.",
+      "rounds": [
+        {
+          "modelText": "Right, let's get this rolling. Pulling in the offer tools first.",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "manage-offers" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "manage-offers",
+                  "newToolsAvailable": [
+                    "listOffers",
+                    "getOfferPerformance",
+                    "createOffer",
+                    "extendOffer",
+                    "expireOffer"
+                  ],
+                  "promptFragment": "## Offers"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Lining up the offer summary so you can sign off.",
+          "toolUses": [
+            {
+              "name": "createOffer",
+              "input": {
+                "service": "Lip filler",
+                "discount": "20%",
+                "validity": "2 weeks",
+                "offerId": "offer-1"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "create_offer",
+                  "resourceId": "offer-1",
+                  "token": "synthetic-token-createOffer-offer-1",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Create offer",
+                    "fields": [
+                      { "label": "Service", "value": "Lip filler" },
+                      { "label": "Discount", "value": "20%" },
+                      { "label": "Validity", "value": "2 weeks" }
+                    ]
+                  },
+                  "executeToolName": "createOffer"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's the offer — 20% off Lip filler for two weeks. Confirm and I'll create it, then I'll line up the promo video and the post.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Yes, create the offer. Then make me a promo video for it.",
+      "rounds": [
+        {
+          "modelText": "Creating the offer now.",
+          "toolUses": [
+            {
+              "name": "createOffer",
+              "input": {
+                "service": "Lip filler",
+                "discount": "20%",
+                "validity": "2 weeks",
+                "offerId": "offer-1",
+                "confirmationToken": "synthetic-token-createOffer-offer-1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "offerId": "offer-1",
+                  "service": "Lip filler",
+                  "discount": "20%",
+                  "validUntil": "2026-05-09",
+                  "isActive": true
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Offer is live. Loading the video tools.",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "generate-video" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "generate-video",
+                  "newToolsAvailable": [
+                    "createDraftVideo",
+                    "generateVideoScript",
+                    "listAvailableAssets",
+                    "autoSelectClips",
+                    "autoSelectMusic",
+                    "updateDraftConfig",
+                    "queueVideoExport",
+                    "executeVideoExport",
+                    "getVideoStatus",
+                    "generateTalkingHeadQR"
+                  ],
+                  "promptFragment": "## Creating a video"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Drafting the promo video.",
+          "toolUses": [
+            {
+              "name": "createDraftVideo",
+              "input": {
+                "templateId": "promo-offer",
+                "service": "Lip filler",
+                "discount": "20%"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-promo-1",
+                  "templateId": "promo-offer",
+                  "variationId": "promo-offer-1",
+                  "status": "draft",
+                  "narrationMode": "recorded",
+                  "recommendedClipCount": 3
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Offer is created. Promo video is drafted — I'll auto-select clips and queue the render next. Renders usually take a few minutes; I'll let you know when it's ready.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Sounds good. Schedule the post for tomorrow morning when the video is ready.",
+      "rounds": [
+        {
+          "modelText": "Loading the post-scheduling tools.",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "schedule-post" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "schedule-post",
+                  "newToolsAvailable": [
+                    "checkConnectedPages",
+                    "listRecentVideos",
+                    "listRecentPosts",
+                    "generatePostCaption",
+                    "suggestPostingTime",
+                    "createSocialPostDraft",
+                    "updateSocialPostDraft",
+                    "confirmSchedulePost",
+                    "confirmPublishNow",
+                    "executeSchedulePost",
+                    "executePublishNow"
+                  ],
+                  "promptFragment": "## Scheduling a post"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Drafting the post.",
+          "toolUses": [
+            {
+              "name": "createSocialPostDraft",
+              "input": {
+                "videoId": "v-promo-1",
+                "platforms": ["facebook", "instagram"]
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "postId": "post-1",
+                  "platforms": ["facebook", "instagram"],
+                  "status": "draft",
+                  "videoId": "v-promo-1"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Lining up the schedule for sign-off.",
+          "toolUses": [
+            {
+              "name": "confirmSchedulePost",
+              "input": {
+                "postId": "post-1",
+                "scheduledFor": "2026-04-26 09:00"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "schedule_post",
+                  "resourceId": "post-1",
+                  "token": "synthetic-token-confirmSchedulePost-post-1",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Schedule post",
+                    "fields": [
+                      { "label": "Platforms", "value": "Facebook, Instagram" },
+                      { "label": "When", "value": "2026-04-26 09:00" },
+                      { "label": "Asset", "value": "Lip-filler promo video" }
+                    ]
+                  },
+                  "executeToolName": "confirmSchedulePost"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Post scheduled for 9 AM tomorrow on Facebook and Instagram, using the lip-filler promo video. Confirm and I'll set it. The video render needs to finish first — I'll flag if it's still processing closer to the time.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-list-campaigns",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Show me my ad campaigns.",
+      "rounds": [
+        {
+          "modelText": "Let me pull up your campaigns.",
+          "toolUses": [
+            {
+              "name": "listCampaigns",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "campaigns": [
+                    {
+                      "id": "c-1",
+                      "name": "Lip filler — winter promo",
+                      "status": "active",
+                      "dailyBudget": 10,
+                      "objective": "leads"
+                    },
+                    {
+                      "id": "c-2",
+                      "name": "Anti-wrinkle awareness",
+                      "status": "paused",
+                      "dailyBudget": 8,
+                      "objective": "awareness"
+                    }
+                  ],
+                  "total": 2
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You've got two campaigns. Lip filler — winter promo is active at €10/day for leads. Anti-wrinkle awareness is paused, set to €8/day. Want me to look at the numbers on the live one or get the paused one going again?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

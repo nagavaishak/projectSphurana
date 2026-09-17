@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "fixtureId": "classifier-ad-optimisation",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Can you review my ad performance this week?",
+      "classifierResponse": {
+        "skillIds": ["optimise-ads"],
+        "confidence": 0.88
+      },
+      "rounds": [
+        {
+          "modelText": "Right, let's pull the picture together. I'll have a look at what's running and bring back what stands out — the ones to leave alone, the ones to nudge, and any in learning phase we shouldn't touch.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace "com.borradh.mobile"
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.borradh.mobile"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode Integer.parseInt(System.getenv("ANDROID_VERSION_CODE") ?: "1")
+        versionName System.getenv("ANDROID_VERSION_NAME")
+            // Local/unset builds fall back to the repo-root VERSION file rather
+            // than a hardcoded literal, which had already rotted to 1.0.3 while
+            // the store was on 1.0.4. CI still passes ANDROID_VERSION_NAME.
+            ?: rootProject.file("../../../VERSION").text.trim()
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    signingConfigs {
+        release {
+            def storeFilePath = System.getenv("ANDROID_KEYSTORE_PATH")
+            if (storeFilePath) {
+                def storePass = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                def alias = System.getenv("ANDROID_KEY_ALIAS")
+                def keyPass = System.getenv("ANDROID_KEY_PASSWORD")
+                // Fail loudly when the keystore path is set but a credential is
+                // missing. Otherwise the signingConfig resolves with null fields
+                // and signReleaseBundle dies inside bundletool with a bare
+                // "NullPointerException (no error message)".
+                def missing = []
+                if (!storePass) missing << "ANDROID_KEYSTORE_PASSWORD"
+                if (!alias) missing << "ANDROID_KEY_ALIAS"
+                if (!keyPass) missing << "ANDROID_KEY_PASSWORD"
+                if (!missing.isEmpty()) {
+                    throw new GradleException(
+                        "ANDROID_KEYSTORE_PATH is set but signing credentials are missing: "
+                        + missing.join(", ")
+                        + ". Set these env vars in the same step, or unset ANDROID_KEYSTORE_PATH for an unsigned build.")
+                }
+                storeFile file(storeFilePath)
+                storePassword storePass
+                keyAlias alias
+                keyPassword keyPass
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // Use upload keystore when ANDROID_KEYSTORE_PATH is provided (CI / signed local builds).
+            // Otherwise fall back to the debug keystore so `gradlew assembleRelease` still produces
+            // an installable APK during local smoke testing.
+            signingConfig System.getenv("ANDROID_KEYSTORE_PATH") ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.core:core:$rootProject.ext.androidxCoreVersion"
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
+
+// Gradle Play Publisher — only apply when we have a service-account JSON to authenticate with.
+// Local dev installs (no creds) skip the plugin entirely so unrelated `./gradlew` commands stay fast.
+def playCreds = System.getenv("GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_PATH")
+if (playCreds && file(playCreds).exists()) {
+    apply plugin: 'com.github.triplet.play'
+    play {
+        serviceAccountCredentials.set(file(playCreds))
+        track.set(System.getenv("GOOGLE_PLAY_TRACK") ?: "internal")
+        defaultToAppBundles.set(true)
+        // Upload the exact .aab build-android.sh already produced. Without this,
+        // GPP's publishReleaseBundle depends on bundleRelease and rebuilds the
+        // bundle in the upload step — which runs without the build step's env,
+        // so the rebuilt AAB regresses to versionCode 1 (and needs re-signing).
+        artifactDir.set(file("build/outputs/bundle/release"))
+
+        // Release status is env-driven so one config serves both jobs: the
+        // build workflow uploading to `internal` and the release workflow
+        // promoting to `production`. Both default to COMPLETED — 100% of the
+        // track, immediately.
+        //
+        // COMPLETED on `production` cannot be halted: every installed device is
+        // offered the update as soon as Play finishes processing, and rolling
+        // back means shipping a higher versionCode. That is the deliberate
+        // choice here; the soak happens on the internal track beforehand.
+        // Pass GOOGLE_PLAY_USER_FRACTION (via promote-android.sh --fraction) to
+        // stage it instead.
+        //
+        // The env var uses Play's own vocabulary (completed, inProgress,
+        // halted, draft); the enum constants are SNAKE_CASE, so "inProgress"
+        // has to become IN_PROGRESS. A bare .toUpperCase() yields INPROGRESS
+        // and throws at configuration time.
+        def releaseStatusEnv = System.getenv("GOOGLE_PLAY_RELEASE_STATUS") ?: "completed"
+        def enumName = releaseStatusEnv.replaceAll(/([a-z])([A-Z])/, '$1_$2').toUpperCase()
+        def resolvedStatus
+        try {
+            resolvedStatus = com.github.triplet.gradle.androidpublisher.ReleaseStatus.valueOf(enumName)
+        } catch (IllegalArgumentException e) {
+            throw new GradleException(
+                "GOOGLE_PLAY_RELEASE_STATUS='${releaseStatusEnv}' is not a Play release status. " +
+                "Expected one of: completed, inProgress, halted, draft."
+            )
+        }
+        releaseStatus.set(resolvedStatus)
+
+        // Play rejects a userFraction on a COMPLETED release, so only set it
+        // when the release is actually being staged.
+        def stagedStatuses = [
+            com.github.triplet.gradle.androidpublisher.ReleaseStatus.IN_PROGRESS,
+            com.github.triplet.gradle.androidpublisher.ReleaseStatus.HALTED,
+        ]
+        def userFractionEnv = System.getenv("GOOGLE_PLAY_USER_FRACTION")
+        if (userFractionEnv && stagedStatuses.contains(resolvedStatus)) {
+            userFraction.set(Double.parseDouble(userFractionEnv))
+        }
+
+        // Only read by the promoteReleaseArtifact task. Promotion moves a
+        // release that is ALREADY on Play between tracks — it never re-uploads,
+        // so the bytes that soaked on `internal` are the bytes that ship.
+        def fromTrackEnv = System.getenv("GOOGLE_PLAY_FROM_TRACK")
+        if (fromTrackEnv) {
+            fromTrack.set(fromTrackEnv)
+        }
+        def promoteTrackEnv = System.getenv("GOOGLE_PLAY_PROMOTE_TRACK")
+        if (promoteTrackEnv) {
+            promoteTrack.set(promoteTrackEnv)
+        }
+    }
+}

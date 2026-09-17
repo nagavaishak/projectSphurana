@@ -1,0 +1,44 @@
+---
+export const prerender = false;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { resolveUpstreamApiUrl } from '@/lib/config';
+
+const slug = Astro.params.slug ?? '';
+const token = Astro.params.token ?? '';
+const response = await fetch(
+  `${resolveUpstreamApiUrl()}/public/shop/${encodeURIComponent(slug)}/orders/${encodeURIComponent(token)}`
+);
+const data = response.ok ? await response.json() : null;
+const labels: Record<string, string> = {
+  awaiting_collection: 'We are preparing your order',
+  ready: 'Your order is ready to collect',
+  collected: 'Your order has been collected',
+};
+---
+
+<BaseLayout title="Your order" description="Shop order status" theme="light">
+  <main class="mx-auto max-w-2xl px-4 py-16">
+    {data ? (
+      <>
+        <p class="text-sm text-muted-foreground">{data.organization.name}</p>
+        <h1 class="mt-2 font-bold text-3xl">{labels[data.order.fulfilmentStatus]}</h1>
+        <p class="mt-4 text-muted-foreground">
+          {data.order.fulfilmentStatus === 'ready'
+            ? `Please collect from ${data.order.locationName ?? 'the clinic'}.`
+            : `We’ll email you when your order is ready for collection at ${data.order.locationName ?? 'the clinic'}.`}
+        </p>
+        <ul class="mt-8 divide-y rounded-lg border">
+          {data.order.items.map((item: { name: string; quantity: number }) => (
+            <li class="flex justify-between px-4 py-3"><span>{item.name}</span><span class="text-muted-foreground">×{item.quantity}</span></li>
+          ))}
+        </ul>
+      </>
+    ) : (
+      <>
+        <h1 class="font-bold text-3xl">Order not found</h1>
+        <p class="mt-4 text-muted-foreground">This order link may be invalid or has expired.</p>
+      </>
+    )}
+    <a class="mt-8 inline-block underline" href={`/sites/${slug}/shop`}>Back to shop</a>
+  </main>
+</BaseLayout>

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fixtureId": "hard-block-learning-phase",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Bump the new lip-filler campaign budget from €10 to €30/day — it just launched yesterday and looks great.",
+      "rounds": [
+        {
+          "modelText": "Let me line up the budget update.",
+          "toolUses": [
+            {
+              "name": "confirmUpdateBudget",
+              "input": {
+                "campaignId": "campaign-lip-filler",
+                "currentBudget": "10",
+                "newBudget": "30"
+              },
+              "result": {
+                "ok": false,
+                "error": "This campaign is in Meta's learning phase (the first 7–10 days). Changes to live budget mid-learning derail optimisation. We'll wait until learning exits before adjusting.",
+                "code": "noLiveCampaignChangeDuringLearningPhase",
+                "presentation": {
+                  "type": "hard_block_violation",
+                  "code": "noLiveCampaignChangeDuringLearningPhase",
+                  "message": "This campaign is in Meta's learning phase (the first 7–10 days). Changes to live budget mid-learning derail optimisation. We'll wait until learning exits before adjusting."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I can't bump the budget on this one yet — it launched yesterday, so it's still in Meta's learning phase. Changing the budget mid-learning resets the optimisation. We'll let it run for the full seven to ten days, then revisit. In the meantime, do you want to look at why the early performance is reading well?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

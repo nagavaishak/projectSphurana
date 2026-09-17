@@ -1,0 +1,20 @@
+---
+/**
+ * Wireframe: Location home.
+ *
+ * Static review page — see `components/wireframes/mock.ts`. Not linked from
+ * anywhere in the product and safe to delete once the surface is built for real.
+ */
+export const prerender = false;
+
+import { LocationHome } from '@/components/wireframes/location-home';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Location home — wireframe"
+  description="Static wireframe for review. Not a live page."
+  theme="light"
+>
+  <LocationHome client:load />
+</BaseLayout>

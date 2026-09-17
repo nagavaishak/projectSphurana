@@ -1,0 +1,36 @@
+# Boot smoke — the white-screen safety net (+ WebView-interaction probe).
+#
+# Browser e2e (app-e2e) runs with Capacitor.isNativePlatform()===false, so it
+# never exercises the native WebView boot path: the bundled SPA loading from
+# capacitor://localhost, build-time runtime config (getBuildTimeRuntimeConfig),
+# and plugin init. A JS error there surfaces as a white screen / boot loop the
+# user cannot refresh past — exactly the failure browser e2e cannot catch.
+#
+# androidWebViewHierarchy: devtools — REQUIRED for this Capacitor app.
+# The whole UI lives in one android.webkit.WebView whose nodes report
+# important-for-accessibility=false, so Maestro's DEFAULT driver (the Android
+# accessibility tree) sees no DOM content as visible and every assertVisible
+# fails with "Assertion is false ... is visible" (verified via hierarchy dump).
+# `devtools` makes Maestro inspect the live DOM over Chrome DevTools instead
+# (Capacitor debug builds are debuggable, so CDP is available), which is what
+# makes assertVisible / tapOn / inputText work on web content.
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# stopApp:false — the CI wrapper (scripts/maestro-android.sh) already cleared
+# state and launched the app, then waited for the WebView DevTools socket to
+# come up. Do NOT restart here: a restart kills the WebView process and tears
+# that socket down, which is what made devtools attach flaky.
+- launchApp:
+    stopApp: false
+- takeScreenshot: boot-state
+# Boot signal: the SPA rendered the /sign-in page (not a white screen).
+# extendedWaitUntil (not a bare assertVisible) because first paint is gated on
+# the cold-boot session round-trip: `/sign-in`'s beforeLoad resolves the session
+# before rendering the heading, and on the software-GPU CI emulator NAT'd to the
+# per-PR Fly preview that can take several seconds. A bare assert reads the still
+# blank/splash page and fails; wait it out instead. The app bounds this gate to
+# ~8s (apps/app/src/lib/session.ts), so 20s is a comfortable ceiling.
+- extendedWaitUntil:
+    visible: 'Sign in to your account'
+    timeout: 20000

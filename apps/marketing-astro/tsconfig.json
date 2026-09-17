@@ -1,0 +1,22 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "next/link": ["src/shims/next-link.tsx"],
+      "next/image": ["src/shims/next-image.tsx"],
+      "next/navigation": ["src/shims/next-navigation.ts"],
+      "next-themes": ["src/shims/next-themes.tsx"],
+      "@borradh-workspace/runtime-config/client": [
+        "src/shims/runtime-config.tsx"
+      ],
+      "@borradh-workspace/api-client": ["src/lib/api-client.ts"]
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "types": ["astro/client", "node"]
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", ".vercel"]
+}

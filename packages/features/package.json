@@ -1,0 +1,525 @@
+{
+  "name": "@borradh-workspace/features",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json"],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./shared": {
+      "types": "./dist/shared/public.d.ts",
+      "import": "./dist/shared/public.js",
+      "default": "./dist/shared/public.js"
+    },
+    "./shared/oauth": {
+      "types": "./dist/shared/oauth-server.d.ts",
+      "import": "./dist/shared/oauth-server.js",
+      "default": "./dist/shared/oauth-server.js"
+    },
+    "./shared/queue": {
+      "types": "./dist/shared/queue/index.d.ts",
+      "import": "./dist/shared/queue/index.js",
+      "default": "./dist/shared/queue/index.js"
+    },
+    "./jobs": {
+      "types": "./dist/jobs/index.d.ts",
+      "import": "./dist/jobs/index.js",
+      "default": "./dist/jobs/index.js"
+    },
+    "./users": {
+      "types": "./dist/users/index.d.ts",
+      "import": "./dist/users/index.js",
+      "default": "./dist/users/index.js"
+    },
+    "./auth": {
+      "types": "./dist/auth/index.d.ts",
+      "import": "./dist/auth/index.js",
+      "default": "./dist/auth/index.js"
+    },
+    "./auth/schemas": {
+      "types": "./dist/auth/schemas.d.ts",
+      "import": "./dist/auth/schemas.js",
+      "default": "./dist/auth/schemas.js"
+    },
+    "./payments": {
+      "types": "./dist/payments/index.d.ts",
+      "import": "./dist/payments/index.js",
+      "default": "./dist/payments/index.js"
+    },
+    "./sales": {
+      "types": "./dist/sales/index.d.ts",
+      "import": "./dist/sales/index.js",
+      "default": "./dist/sales/index.js"
+    },
+    "./gift-cards": {
+      "types": "./dist/gift-cards/index.d.ts",
+      "import": "./dist/gift-cards/index.js",
+      "default": "./dist/gift-cards/index.js"
+    },
+    "./timesheets": {
+      "types": "./dist/timesheets/index.d.ts",
+      "import": "./dist/timesheets/index.js",
+      "default": "./dist/timesheets/index.js"
+    },
+    "./organizations": {
+      "types": "./dist/organizations/index.d.ts",
+      "import": "./dist/organizations/index.js",
+      "default": "./dist/organizations/index.js"
+    },
+    "./organizations/schemas": {
+      "types": "./dist/organizations/schemas.d.ts",
+      "import": "./dist/organizations/schemas.js",
+      "default": "./dist/organizations/schemas.js"
+    },
+    "./videos": {
+      "types": "./dist/videos/index.d.ts",
+      "import": "./dist/videos/index.js",
+      "default": "./dist/videos/index.js"
+    },
+    "./videos/templates": {
+      "types": "./dist/videos/templates.d.ts",
+      "import": "./dist/videos/templates.js",
+      "default": "./dist/videos/templates.js"
+    },
+    "./assets": {
+      "types": "./dist/assets/index.d.ts",
+      "import": "./dist/assets/index.js",
+      "default": "./dist/assets/index.js"
+    },
+    "./leads": {
+      "types": "./dist/leads/index.d.ts",
+      "import": "./dist/leads/index.js",
+      "default": "./dist/leads/index.js"
+    },
+    "./patient-auth": {
+      "types": "./dist/patient-auth/index.d.ts",
+      "import": "./dist/patient-auth/index.js",
+      "default": "./dist/patient-auth/index.js"
+    },
+    "./patient-bookings": {
+      "types": "./dist/patient-bookings/index.d.ts",
+      "import": "./dist/patient-bookings/index.js",
+      "default": "./dist/patient-bookings/index.js"
+    },
+    "./consent-forms": {
+      "types": "./dist/consent-forms/index.d.ts",
+      "import": "./dist/consent-forms/index.js",
+      "default": "./dist/consent-forms/index.js"
+    },
+    "./document-imports": {
+      "types": "./dist/document-imports/index.d.ts",
+      "import": "./dist/document-imports/index.js",
+      "default": "./dist/document-imports/index.js"
+    },
+    "./patient-documents": {
+      "types": "./dist/patient-documents/index.d.ts",
+      "import": "./dist/patient-documents/index.js",
+      "default": "./dist/patient-documents/index.js"
+    },
+    "./campaigns": {
+      "types": "./dist/campaigns/index.d.ts",
+      "import": "./dist/campaigns/index.js",
+      "default": "./dist/campaigns/index.js"
+    },
+    "./campaigns/content": {
+      "types": "./dist/campaigns/_shared/campaign-content.d.ts",
+      "import": "./dist/campaigns/_shared/campaign-content.js",
+      "default": "./dist/campaigns/_shared/campaign-content.js"
+    },
+    "./sequences": {
+      "types": "./dist/sequences/index.d.ts",
+      "import": "./dist/sequences/index.js",
+      "default": "./dist/sequences/index.js"
+    },
+    "./training-hub": {
+      "types": "./dist/training-hub/index.d.ts",
+      "import": "./dist/training-hub/index.js",
+      "default": "./dist/training-hub/index.js"
+    },
+    "./meta-campaigns": {
+      "types": "./dist/meta-campaigns/index.d.ts",
+      "import": "./dist/meta-campaigns/index.js",
+      "default": "./dist/meta-campaigns/index.js"
+    },
+    "./meta-ads": {
+      "types": "./dist/meta-ads/index.d.ts",
+      "import": "./dist/meta-ads/index.js",
+      "default": "./dist/meta-ads/index.js"
+    },
+    "./meta-ads/nurture": {
+      "types": "./dist/meta-ads/services/_shared/nurture-channel-for-country.d.ts",
+      "import": "./dist/meta-ads/services/_shared/nurture-channel-for-country.js",
+      "default": "./dist/meta-ads/services/_shared/nurture-channel-for-country.js"
+    },
+    "./integrations": {
+      "types": "./dist/integrations/index.d.ts",
+      "import": "./dist/integrations/index.js",
+      "default": "./dist/integrations/index.js"
+    },
+    "./voice": {
+      "types": "./dist/voice/index.d.ts",
+      "import": "./dist/voice/index.js",
+      "default": "./dist/voice/index.js"
+    },
+    "./appointments": {
+      "types": "./dist/appointments/index.d.ts",
+      "import": "./dist/appointments/index.js",
+      "default": "./dist/appointments/index.js"
+    },
+    "./graphics": {
+      "types": "./dist/graphics/index.d.ts",
+      "import": "./dist/graphics/index.js",
+      "default": "./dist/graphics/index.js"
+    },
+    "./graphics/carousel-slides": {
+      "types": "./dist/graphics/utils/carousel-slides.d.ts",
+      "import": "./dist/graphics/utils/carousel-slides.js",
+      "default": "./dist/graphics/utils/carousel-slides.js"
+    },
+    "./content-provenance": {
+      "types": "./dist/content-provenance/index.d.ts",
+      "import": "./dist/content-provenance/index.js",
+      "default": "./dist/content-provenance/index.js"
+    },
+    "./image-generation": {
+      "types": "./dist/image-generation/index.d.ts",
+      "import": "./dist/image-generation/index.js",
+      "default": "./dist/image-generation/index.js"
+    },
+    "./stock-footage": {
+      "types": "./dist/stock-footage/index.d.ts",
+      "import": "./dist/stock-footage/index.js",
+      "default": "./dist/stock-footage/index.js"
+    },
+    "./voice-scripts": {
+      "types": "./dist/voice-scripts/index.d.ts",
+      "import": "./dist/voice-scripts/index.js",
+      "default": "./dist/voice-scripts/index.js"
+    },
+    "./lead-forms": {
+      "types": "./dist/lead-forms/index.d.ts",
+      "import": "./dist/lead-forms/index.js",
+      "default": "./dist/lead-forms/index.js"
+    },
+    "./health": {
+      "types": "./dist/health/index.d.ts",
+      "import": "./dist/health/index.js",
+      "default": "./dist/health/index.js"
+    },
+    "./billing": {
+      "types": "./dist/billing/index.d.ts",
+      "import": "./dist/billing/index.js",
+      "default": "./dist/billing/index.js"
+    },
+    "./booking-forms": {
+      "types": "./dist/booking-forms/index.d.ts",
+      "import": "./dist/booking-forms/index.js",
+      "default": "./dist/booking-forms/index.js"
+    },
+    "./booking-forms/payment": {
+      "types": "./dist/booking-forms/shared/resolve-booking-payment.d.ts",
+      "import": "./dist/booking-forms/shared/resolve-booking-payment.js",
+      "default": "./dist/booking-forms/shared/resolve-booking-payment.js"
+    },
+    "./microsites": {
+      "types": "./dist/microsites/index.d.ts",
+      "import": "./dist/microsites/index.js",
+      "default": "./dist/microsites/index.js"
+    },
+    "./microsites/meta-verification": {
+      "types": "./dist/microsites/domain-verification/meta-verification/index.d.ts",
+      "import": "./dist/microsites/domain-verification/meta-verification/index.js",
+      "default": "./dist/microsites/domain-verification/meta-verification/index.js"
+    },
+    "./microsites/domain-verification": {
+      "types": "./dist/microsites/domain-verification/index.d.ts",
+      "import": "./dist/microsites/domain-verification/index.js",
+      "default": "./dist/microsites/domain-verification/index.js"
+    },
+    "./venue": {
+      "types": "./dist/venue/index.d.ts",
+      "import": "./dist/venue/index.js",
+      "default": "./dist/venue/index.js"
+    },
+    "./intake-forms": {
+      "types": "./dist/intake-forms/index.d.ts",
+      "import": "./dist/intake-forms/index.js",
+      "default": "./dist/intake-forms/index.js"
+    },
+    "./social-posts": {
+      "types": "./dist/social-posts/index.d.ts",
+      "import": "./dist/social-posts/index.js",
+      "default": "./dist/social-posts/index.js"
+    },
+    "./content-batches": {
+      "types": "./dist/content-batches/index.d.ts",
+      "import": "./dist/content-batches/index.js",
+      "default": "./dist/content-batches/index.js"
+    },
+    "./content-items": {
+      "types": "./dist/content-items/index.d.ts",
+      "import": "./dist/content-items/index.js",
+      "default": "./dist/content-items/index.js"
+    },
+    "./calendar": {
+      "types": "./dist/calendar/index.d.ts",
+      "import": "./dist/calendar/index.js",
+      "default": "./dist/calendar/index.js"
+    },
+    "./recommendations": {
+      "types": "./dist/recommendations/index.d.ts",
+      "import": "./dist/recommendations/index.js",
+      "default": "./dist/recommendations/index.js"
+    },
+    "./recommendations/models": {
+      "types": "./dist/recommendations/models/index.d.ts",
+      "import": "./dist/recommendations/models/index.js",
+      "default": "./dist/recommendations/models/index.js"
+    },
+    "./meta-sync": {
+      "types": "./dist/meta-sync/index.d.ts",
+      "import": "./dist/meta-sync/index.js",
+      "default": "./dist/meta-sync/index.js"
+    },
+    "./organization-services": {
+      "types": "./dist/organization-services/index.d.ts",
+      "import": "./dist/organization-services/index.js",
+      "default": "./dist/organization-services/index.js"
+    },
+    "./service-categories": {
+      "types": "./dist/service-categories/index.d.ts",
+      "import": "./dist/service-categories/index.js",
+      "default": "./dist/service-categories/index.js"
+    },
+    "./packages": {
+      "types": "./dist/packages/index.d.ts",
+      "import": "./dist/packages/index.js",
+      "default": "./dist/packages/index.js"
+    },
+    "./organization-locations": {
+      "types": "./dist/organization-locations/index.d.ts",
+      "import": "./dist/organization-locations/index.js",
+      "default": "./dist/organization-locations/index.js"
+    },
+    "./website-analysis": {
+      "types": "./dist/website-analysis/index.d.ts",
+      "import": "./dist/website-analysis/index.js",
+      "default": "./dist/website-analysis/index.js"
+    },
+    "./phone-numbers": {
+      "types": "./dist/phone-numbers/index.d.ts",
+      "import": "./dist/phone-numbers/index.js",
+      "default": "./dist/phone-numbers/index.js"
+    },
+    "./api-keys": {
+      "types": "./dist/api-keys/index.d.ts",
+      "import": "./dist/api-keys/index.js",
+      "default": "./dist/api-keys/index.js"
+    },
+    "./chatbots": {
+      "types": "./dist/chatbots/index.d.ts",
+      "import": "./dist/chatbots/index.js",
+      "default": "./dist/chatbots/index.js"
+    },
+    "./conversations": {
+      "types": "./dist/conversations/index.d.ts",
+      "import": "./dist/conversations/index.js",
+      "default": "./dist/conversations/index.js"
+    },
+    "./face-groups": {
+      "types": "./dist/face-groups/index.d.ts",
+      "import": "./dist/face-groups/index.js",
+      "default": "./dist/face-groups/index.js"
+    },
+    "./ai-content": {
+      "types": "./dist/ai-content/index.d.ts",
+      "import": "./dist/ai-content/index.js",
+      "default": "./dist/ai-content/index.js"
+    },
+    "./practitioners": {
+      "types": "./dist/practitioners/index.d.ts",
+      "import": "./dist/practitioners/index.js",
+      "default": "./dist/practitioners/index.js"
+    },
+    "./scheduling": {
+      "types": "./dist/scheduling/index.d.ts",
+      "import": "./dist/scheduling/index.js",
+      "default": "./dist/scheduling/index.js"
+    },
+    "./resources": {
+      "types": "./dist/resources/index.d.ts",
+      "import": "./dist/resources/index.js",
+      "default": "./dist/resources/index.js"
+    },
+    "./location-opening-hours": {
+      "types": "./dist/location-opening-hours/index.d.ts",
+      "import": "./dist/location-opening-hours/index.js",
+      "default": "./dist/location-opening-hours/index.js"
+    },
+    "./notification-preferences": {
+      "types": "./dist/notification-preferences/index.d.ts",
+      "import": "./dist/notification-preferences/index.js",
+      "default": "./dist/notification-preferences/index.js"
+    },
+    "./notifications": {
+      "types": "./dist/notifications/index.d.ts",
+      "import": "./dist/notifications/index.js",
+      "default": "./dist/notifications/index.js"
+    },
+    "./upload": {
+      "types": "./dist/upload/index.d.ts",
+      "import": "./dist/upload/index.js",
+      "default": "./dist/upload/index.js"
+    },
+    "./cdn": {
+      "types": "./dist/cdn/index.d.ts",
+      "import": "./dist/cdn/index.js",
+      "default": "./dist/cdn/index.js"
+    },
+    "./offers": {
+      "types": "./dist/offers/index.d.ts",
+      "import": "./dist/offers/index.js",
+      "default": "./dist/offers/index.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics/index.d.ts",
+      "import": "./dist/analytics/index.js",
+      "default": "./dist/analytics/index.js"
+    },
+    "./assistant": {
+      "types": "./dist/assistant/index.d.ts",
+      "import": "./dist/assistant/index.js",
+      "default": "./dist/assistant/index.js"
+    },
+    "./assistant/skills": {
+      "types": "./dist/assistant/skills/index.d.ts",
+      "import": "./dist/assistant/skills/index.js",
+      "default": "./dist/assistant/skills/index.js"
+    },
+    "./claire": {
+      "types": "./dist/claire/index.d.ts",
+      "import": "./dist/claire/index.js",
+      "default": "./dist/claire/index.js"
+    },
+    "./onboarding": {
+      "types": "./dist/onboarding/index.d.ts",
+      "import": "./dist/onboarding/index.js",
+      "default": "./dist/onboarding/index.js"
+    },
+    "./assistant/models": {
+      "types": "./dist/assistant/models.d.ts",
+      "import": "./dist/assistant/models.js",
+      "default": "./dist/assistant/models.js"
+    },
+    "./assistant/prompts": {
+      "types": "./dist/assistant/prompts/index.d.ts",
+      "import": "./dist/assistant/prompts/index.js",
+      "default": "./dist/assistant/prompts/index.js"
+    },
+    "./places": {
+      "types": "./dist/places/index.d.ts",
+      "import": "./dist/places/index.js",
+      "default": "./dist/places/index.js"
+    },
+    "./admin-terminal": {
+      "types": "./dist/admin-terminal/index.d.ts",
+      "import": "./dist/admin-terminal/index.js",
+      "default": "./dist/admin-terminal/index.js"
+    },
+    "./voice-cloning": {
+      "types": "./dist/voice-cloning/index.d.ts",
+      "import": "./dist/voice-cloning/index.js",
+      "default": "./dist/voice-cloning/index.js"
+    },
+    "./org-defaults": {
+      "types": "./dist/org-defaults/index.d.ts",
+      "import": "./dist/org-defaults/index.js",
+      "default": "./dist/org-defaults/index.js"
+    },
+    "./memberships": {
+      "types": "./dist/memberships/index.d.ts",
+      "import": "./dist/memberships/index.js",
+      "default": "./dist/memberships/index.js"
+    },
+    "./inventory": {
+      "types": "./dist/inventory/index.d.ts",
+      "import": "./dist/inventory/index.js",
+      "default": "./dist/inventory/index.js"
+    },
+    "./webhooks": {
+      "types": "./dist/webhooks/index.d.ts",
+      "import": "./dist/webhooks/index.js",
+      "default": "./dist/webhooks/index.js"
+    },
+    "./app-version": {
+      "types": "./dist/app-version/index.d.ts",
+      "import": "./dist/app-version/index.js",
+      "default": "./dist/app-version/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev": "tsc --build tsconfig.lib.json --watch --preserveWatchOutput",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "test": "vitest run",
+    "test:isolation": "vitest run --no-file-parallelism",
+    "test:eval": "tsx src/assistant/eval/run-eval.ts",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "lint": "biome check src/ --write && node ../../scripts/lint/no-implicit-timezone.mjs tsconfig.lib.json",
+    "test:eval-heldout": "tsx src/assistant/eval/heldout.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^3.0.36",
+    "@borradh-workspace/ai": "workspace:*",
+    "@borradh-workspace/auth": "workspace:*",
+    "@borradh-workspace/contracts": "workspace:*",
+    "@borradh-workspace/database": "workspace:*",
+    "@borradh-workspace/email": "workspace:*",
+    "@borradh-workspace/env": "workspace:*",
+    "@borradh-workspace/http": "workspace:*",
+    "@borradh-workspace/integrations": "workspace:*",
+    "@borradh-workspace/labels": "workspace:*",
+    "@borradh-workspace/observability": "workspace:*",
+    "@borradh-workspace/redis": "workspace:*",
+    "@borradh-workspace/storage": "workspace:*",
+    "@napi-rs/canvas": "^1.0.0",
+    "@borradh-workspace/video-templates": "workspace:*",
+    "@borradh-workspace/web-shared": "workspace:*",
+    "@parse/node-apn": "^6.5.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "ai": "^6.0.104",
+    "bullmq": "^5.34.8",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.3",
+    "drizzle-orm": "0.45.2",
+    "expo-server-sdk": "^3.13.0",
+    "fast-xml-parser": "5.3.6",
+    "fflate": "0.8.2",
+    "google-auth-library": "^11.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "nanoid": "^5.0.9",
+    "nestjs-zod": "^5.0.1",
+    "openai": "^4.73.1",
+    "pdfjs-dist": "^6.2.108",
+    "parquetjs-lite": "^0.8.7",
+    "pdf-lib": "1.17.1",
+    "playwright-core": "^1.58.1",
+    "sharp": "^0.33.5",
+    "tslib": "^2.3.0",
+    "tz-lookup": "^6.1.25",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@borradh-workspace/testing": "workspace:*",
+    "stripe": "^17.5.0"
+  }
+}

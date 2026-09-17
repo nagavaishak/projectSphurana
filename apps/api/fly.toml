@@ -1,0 +1,37 @@
+# app is intentionally omitted — set per-deploy via `--app`. The per-PR
+# preview workflow uses borradh-api-pr-<N>, future prod will use a
+# different name. Locking to a single static name caused confusion when
+# borradh-api-staging was destroyed.
+primary_region = "lhr"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+  LOG_LEVEL = "info"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "30s"
+  method = "GET"
+  path = "/health/live"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "1gb"

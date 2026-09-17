@@ -1,0 +1,2 @@
+ALTER TYPE "public"."claire_confirmation_action" ADD VALUE 'add_service_locations' BEFORE 'send_reply';--> statement-breakpoint
+ALTER TABLE "meta_campaign_config" ADD CONSTRAINT "meta_campaign_config_location_id_organization_location_id_fk" FOREIGN KEY ("location_id") REFERENCES "public"."organization_location"("id") ON DELETE set null ON UPDATE no action;

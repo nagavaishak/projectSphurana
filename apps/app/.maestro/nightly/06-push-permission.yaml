@@ -1,0 +1,93 @@
+# NIGHTLY-ONLY (not a per-PR gate). Native gap: push-notification registration /
+# permission (Linear WEB-18).
+#
+# Why nightly, not per-PR: the in-app preferences leg navigates via the
+# "Personal area" header avatar, so it transits the post-login HomeNew render
+# that crashes the software-GPU CI emulator (see 03-dashboard.yaml). The
+# registration-doesn't-crash assertion alone could be per-PR, but the full flow
+# is parked nightly with its siblings until HomeNew is emulator-stable (ENG-7).
+#
+# WEB-18 is "Firebase not initialized" at push registration — a class of bug
+# that CANNOT exist in the browser app-e2e suite, where registerForPushNotifi-
+# cations() short-circuits on `!Capacitor.isNativePlatform()` (src/lib/push.ts
+# line 48). On a real device, sign-in calls registerForPushNotifications() →
+# PushNotifications.requestPermissions() (native OS dialog) → register() →
+# the FCM/APNs registration callback → POST notifications/push-token. If FCM
+# (google-services.json) isn't wired, register() throws / fires
+# registrationError and the user silently never receives pushes — exactly
+# what only the native boot path surfaces.
+#
+# WHAT THIS FLOW CAN AND CANNOT ASSERT:
+#  - The native OS permission dialog (Android POST_NOTIFICATIONS) is rendered by
+#    the SYSTEM, not the WebView, so it is invisible to the `devtools` driver.
+#    We grant it from the DEFAULT (native) hierarchy in a separate sub-flow.
+#  - The FCM token POST is a background side-effect with no in-app UI. We assert
+#    the OBSERVABLE proxy: sign-in (which triggers registration) does not crash
+#    the app / white-screen the WebView — a Firebase-init crash at register()
+#    takes the WebView down or boot-loops it.
+#  - The in-app Notification *preferences* screen (the "Push" channel toggle) is
+#    the closest user-facing surface; we render + toggle it to prove the prefs
+#    UI works. The toggle is the per-category Push channel switch, NOT the OS
+#    permission. End-to-end token-delivery verification belongs on the device
+#    farm with a push-receipt assertion (handoff).
+#
+# Screen: src/routes/_authed/dashboard/settings/notifications.tsx — the "Push"
+# ChannelToggle rows (under Appointments / Inbox / Advertising).
+#
+# androidWebViewHierarchy: devtools — required for the WebView DOM steps. The
+# native permission grant below explicitly overrides the hierarchy per-step.
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# Sign in → this triggers registerForPushNotifications() on native. Reusing the
+# shared login keeps the auth round-trip identical to 02-sign-in.
+# Path is relative to this file (.maestro/nightly/) → the shared login flow.
+- runFlow: ../02-sign-in.yaml
+# Grant the native OS notification permission if the system dialog appeared.
+# This dialog is part of the NATIVE (Android) hierarchy, not the WebView DOM. It
+# is matched against the default driver and the whole block is conditional, so
+# older Android (no runtime notification permission) or a previously-granted run
+# (no dialog) simply skips it without failing the flow. The Android 13+ dialog's
+# affirmative button is labelled "Allow".
+- runFlow:
+    when:
+      platform: Android
+      visible: 'Allow'
+    commands:
+      - tapOn: 'Allow'
+# Sign-in + registration did not crash the WebView: the authenticated landing
+# surface is still rendered (a Firebase-init crash at register() would have
+# taken the WebView down or boot-looped it). The mobile header avatar
+# (data-testid="mobile-header-user-menu", ENG-7) is the stable landing-surface
+# marker; see src/features/mobile-dashboard-header/mobile-header-user-menu.tsx.
+- extendedWaitUntil:
+    visible:
+      id: 'mobile-header-user-menu'
+    timeout: 30000
+- takeScreenshot: post-signin-push-registered
+# Now the in-app preferences surface. Open Personal area (avatar testid) →
+# Notifications (menu-link testid); see src/routes/_authed/dashboard/account.tsx.
+- tapOn:
+    id: 'mobile-header-user-menu'
+- extendedWaitUntil:
+    visible:
+      id: 'account-menu-notifications'
+    timeout: 20000
+- tapOn:
+    id: 'account-menu-notifications'
+# Notifications preferences screen rendered. The "Push" channel switch carries a
+# stable data-testid="channel-toggle-push" (ENG-7); see
+# src/routes/_authed/dashboard/settings/notifications.tsx (ChannelToggle). There
+# is one per category — Maestro taps the first match, matching "toggle the first
+# Push channel switch".
+- extendedWaitUntil:
+    visible:
+      id: 'channel-toggle-push'
+    timeout: 20000
+- takeScreenshot: notification-preferences
+# Toggle the first "Push" channel switch — proves the prefs UI is interactive
+# and the update round-trip wires up. (This is the per-category push *delivery*
+# preference, distinct from the OS permission granted above.)
+- tapOn:
+    id: 'channel-toggle-push'
+- takeScreenshot: push-pref-toggled

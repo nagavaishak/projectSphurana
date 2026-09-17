@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fixtureId": "register-9-no-sequence-creation",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Can you set up an automated follow-up sequence that messages every new lead over the next week?",
+      "rounds": [
+        {
+          "modelText": "I can't build nurture sequences — those tools are switched off here, so I won't pretend to set one up for you. What I can do is pull your recent leads and their status so you can work them from the inbox, or draft a first message you send yourself. Want me to show the recent leads.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

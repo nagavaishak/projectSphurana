@@ -1,0 +1,1 @@
+ALTER TABLE "organization_service" DROP COLUMN "requires_consultation";

@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "fixtureId": "lead-form-edit-fields",
+  "recordedAt": "2026-06-06T11:08:40.282Z",
+  "skillRegistryVersion": 28,
+  "turns": [
+    {
+      "userMessage": "Add a phone number field to my lead form.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listLeadForms",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "leadForms": [
+                    {
+                      "leadFormId": "lf1",
+                      "name": "New client enquiries",
+                      "status": "synced",
+                      "metaFormId": "m1",
+                      "followUpChannel": "whatsapp",
+                      "fieldCount": 2
+                    }
+                  ],
+                  "count": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "updateLeadForm",
+              "input": {
+                "leadFormId": "lf1",
+                "addFields": ["PHONE"]
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "created",
+                  "variant": "preview",
+                  "title": "Lead form updated",
+                  "leadFormId": "lf1",
+                  "metaFormId": "m2",
+                  "followUpChannel": "whatsapp",
+                  "status": "synced",
+                  "requiresCampaignRelink": false,
+                  "questions": [
+                    {
+                      "type": "FULL_NAME",
+                      "label": "Full Name"
+                    },
+                    {
+                      "type": "EMAIL",
+                      "label": "Email"
+                    },
+                    {
+                      "type": "PHONE",
+                      "label": "Phone"
+                    }
+                  ],
+                  "fields": [],
+                  "actions": [],
+                  "ready": true
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Done. Your form now has full name, email, and phone number.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

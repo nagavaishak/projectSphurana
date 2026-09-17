@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "fixtureId": "register-131-tokenless-launch",
+  "recordedAt": "2026-07-29T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Yes, launch all three now.",
+      "rounds": [
+        {
+          "modelText": "Putting the launch cards up for you to confirm.",
+          "toolUses": [
+            {
+              "name": "executeLaunchAd",
+              "input": {
+                "adId": "ad-1",
+                "adName": "Lip filler — March"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "launch_ad",
+                  "resourceId": "ad-1",
+                  "token": "synthetic-token-executeLaunchAd-ad-1",
+                  "expiresAt": "2026-07-29T00:30:00.000Z",
+                  "summary": {
+                    "title": "Launch ad",
+                    "fields": [
+                      {
+                        "label": "Ad name",
+                        "value": "Lip filler — March"
+                      }
+                    ]
+                  },
+                  "executeToolName": "executeLaunchAd"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Confirm and I'll put all three live.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

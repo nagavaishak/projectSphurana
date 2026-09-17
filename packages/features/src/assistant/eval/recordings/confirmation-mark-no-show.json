@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-mark-no-show",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Sarah Doyle didn't turn up for her 2pm today — mark it as a no-show.",
+      "rounds": [
+        {
+          "modelText": "Marking Sarah's 2pm as a no-show — here's the summary to confirm.",
+          "toolUses": [
+            {
+              "name": "markNoShow",
+              "input": {
+                "appointmentId": "appt-1",
+                "customerDisplayName": "Sarah Doyle",
+                "slotDisplay": "Today 14:00"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "mark_no_show",
+                  "resourceId": "appt-1",
+                  "token": "synthetic-token-markNoShow-appt-1",
+                  "expiresAt": "2026-07-15T00:30:00.000Z",
+                  "summary": {
+                    "title": "Mark no-show",
+                    "fields": [
+                      { "label": "Customer", "value": "Sarah Doyle" },
+                      { "label": "Slot", "value": "Today 14:00" },
+                      {
+                        "label": "Effect",
+                        "value": "Frees the slot for re-booking; no practitioner notification."
+                      },
+                      {
+                        "label": "No-show fee",
+                        "value": "Per your cancellation policy (not charged automatically)."
+                      }
+                    ]
+                  },
+                  "executeToolName": "markNoShow"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Sarah Doyle's 2pm today — confirm and I'll mark it as a no-show. That frees the slot for re-booking; a no-show fee may apply per your policy (I won't charge it automatically).",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

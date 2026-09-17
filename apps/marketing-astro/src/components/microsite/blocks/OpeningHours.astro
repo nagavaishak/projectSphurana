@@ -1,0 +1,141 @@
+---
+import { BLOCK_VARIANTS } from '@borradh-workspace/web-shared';
+import type { OpeningHoursProps } from '@borradh-workspace/web-shared';
+import { pickLocation, resolveVariant, type MicrositeData } from '../data';
+import { editableAttrs } from '../edit/editable';
+
+const VARIANTS = BLOCK_VARIANTS['opening_hours'];
+
+/**
+ * DATA-BOUND. `props` selects the location and whether exceptions are shown;
+ * the hours come from `data.locations[].openingHours`, live.
+ *
+ * Exceptions are not in any public payload yet (plan §5), so `showExceptions`
+ * is honoured but simply renders nothing until the page can supply them.
+ */
+interface Props {
+  props: OpeningHoursProps;
+  variant: string;
+  data: MicrositeData;
+  /** True ONLY on a token-gated draft preview. Never on a published render. */
+  editable?: boolean;
+  blockId?: string;
+}
+
+const { props, variant, data, editable = false, blockId } = Astro.props;
+
+/** §2: `title` only. The HOURS are live business data — no affordance. */
+const attrs = (field: string) =>
+  editableAttrs(editable, blockId, 'opening_hours', field);
+const v = resolveVariant(variant, VARIANTS);
+
+const location = pickLocation(data, props?.locationId);
+const days = location?.openingHours ?? [];
+const exceptions = props?.showExceptions
+  ? (location?.openingHoursExceptions ?? [])
+  : [];
+
+const title = props?.title?.trim();
+---
+
+{
+  days.length > 0 && (
+    <section class:list={['ms-section', 'ms-hours', `ms-hours--${v}`]}>
+      <div class="ms-container ms-hours__inner">
+        {title && <h2 class="ms-hours__title" {...attrs('title')}>
+            {title}
+          </h2>}
+
+        <dl class="ms-hours__list">
+          {days.map((day) => (
+            <div class="ms-hours__row">
+              <dt class="ms-hours__day">{day.label}</dt>
+              <dd class="ms-hours__value">
+                {day.intervals.length ? day.intervals.join(', ') : 'Closed'}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        {exceptions.length > 0 && (
+          <ul class="ms-hours__exceptions">
+            {exceptions.map((exception) => (
+              <li>
+                <strong>{exception.label}</strong> {exception.detail}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .ms-hours {
+    background: var(--brand-subtle);
+  }
+
+  .ms-hours__title {
+    margin-bottom: calc(var(--ms-gap) * 1.25);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .ms-hours__list {
+    margin: 0;
+    max-width: 30rem;
+  }
+
+  .ms-hours__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.625rem;
+    border-bottom: 1px solid var(--brand-border);
+  }
+
+  .ms-hours__row:last-child {
+    border-bottom: 0;
+  }
+
+  .ms-hours__day {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+
+  .ms-hours__value {
+    margin: 0;
+    color: var(--brand-muted);
+    text-align: right;
+  }
+
+  .ms-hours__exceptions {
+    margin: 1.25rem 0 0;
+    padding-left: 1.125rem;
+    color: var(--brand-muted);
+    font-size: 0.9375rem;
+  }
+
+  .ms-hours__exceptions strong {
+    color: var(--brand-primary);
+  }
+
+  /* inline: a wrapping strip rather than a stacked table. */
+  .ms-hours--inline .ms-hours__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    max-width: none;
+  }
+
+  .ms-hours--inline .ms-hours__row {
+    display: block;
+    border-bottom: 0;
+    padding-block: 0;
+  }
+
+  .ms-hours--inline .ms-hours__value {
+    text-align: left;
+  }
+</style>

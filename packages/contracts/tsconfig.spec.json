@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist/test",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["vitest/globals", "node"],
+    "composite": true
+  },
+  "include": [
+    "vite.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "scripts/**/*.ts"
+  ],
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "../database/tsconfig.lib.json" },
+    { "path": "../labels/tsconfig.lib.json" }
+  ]
+}

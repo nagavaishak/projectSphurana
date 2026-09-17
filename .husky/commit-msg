@@ -1,0 +1,16 @@
+#!/bin/sh
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm_cmd="pnpm"
+elif command -v pnpm.CMD >/dev/null 2>&1; then
+  pnpm_cmd="pnpm.CMD"
+elif [ -n "$LOCALAPPDATA" ] && [ -f "$LOCALAPPDATA/pnpm/pnpm.CMD" ]; then
+  pnpm_cmd="$LOCALAPPDATA/pnpm/pnpm.CMD"
+elif command -v corepack >/dev/null 2>&1; then
+  pnpm_cmd="corepack pnpm"
+else
+  echo "pnpm is required for commit-msg checks but was not found on PATH."
+  echo "Install pnpm or enable it with: corepack enable"
+  exit 127
+fi
+
+$pnpm_cmd exec commitlint --edit $1

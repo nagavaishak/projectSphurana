@@ -1,0 +1,1 @@
+ALTER TABLE "assistant_conversation" ADD COLUMN "budget_failure_campaign_ids" text[] DEFAULT '{}' NOT NULL;

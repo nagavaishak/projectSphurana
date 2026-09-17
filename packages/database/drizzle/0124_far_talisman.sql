@@ -1,0 +1,4 @@
+ALTER TYPE "public"."sale_payment_method" ADD VALUE 'deposit';--> statement-breakpoint
+ALTER TABLE "sale_payment" ADD COLUMN "appointment_deposit_id" text;--> statement-breakpoint
+ALTER TABLE "sale_payment" ADD CONSTRAINT "sale_payment_appointment_deposit_id_appointment_deposit_id_fk" FOREIGN KEY ("appointment_deposit_id") REFERENCES "public"."appointment_deposit"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "uq_sale_payment_appointment_deposit" ON "sale_payment" USING btree ("appointment_deposit_id") WHERE "sale_payment"."appointment_deposit_id" IS NOT NULL;

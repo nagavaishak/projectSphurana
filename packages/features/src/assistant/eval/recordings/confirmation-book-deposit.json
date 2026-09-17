@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-book-deposit",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Book Chloe Barrett in for the Profhilo on Monday at 2pm with Niamh — that one needs a deposit.",
+      "rounds": [
+        {
+          "modelText": "Setting up Chloe's Profhilo booking — this service takes a deposit, so I'll flag the payment link.",
+          "toolUses": [
+            {
+              "name": "bookAppointment",
+              "input": {
+                "leadId": "lead-chloe",
+                "title": "Profhilo with Niamh",
+                "startDate": "2026-05-18T13:00:00.000Z",
+                "endDate": "2026-05-18T13:45:00.000Z",
+                "practitionerId": "prac-niamh",
+                "customerDisplayName": "Chloe Barrett",
+                "serviceDisplayName": "Profhilo",
+                "serviceId": "svc-profhilo",
+                "depositRequired": true
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "book_appointment",
+                  "resourceId": "lead-chloe",
+                  "token": "synthetic-token-bookAppointment-lead-chloe",
+                  "expiresAt": "2026-07-15T00:30:00.000Z",
+                  "summary": {
+                    "title": "Book appointment",
+                    "fields": [
+                      { "label": "Customer", "value": "Chloe Barrett" },
+                      { "label": "Service", "value": "Profhilo" },
+                      { "label": "Start", "value": "2026-05-18T13:00:00.000Z" },
+                      {
+                        "label": "Deposit",
+                        "value": "Required — the customer will receive a payment link from the booking system."
+                      }
+                    ]
+                  },
+                  "executeToolName": "bookAppointment"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Chloe Barrett in with Niamh for Profhilo, Monday 2pm. Confirm and I'll book it — a deposit is required, so the booking system will send her a payment link automatically.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

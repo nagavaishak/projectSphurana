@@ -1,0 +1,14 @@
+---
+import { DpaPage } from '@/components/pages/dpa';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="Data Processing Agreement | Borradh"
+  description="Borradh Data Processing Agreement (DPA). Details on how we process and protect your data in compliance with GDPR."
+>
+  <DpaPage client:load config={config} />
+</BaseLayout>

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "fixtureId": "branch-pricing-variants-are-a-from",
+  "recordedAt": "2026-08-27T11:28:41.259Z",
+  "skillRegistryVersion": 51,
+  "turns": [
+    {
+      "userMessage": "How much is Dermal Filler?",
+      "rounds": [
+        {
+          "modelText": "I'll check the pricing for you.",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [
+                    {
+                      "id": "svc-filler",
+                      "name": "Dermal Filler",
+                      "category": "treatment",
+                      "description": null,
+                      "isActive": true,
+                      "priceType": "from",
+                      "priceCents": 25000,
+                      "priceText": null,
+                      "hasVariants": true
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "getServiceDetails",
+              "input": {
+                "serviceId": "svc-filler"
+              },
+              "result": {
+                "ok": false,
+                "error": "No stub registered for tool \"getServiceDetails\".",
+                "code": "STUB_MISSING"
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Dermal Filler is priced from €250. It has variants, so the exact price depends on the area or treatment chosen.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

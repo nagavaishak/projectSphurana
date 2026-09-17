@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-send-reply",
+  "recordedAt": "2026-06-03T10:30:10.321Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Draft a reply to Sarah on conv-1 confirming Tuesday at 10am.",
+      "rounds": [
+        {
+          "modelText": "I'll read the conversation first to get context, then draft the reply.",
+          "toolUses": [
+            {
+              "name": "summariseConversation",
+              "input": {
+                "conversation_id": "conv-1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "conversationId": "conv-1",
+                  "customerName": "Sarah Murphy",
+                  "platform": "whatsapp",
+                  "summary": "Sarah asked to book a lip filler consult; she suggested Tuesday morning and is waiting on confirmation.",
+                  "lastMessageFrom": "customer"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "draftReply",
+              "input": {
+                "conversation_id": "conv-1",
+                "intent": "Confirm Tuesday at 10am for lip filler consultation"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "conversationId": "conv-1",
+                  "draft": "Hi Sarah, Tuesday at 10am works grand. I'll see you then — pop a reply if anything changes.",
+                  "customerName": "Sarah Murphy",
+                  "platform": "whatsapp",
+                  "suggestedSendAction": "send_message"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's the draft:\n\n> Hi Sarah, Tuesday at 10am works grand. I'll see you then — pop a reply if anything changes.\n\nWant me to send it, or would you like to change anything.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "That looks good — send it.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "sendReply",
+              "input": {
+                "conversation_id": "conv-1",
+                "message": "Hi Sarah, Tuesday at 10am works grand. I'll see you then — pop a reply if anything changes."
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "send_reply",
+                  "resourceId": "conv-1",
+                  "token": "synthetic-token-sendReply-conv-1",
+                  "expiresAt": "2026-06-03T11:00:08.428Z",
+                  "summary": {
+                    "title": "Send reply",
+                    "fields": [
+                      {
+                        "label": "Customer",
+                        "value": "Sarah Murphy"
+                      },
+                      {
+                        "label": "Channel",
+                        "value": "WhatsApp"
+                      },
+                      {
+                        "label": "Message",
+                        "value": "Hi Sarah, Tuesday at 10am works grand. I'll see you then — pop a reply if anything changes."
+                      }
+                    ]
+                  },
+                  "executeToolName": "sendReply"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "**Send reply**\n\n- **Customer:** Sarah Murphy\n- **Channel:** WhatsApp\n- **Message:** Hi Sarah, Tuesday at 10am works grand. I'll see you then — pop a reply if anything changes.\n\nConfirm to send.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

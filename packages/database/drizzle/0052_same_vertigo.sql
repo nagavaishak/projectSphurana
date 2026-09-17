@@ -1,0 +1,2 @@
+ALTER TABLE "meta_campaign_config" ADD COLUMN "lead_form_id" text;--> statement-breakpoint
+ALTER TABLE "meta_campaign_config" ADD CONSTRAINT "meta_campaign_config_lead_form_id_lead_form_id_fk" FOREIGN KEY ("lead_form_id") REFERENCES "public"."lead_form"("id") ON DELETE set null ON UPDATE no action;

@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "fixtureId": "register-150-151-owner-asset-not-substituted",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 37,
+  "turns": [
+    {
+      "userMessage": "Make me a graphic using my clinic photo.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [{ "id": "svc-1", "name": "Skin treatments" }],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createGraphic",
+              "input": { "serviceId": "svc-1", "assetRef": "my clinic photo" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "assetUnresolved": {
+                    "assetRef": "my clinic photo",
+                    "candidates": [
+                      {
+                        "id": "asset-a",
+                        "name": "Clinic front",
+                        "thumbnailUrl": null,
+                        "blobUrl": null
+                      },
+                      {
+                        "id": "asset-b",
+                        "name": "Clinic reception",
+                        "thumbnailUrl": null,
+                        "blobUrl": null
+                      }
+                    ]
+                  },
+                  "message": "I found more than one asset that could be \"my clinic photo\": \"Clinic front\", \"Clinic reception\". Which one should I use?"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I found a couple of uploads that could be the one — \"Clinic front\" or \"Clinic reception\". Which one should I use? (Or say \"just generate one\" and I'll create a fresh design instead.)",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

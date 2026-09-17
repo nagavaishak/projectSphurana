@@ -1,0 +1,99 @@
+---
+import { getPublicConfig } from '@/lib/config';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogType?: string;
+  /**
+   * `'system'` (default) follows the visitor's OS and honours the theme toggle —
+   * correct for Borradh's own marketing pages.
+   *
+   * `'light'` pins the page light. TENANT surfaces (booking, venue, the
+   * customer portal) must pass this. They are a clinic's public pages, and in
+   * apps/app they were always light: those routes rendered outside the
+   * dashboard's theme provider, so `<html>` carried no theme class at all.
+   * Moving them here put them under this layout, which stamps the OS
+   * preference — so a customer with their phone in dark mode suddenly saw the
+   * clinic's booking page in dark. Nobody asked for that, and a tenant cannot
+   * control it. Microsites already work this way: `MicrositeShell` renders the
+   * tenant's own theme with no dark variant.
+   */
+  theme?: 'system' | 'light';
+}
+
+const {
+  title = 'Borradh — Claire AI runs your entire clinic',
+  description = "Claire is your clinic's AI employee. She finds new patients, books them in, collects deposits, and keeps them coming back. You do treatments. Claire does everything else.",
+  ogType = 'website',
+  theme = 'system',
+} = Astro.props;
+
+// Read once on the server; injected for client code (PostHog, api-client)
+// and serialised so the value can never break out of the <script> tag.
+const config = getPublicConfig();
+const configJson = JSON.stringify(config).replace(/</g, '\\u003c');
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/android-chrome-512x512.png', Astro.site).href;
+---
+
+<!doctype html>
+<html
+  lang="en"
+  class={theme === 'light' ? 'light' : undefined}
+  style={theme === 'light' ? 'color-scheme: light' : undefined}
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+
+    {/* Apply the theme class before paint to avoid a flash. Skipped entirely
+        when the page is pinned light — the class is already on <html> above,
+        and running this would let the OS preference override it. */}
+    {theme === 'system' && (
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('theme');
+          const system = window.matchMedia('(prefers-color-scheme: dark)')
+            .matches
+            ? 'dark'
+            : 'light';
+          const resolved =
+            !stored || stored === 'system' ? system : stored;
+          document.documentElement.classList.add(resolved);
+          document.documentElement.style.colorScheme = resolved;
+        } catch (_) {
+          /* localStorage unavailable */
+        }
+      })();
+    </script>
+    )}
+
+    {/* Public runtime config for client code. */}
+    <script is:inline set:html={`window.__CONFIG__=${configJson}`} />
+  </head>
+  <body class="antialiased">
+    <slot />
+  </body>
+</html>

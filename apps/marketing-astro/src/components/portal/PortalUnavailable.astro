@@ -1,0 +1,22 @@
+---
+/**
+ * Shown when the org for this request cannot be resolved — today only a custom
+ * tenant domain, whose slug is not derivable from the hostname.
+ *
+ * It is a dead end on purpose. The alternative is guessing an org, and a
+ * wrong guess here shows one clinic's customer another clinic's portal.
+ */
+import PortalLayout from './PortalLayout.astro';
+---
+
+<PortalLayout title="Portal unavailable">
+  <main
+    class="flex min-h-svh flex-col items-center justify-center gap-3 p-6 text-center"
+  >
+    <h1 class="text-xl font-bold">Portal unavailable</h1>
+    <p class="text-muted-foreground max-w-sm text-sm text-balance">
+      We couldn't work out which clinic this portal belongs to. Please use the
+      link your clinic sent you.
+    </p>
+  </main>
+</PortalLayout>

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-recommend-service-for-ads",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Help me run an ad — not sure what to promote though.",
+      "rounds": [
+        {
+          "modelText": "Let me make sure your ad account is connected and then look at what's worth promoting.",
+          "toolUses": [
+            {
+              "name": "checkMetaIntegration",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "connected": true,
+                  "hasAdAccount": true,
+                  "hasFacebookPage": true,
+                  "configurationComplete": true
+                }
+              }
+            },
+            {
+              "name": "recommendServiceForAds",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "recommended": {
+                    "serviceId": "s1",
+                    "name": "Lip filler",
+                    "rationale": "Highest-margin treatment with strong existing demand and ready creative."
+                  },
+                  "alternatives": [
+                    { "serviceId": "s2", "name": "Anti-wrinkle treatment" },
+                    { "serviceId": "s4", "name": "PRP facial" }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Your account's connected, so we're good to go. I'd lead with Lip filler — it's your highest-margin treatment, demand is steady, and you've got creative ready for it. Anti-wrinkle treatment or PRP facial would be solid alternatives if you'd rather push something else. Want me to start a draft ad for Lip filler?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# build output
+dist/
+.vercel/
+# generated types
+.astro/
+# dependencies
+node_modules/
+# environment
+.env
+.env.production
+.env.local
+# logs
+*.log
+.vercel

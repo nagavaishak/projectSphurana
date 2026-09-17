@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "fixtureId": "register-9-no-bulk-contact-claim",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Mark all my new leads as contacted.",
+      "rounds": [
+        {
+          "modelText": "Let me pull your new leads first.",
+          "toolUses": [
+            {
+              "name": "listLeads",
+              "input": { "status": "new" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "leads": [
+                    { "id": "l1", "firstName": "A", "status": "new" },
+                    { "id": "l2", "firstName": "B", "status": "new" },
+                    { "id": "l3", "firstName": "C", "status": "new" }
+                  ],
+                  "total": 12
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You've got 12 new leads. I can't flip them all in a single action — I update leads one at a time. Want me to go through them individually, or start with a specific person?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fixtureId": "persona-off-scope-poem",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Write me a poem about my dog Bailey for his birthday party.",
+      "rounds": [
+        {
+          "modelText": "Happy birthday to Bailey — but writing poems is outside my scope. I'm here for your clinic: marketing, ads, offers, your schedule, and customer chats. If you'd like, I can help you put together something for the clinic instead — say a social post or a promo. Otherwise a general writing tool would serve Bailey better than I can.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

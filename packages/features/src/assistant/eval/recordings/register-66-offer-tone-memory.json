@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "fixtureId": "register-66-offer-tone-memory",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "From now on, write everything in a warmer, more casual tone — remember that.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "meta_remember",
+              "input": {
+                "content": "Owner prefers a warmer, more casual tone in all copy."
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "remembered": true,
+                  "note": "Owner prefers a warmer, more casual tone in all copy."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Got it. I'll keep things warmer and more casual from here on.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

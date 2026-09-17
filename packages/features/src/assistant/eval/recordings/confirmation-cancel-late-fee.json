@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-cancel-late-fee",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Cancel Emma Kelly's facial tomorrow at 10am — she rang to cancel.",
+      "rounds": [
+        {
+          "modelText": "That's inside your notice window, so I'll flag the fee on the summary.",
+          "toolUses": [
+            {
+              "name": "cancelAppointment",
+              "input": {
+                "appointmentId": "appt-3",
+                "reason": "Customer cancelled",
+                "customerDisplayName": "Emma Kelly",
+                "slotDisplay": "Tomorrow 10:00",
+                "lateFeeDisplay": "€25.00"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "cancel_appointment",
+                  "resourceId": "appt-3",
+                  "token": "synthetic-token-cancelAppointment-appt-3",
+                  "expiresAt": "2026-07-15T00:30:00.000Z",
+                  "summary": {
+                    "title": "Cancel appointment",
+                    "fields": [
+                      { "label": "Customer", "value": "Emma Kelly" },
+                      { "label": "Slot", "value": "Tomorrow 10:00" },
+                      { "label": "Reason", "value": "Customer cancelled" },
+                      {
+                        "label": "⚠ Late-cancel fee",
+                        "value": "€25.00 may apply per policy (inside notice window; not charged automatically)."
+                      }
+                    ]
+                  },
+                  "executeToolName": "cancelAppointment"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Emma Kelly's facial tomorrow at 10am — this is inside your 24h notice window, so a €25.00 late-cancel fee may apply (I won't charge it automatically). Confirm and I'll cancel it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

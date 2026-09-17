@@ -1,0 +1,1 @@
+ALTER TYPE "public"."knowledge_entry_type" ADD VALUE 'operational_snapshot';

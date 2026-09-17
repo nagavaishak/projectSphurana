@@ -1,0 +1,34 @@
+require_relative '../../../../node_modules/.pnpm/@capacitor+ios@7.6.4_@capacitor+core@7.6.4/node_modules/@capacitor/ios/scripts/pods_helpers'
+
+platform :ios, '15.0'
+use_frameworks!
+
+# workaround to avoid Xcode caching of Pods that requires
+# Product -> Clean Build Folder after new Cordova plugins installed
+# Requires CocoaPods 1.6 or newer
+install! 'cocoapods', :disable_input_output_paths => true
+
+def capacitor_pods
+  pod 'Capacitor', :path => '../../../../node_modules/.pnpm/@capacitor+ios@7.6.4_@capacitor+core@7.6.4/node_modules/@capacitor/ios'
+  pod 'CapacitorCordova', :path => '../../../../node_modules/.pnpm/@capacitor+ios@7.6.4_@capacitor+core@7.6.4/node_modules/@capacitor/ios'
+  pod 'CapacitorCommunityCameraPreview', :path => '../../../../node_modules/.pnpm/@capacitor-community+camera-preview@7.0.5_@capacitor+core@7.6.4/node_modules/@capacitor-community/camera-preview'
+  pod 'CapacitorCommunityIntercom', :path => '../../../../node_modules/.pnpm/@capacitor-community+intercom@7.2.0_@capacitor+core@7.6.4/node_modules/@capacitor-community/intercom'
+  pod 'CapacitorCommunityStripeTerminal', :path => '../../../../node_modules/.pnpm/@capacitor-community+stripe-terminal@7.2.3_@capacitor+core@7.6.4/node_modules/@capacitor-community/stripe-terminal'
+  pod 'CapacitorApp', :path => '../../../../node_modules/.pnpm/@capacitor+app@7.1.2_@capacitor+core@7.6.4/node_modules/@capacitor/app'
+  pod 'CapacitorBrowser', :path => '../../../../node_modules/.pnpm/@capacitor+browser@7.0.5_@capacitor+core@7.6.4/node_modules/@capacitor/browser'
+  pod 'CapacitorHaptics', :path => '../../../../node_modules/.pnpm/@capacitor+haptics@7.0.5_@capacitor+core@7.6.4/node_modules/@capacitor/haptics'
+  pod 'CapacitorPushNotifications', :path => '../../../../node_modules/.pnpm/@capacitor+push-notifications@7.0.6_@capacitor+core@7.6.4/node_modules/@capacitor/push-notifications'
+  pod 'CapacitorStatusBar', :path => '../../../../node_modules/.pnpm/@capacitor+status-bar@7.0.6_@capacitor+core@7.6.4/node_modules/@capacitor/status-bar'
+  pod 'CapgoCapacitorUpdater', :path => '../../../../node_modules/.pnpm/@capgo+capacitor-updater@7.45.10_@capacitor+core@7.6.4/node_modules/@capgo/capacitor-updater'
+  pod 'SentryCapacitor', :path => '../../../../node_modules/.pnpm/@sentry+capacitor@4.2.0_@capacitor+core@7.6.4_@sentry+react@10.60.0_react@19.1.0_/node_modules/@sentry/capacitor'
+  pod 'CapacitorSecureStoragePlugin', :path => '../../../../node_modules/.pnpm/capacitor-secure-storage-plugin@0.12.0_@capacitor+core@7.6.4/node_modules/capacitor-secure-storage-plugin'
+end
+
+target 'App' do
+  capacitor_pods
+  # Add your Pods here
+end
+
+post_install do |installer|
+  assertDeploymentTarget(installer)
+end

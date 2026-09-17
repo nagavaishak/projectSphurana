@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-ad-insights",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "How are my ads doing this week?",
+      "rounds": [
+        {
+          "modelText": "Let me pull your live ads and their numbers for the week.",
+          "toolUses": [
+            {
+              "name": "listRecentAds",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "ads": [
+                    {
+                      "id": "ad-1",
+                      "name": "Lip filler — winter promo",
+                      "status": "active",
+                      "campaignId": "c-1"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "getAdInsights",
+              "input": { "adId": "ad-1", "window": "last_7d" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "adId": "ad-1",
+                  "window": "last_7d",
+                  "spend": 70,
+                  "impressions": 9120,
+                  "clicks": 188,
+                  "leads": 9,
+                  "costPerLead": 7.78,
+                  "learningPhase": false
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Your Lip filler — winter promo ad is the one running. Over the last 7 days it spent €70 and brought in 9 leads, so your cost per lead is about €7.78. That's a healthy number for aesthetics — it's out of the learning phase, so it's stable. Want me to look at nudging the budget or leaving it as is?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

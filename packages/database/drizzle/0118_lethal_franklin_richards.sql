@@ -1,0 +1,1 @@
+ALTER TYPE "public"."claire_confirmation_action" ADD VALUE 'regenerate_content_item' BEFORE 'launch_campaign';

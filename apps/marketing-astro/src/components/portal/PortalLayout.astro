@@ -1,0 +1,61 @@
+---
+/**
+ * Document shell for every portal page.
+ *
+ * Not `BaseLayout.astro`, for one reason that matters: the portal is a
+ * customer's private medical surface and must carry `noindex, nofollow`.
+ * BaseLayout has no head slot and no noindex prop, and it lives outside this
+ * port's blast radius, so the shell is duplicated here rather than modified
+ * there. Everything else (theme-before-paint, `window.__CONFIG__`) is the
+ * same, because dropping either produces a flash of the wrong theme or a
+ * client with no API base.
+ *
+ * There is deliberately no canonical URL: the same portal is reachable on up
+ * to three tiers and pointing them all at one canonical would be wrong on two
+ * of them. Noindex makes the question moot.
+ */
+import { getPublicConfig } from '@/lib/config';
+import '@/styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+
+const config = getPublicConfig();
+const configJson = JSON.stringify(config).replace(/</g, '\\u003c');
+---
+
+<!doctype html>
+<html lang="en" class="light" style="color-scheme: light">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <title>{title}</title>
+
+    {/*
+      No theme-before-paint script here: the portal is pinned light on <html>
+      above, so there is nothing to resolve and no flash to avoid.
+
+      This used to stamp `prefers-color-scheme`, which meant a patient opening
+      their clinic's portal on a dark-mode phone got a dark portal. Like
+      booking and the venue page, this is a TENANT surface — in apps/app it
+      rendered outside the dashboard's theme provider and was always light.
+      See the `theme` prop on BaseLayout for the full reasoning.
+    */}
+
+    <script is:inline set:html={`window.__CONFIG__=${configJson}`} />
+  </head>
+  <body class="antialiased">
+    <slot />
+  </body>
+</html>

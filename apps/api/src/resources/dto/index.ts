@@ -1,0 +1,10 @@
+export { CreateResourceCategoryDto } from './create-resource-category.dto.js';
+export { UpdateResourceCategoryDto } from './update-resource-category.dto.js';
+export { ListResourceCategoriesDto } from './list-resource-categories.dto.js';
+export { CreateResourceDto } from './create-resource.dto.js';
+export { UpdateResourceDto } from './update-resource.dto.js';
+export { ListResourcesDto } from './list-resources.dto.js';
+export { ReorderResourcesDto } from './reorder-resources.dto.js';
+export { SetServiceResourceRequirementsDto } from './set-service-resource-requirements.dto.js';
+export { ResourceUtilisationDto } from './resource-utilisation.dto.js';
+export { ListAppointmentResourcesDto } from './list-appointment-resources.dto.js';

@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "fixtureId": "register-79-duplicate-campaign-prevented",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Set up a Botox campaign for September.",
+      "rounds": [
+        {
+          "modelText": "Let me set that up.",
+          "toolUses": [
+            {
+              "name": "createCampaign",
+              "input": { "name": "Botox — September" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "existing_candidates",
+                  "title": "You may already have this campaign",
+                  "message": "You created 1 similar campaign recently. Do you want to reuse it, or create a brand-new campaign anyway? I will not create a duplicate unless you say so.",
+                  "proposedName": "Botox — September",
+                  "existingCandidates": [
+                    {
+                      "id": "meta-camp-1",
+                      "name": "Botox — September",
+                      "createdAt": "2026-07-29T10:00:00.000Z",
+                      "matchReasons": ["same name", "same objective"]
+                    }
+                  ]
+                },
+                "presentation": {
+                  "type": "existing_candidates",
+                  "kind": "campaign",
+                  "proposedName": "Botox — September",
+                  "candidates": [
+                    {
+                      "id": "meta-camp-1",
+                      "name": "Botox — September",
+                      "createdAt": "2026-07-29T10:00:00.000Z",
+                      "matchReasons": ["same name", "same objective"]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You already have a very similar campaign — \"Botox — September\" — that you set up a couple of days ago. Do you want to reuse that one, or should I create a brand-new campaign anyway?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+---
+/**
+ * The ONLY client JavaScript a microsite ever ships — and it ships on exactly
+ * one route.
+ *
+ * A published render (`/sites/{slug}/…`) never imports this component, so Astro
+ * never emits its script tag or its bundle there. That is the mechanism behind
+ * the "zero client JS on a published page" budget AND behind §1 of the inline
+ * edit contract: edit mode cannot leak onto a live tenant site by a runtime
+ * condition being wrong somewhere, because the code is not on the page at all.
+ *
+ * The draft preview route renders this only when it holds a draft document the
+ * API returned for a valid preview token.
+ */
+interface Props {
+  /** The ONE origin allowed to message this frame, and our only post target. */
+  parentOrigin: string;
+}
+
+const { parentOrigin } = Astro.props;
+---
+
+{/*
+  The config travels as a data attribute rather than an inline script so the
+  page needs no `unsafe-inline` allowance, and so the value is escaped by the
+  templating rather than interpolated into JS.
+*/}
+<div id="ms-edit-config" data-parent-origin={parentOrigin} hidden></div>
+
+<script>
+  import { startMicrositeEditMode } from './edit/edit-runtime';
+  import { toOrigin } from './edit/editable';
+
+  const config = document.getElementById('ms-edit-config');
+  const parentOrigin = toOrigin(config?.dataset.parentOrigin);
+
+  // Fail CLOSED. With no trustworthy peer origin there is nobody to post a
+  // commit to and nobody whose messages we may believe, so edit mode simply
+  // does not start and the draft stays read-only.
+  if (parentOrigin && window.parent !== window) {
+    startMicrositeEditMode({ parentOrigin });
+  } else {
+    for (const el of Array.from(
+      document.querySelectorAll('[data-ms-editable]')
+    )) {
+      el.removeAttribute('contenteditable');
+    }
+  }
+</script>
+
+<style is:global>
+  [data-ms-editable] {
+    outline: 1px dashed color-mix(in srgb, var(--brand-accent) 45%, transparent);
+    outline-offset: 3px;
+    border-radius: 2px;
+    cursor: text;
+  }
+
+  [data-ms-editable]:hover {
+    outline-style: solid;
+  }
+
+  [data-ms-editable]:focus {
+    outline: 2px solid var(--brand-accent);
+  }
+
+  /* In flight to the parent — the change is not saved yet. */
+  [data-ms-editable][data-ms-pending] {
+    opacity: 0.72;
+  }
+
+  /* The commit failed and the text was rolled back. Loud on purpose. */
+  [data-ms-editable][data-ms-failed] {
+    outline: 2px solid #b42318;
+    background: color-mix(in srgb, #b42318 12%, transparent);
+  }
+
+  #ms-edit-error {
+    position: fixed;
+    inset-inline: 1rem;
+    bottom: 1rem;
+    z-index: 2147483000;
+    margin-inline: auto;
+    max-width: 32rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: #b42318;
+    color: #fff;
+    font: 500 0.9375rem/1.4 system-ui, sans-serif;
+    text-align: center;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 25%);
+  }
+
+  #ms-edit-error[hidden] {
+    display: none;
+  }
+</style>

@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-leads-summary",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 3,
+  "turns": [
+    {
+      "userMessage": "Summarise my leads this month.",
+      "rounds": [
+        {
+          "modelText": "Reading the rollup for this month.",
+          "toolUses": [
+            {
+              "name": "summariseRecentLeads",
+              "input": {
+                "timeframe": "month",
+                "limit": 5
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "timeframe": "month",
+                  "windowStart": "2026-03-25T00:00:00.000Z",
+                  "windowEnd": "2026-04-25T00:00:00.000Z",
+                  "totalLeads": 42,
+                  "previousLeads": 28,
+                  "deltaPercent": 50,
+                  "byStatus": {
+                    "new": 18,
+                    "contacted": 14,
+                    "qualified": 7,
+                    "won": 2,
+                    "lost": 1
+                  },
+                  "bySource": {
+                    "facebook": 30,
+                    "instagram": 8,
+                    "website": 4
+                  },
+                  "topLeads": [
+                    {
+                      "id": "lead-9",
+                      "firstName": "Niamh",
+                      "lastName": "Doyle",
+                      "email": "niamh@example.com",
+                      "phone": null,
+                      "status": "qualified",
+                      "source": "facebook",
+                      "createdAt": "2026-04-23T09:30:00.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "42 leads this month — up 50% on the previous 30 days. Facebook is doing the heavy lifting (30), with Instagram (8) and the website (4) trailing. Pipeline is mostly new (18) and contacted (14), 7 qualified, 2 won, 1 lost. Niamh Doyle's the freshest qualified lead worth a follow-up.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

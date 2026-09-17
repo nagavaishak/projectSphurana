@@ -1,0 +1,10 @@
+---
+export const prerender = false;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ShopCart } from '@/components/shop/shop-cart';
+import { resolveUpstreamApiUrl } from '@/lib/config';
+const slug = Astro.params.slug ?? '';
+const response = await fetch(`${resolveUpstreamApiUrl()}/public/shop/${encodeURIComponent(slug)}`);
+const data = response.ok ? await response.json() : { organization: { currency: 'EUR' }, products: [] };
+---
+<BaseLayout title="Your cart" description="Shop cart" theme="light"><ShopCart client:load slug={slug} products={data.products} currency={data.organization.currency ?? 'EUR'} organizationName={data.organization.name ?? 'Shop'} basePath={`/sites/${slug}`} /></BaseLayout>

@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "fixtureId": "register-131-no-self-launch",
+  "recordedAt": "2026-07-29T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Launch the lip-filler video ad I drafted.",
+      "rounds": [
+        {
+          "modelText": "Let me pull up the launch summary first.",
+          "toolUses": [
+            {
+              "name": "confirmLaunchAd",
+              "input": {
+                "adId": "ad-1",
+                "adName": "Lip filler — March",
+                "campaignName": "Q1"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "launch_ad",
+                  "resourceId": "ad-1",
+                  "token": "synthetic-token-confirmLaunchAd-ad-1",
+                  "expiresAt": "2026-07-29T00:30:00.000Z",
+                  "summary": {
+                    "title": "Launch ad",
+                    "fields": [
+                      {
+                        "label": "Headline",
+                        "value": "Lip filler that suits your face"
+                      }
+                    ]
+                  },
+                  "executeToolName": "executeLaunchAd"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's the launch summary. Confirm and I'll put it live.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

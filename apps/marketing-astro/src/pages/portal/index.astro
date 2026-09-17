@@ -1,0 +1,18 @@
+---
+/**
+ * HOST TIER — `{slug}.borradh.io/portal` and `salon.com/portal`.
+ *
+ * All six portal routes exist twice, once per tier, because Astro's file
+ * router cannot serve `/portal/x` and `/sites/{slug}/portal/x` from one file
+ * and the path tier's catch-all (`sites/[slug]/[...path].astro`) would
+ * otherwise swallow these as microsite pages and 404. Every one of these files
+ * is a wrapper with no logic, so the tiers cannot drift.
+ *
+ * SSR: which org this is depends on the request.
+ */
+export const prerender = false;
+
+import PortalHomePage from '@/components/portal/pages/PortalHomePage.astro';
+---
+
+<PortalHomePage />

@@ -1,0 +1,198 @@
+---
+/**
+ * `/wireframes` — index of the static booking-surface wireframes.
+ *
+ * These pages exist so the NEW surfaces in Spec V2 can be reviewed in the real
+ * UI kit before any of them get a backend. Every one of them is static: the
+ * fixtures live in `components/wireframes/mock.ts`, nothing calls an API, and
+ * no route in the product links here.
+ *
+ * Delete a page once its surface ships for real.
+ */
+export const prerender = false;
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const GROUPS = [
+  {
+    title: 'Access',
+    blurb:
+      'The two ways a patient gets in. Neither is a password — the portal signs in with a typed one-time code, and the consent form arrives by WhatsApp on a link that needs no account at all.',
+    pages: [
+      {
+        href: '/wireframes/consent-form',
+        name: 'Public consent form',
+        note: 'Tokenised /consent/{token} — plus invalid, expired, submitted and renewal states.',
+        status: 'new',
+      },
+    ],
+  },
+  {
+    title: 'Entry',
+    blurb:
+      'Where a patient lands. The location page gains the three commerce actions the sketch adds alongside booking.',
+    pages: [
+      {
+        href: '/wireframes/org',
+        name: 'Organisation landing',
+        note: 'Multi-location chooser plus org-level courses, vouchers and shop.',
+        status: 'new',
+      },
+      {
+        href: '/wireframes/location',
+        name: 'Location home',
+        note: 'Offers banner and the four actions, in the order the sketch fixes.',
+        status: 'extends',
+      },
+    ],
+  },
+  {
+    title: 'Courses',
+    blurb:
+      'Where the min/max gap between sessions the product owner flagged actually shows up — three times, ending in a clamped date picker.',
+    pages: [
+      {
+        href: '/wireframes/courses',
+        name: 'Course list',
+        note: 'The gap rule stated before anyone spends money.',
+        status: 'new',
+      },
+      {
+        href: '/wireframes/course-detail',
+        name: 'Course detail',
+        note: 'The same rule with the clinical reason attached.',
+        status: 'new',
+      },
+      {
+        href: '/wireframes/course-schedule',
+        name: 'Session scheduler',
+        note: 'Bookable window per session; the max gap warns rather than blocks.',
+        status: 'new',
+      },
+    ],
+  },
+  {
+    title: 'Commerce',
+    blurb:
+      'A pinned reference screenshot on the sketch rather than a spec section. The retail shop lives on its own branch (claude/shop-wireframes) and is not listed here.',
+    pages: [
+      {
+        href: '/wireframes/voucher',
+        name: 'Gift voucher',
+        note: 'Fixed tiers, send-to-me or send-to-someone-else, gift message.',
+        status: 'new',
+      },
+    ],
+  },
+  {
+    title: 'Account',
+    blurb:
+      'The part that deflects phone calls. Cancelling is two genuinely different screens depending on the cancellation window.',
+    pages: [
+      {
+        href: '/wireframes/account',
+        name: 'My account',
+        note: 'Adds courses, vouchers, purchase history and notifications.',
+        status: 'extends',
+      },
+      {
+        href: '/wireframes/bookings',
+        name: 'My bookings',
+        note: 'Deposit, consent and prepaid badges on each row.',
+        status: 'extends',
+      },
+      {
+        href: '/wireframes/cancel',
+        name: 'Cancel a booking',
+        note: 'Toggle between inside and outside the deposit-forfeit window.',
+        status: 'new',
+      },
+      {
+        href: '/wireframes/reschedule',
+        name: 'Reschedule a booking',
+        note: 'Deposit carried over — and blocked outright inside the deadline.',
+        status: 'new',
+      },
+      {
+        href: '/wireframes/account-sub',
+        name: 'Purchases, forms & vouchers',
+        note: 'The three sub-pages behind the hub links, including the five form statuses.',
+        status: 'new',
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Booking surface wireframes"
+  description="Static wireframes for the new booking surfaces. Not live pages."
+  theme="light"
+>
+  <main class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+    <header class="space-y-3">
+      <p class="font-medium text-primary text-sm uppercase tracking-wide">
+        Spec V2
+      </p>
+      <h1 class="font-bold text-4xl">Booking surface wireframes</h1>
+      <p class="max-w-prose text-muted-foreground">
+        The new patient-facing surfaces, built in the real UI kit so they can be
+        judged as pages rather than as diagrams. Every one is static — fixtures
+        only, no API calls, no writes. Nothing in the product links here.
+      </p>
+    </header>
+
+    <div class="mt-8 rounded-xl border border-amber-500/30 bg-amber-50 p-4">
+      <p class="text-amber-900 text-sm">
+        <strong>Two things worth knowing before you review.</strong> The patient
+        portal is absent from the eighteen sections of Spec V2 — §18.6 states
+        there is no patient-facing app at this stage — so these pages are drawn
+        from the sketch and its reference screenshots. And courses need <code
+          class="font-mono text-xs">min_days_between_sessions</code
+        > / <code class="font-mono text-xs">max_days_between_sessions</code>,
+        which do not exist in the database yet.
+      </p>
+    </div>
+
+    <div class="mt-10 space-y-10">
+      {
+        GROUPS.map((group) => (
+          <section class="space-y-4">
+            <div class="space-y-1.5">
+              <h2 class="font-semibold text-xl">{group.title}</h2>
+              <p class="max-w-prose text-muted-foreground text-sm">
+                {group.blurb}
+              </p>
+            </div>
+            <ul class="divide-y rounded-xl border">
+              {group.pages.map((page) => (
+                <li>
+                  <a
+                    href={page.href}
+                    class="flex items-center gap-4 p-4 transition-colors hover:bg-muted/50"
+                  >
+                    <span class="min-w-0 flex-1">
+                      <span class="block font-medium">{page.name}</span>
+                      <span class="block text-muted-foreground text-sm">
+                        {page.note}
+                      </span>
+                    </span>
+                    <span
+                      class={
+                        page.status === 'new'
+                          ? 'shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 font-medium text-primary text-xs'
+                          : 'shrink-0 rounded-full bg-muted px-2.5 py-0.5 font-medium text-muted-foreground text-xs'
+                      }
+                    >
+                      {page.status === 'new' ? 'New' : 'Extends live page'}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </main>
+</BaseLayout>

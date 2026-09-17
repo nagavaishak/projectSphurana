@@ -1,0 +1,134 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "emitDeclarationOnly": false,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@borradh-workspace/ai": ["../ai/src/index.ts"],
+      "@borradh-workspace/auth": ["../auth/src/index.ts"],
+      "@borradh-workspace/auth/patient": ["../auth/src/patient.ts"],
+      "@borradh-workspace/auth/server": ["../auth/src/server.ts"],
+      "@borradh-workspace/contracts": ["../contracts/src/index.ts"],
+      "@borradh-workspace/database": ["../database/src/index.ts"],
+      "@borradh-workspace/database/schema": ["../database/src/schema/index.ts"],
+      "@borradh-workspace/email": ["../email/src/index.ts"],
+      "@borradh-workspace/env": ["../env/src/index.ts"],
+      "@borradh-workspace/env/api": ["../env/src/api.ts"],
+      "@borradh-workspace/env/auth": ["../env/src/auth.ts"],
+      "@borradh-workspace/env/email": ["../env/src/email.ts"],
+      "@borradh-workspace/env/loops": ["../env/src/loops.ts"],
+      "@borradh-workspace/env/voice": ["../env/src/voice.ts"],
+      "@borradh-workspace/features": ["./src/index.ts"],
+      "@borradh-workspace/features/*": ["./src/*/index.ts"],
+      "@borradh-workspace/integrations": ["../integrations/src/index.ts"],
+      "@borradh-workspace/integrations/domains": [
+        "../integrations/src/vercel-domains/index.ts"
+      ],
+      "@borradh-workspace/integrations/email": [
+        "../integrations/src/email/index.ts"
+      ],
+      "@borradh-workspace/integrations/encryption": [
+        "../integrations/src/encryption/index.ts"
+      ],
+      "@borradh-workspace/integrations/facebook": [
+        "../integrations/src/facebook/index.ts"
+      ],
+      "@borradh-workspace/integrations/loops": [
+        "../integrations/src/loops/index.ts"
+      ],
+      "@borradh-workspace/integrations/meta-ads": [
+        "../integrations/src/meta-ads/index.ts"
+      ],
+      "@borradh-workspace/integrations/meta-messaging": [
+        "../integrations/src/meta-messaging/index.ts"
+      ],
+      "@borradh-workspace/integrations/notion": [
+        "../integrations/src/notion/index.ts"
+      ],
+      "@borradh-workspace/integrations/sms": [
+        "../integrations/src/sms/index.ts"
+      ],
+      "@borradh-workspace/integrations/stripe": [
+        "../integrations/src/stripe/index.ts"
+      ],
+      "@borradh-workspace/integrations/voice": [
+        "../integrations/src/voice/index.ts"
+      ],
+      "@borradh-workspace/integrations/whatsapp": [
+        "../integrations/src/whatsapp/index.ts"
+      ],
+      "@borradh-workspace/labels": ["../labels/src/index.ts"],
+      "@borradh-workspace/observability": ["../observability/src/index.ts"],
+      "@borradh-workspace/redis": ["../redis/src/index.ts"],
+      "@borradh-workspace/storage": ["../storage/src/index.ts"],
+      "@borradh-workspace/testing": ["../testing/src/index.ts"],
+      "@borradh-workspace/web-shared": ["../web-shared/src/index.ts"]
+    },
+    "composite": true
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../ai/tsconfig.lib.json"
+    },
+    {
+      "path": "../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../email/tsconfig.lib.json"
+    },
+    {
+      "path": "../redis/tsconfig.lib.json"
+    },
+    {
+      "path": "../observability/tsconfig.lib.json"
+    },
+    {
+      "path": "../integrations/tsconfig.lib.json"
+    },
+    {
+      "path": "../database/tsconfig.lib.json"
+    },
+    {
+      "path": "../labels/tsconfig.lib.json"
+    },
+    {
+      "path": "../contracts/tsconfig.lib.json"
+    },
+    {
+      "path": "../video-templates/tsconfig.lib.json"
+    },
+    {
+      "path": "../auth/tsconfig.lib.json"
+    },
+    {
+      "path": "../testing/tsconfig.lib.json"
+    },
+    {
+      "path": "../storage/tsconfig.lib.json"
+    },
+    {
+      "path": "../http/tsconfig.lib.json"
+    },
+    {
+      "path": "../web-shared/tsconfig.lib.json"
+    }
+  ],
+  "exclude": [
+    "jest.config.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.test-utils.ts",
+    "src/test-setup.ts",
+    "src/__mocks__/**"
+  ]
+}

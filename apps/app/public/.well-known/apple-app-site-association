@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["8W7D86M35R.com.borradh.mobile"],
+        "components": [
+          { "/": "*" }
+        ]
+      }
+    ]
+  }
+}

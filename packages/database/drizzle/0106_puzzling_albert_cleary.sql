@@ -1,0 +1,3 @@
+ALTER TABLE "organization_service" ADD COLUMN "expected_shot_embedding" vector(1536);--> statement-breakpoint
+ALTER TABLE "organization_service" ADD COLUMN "technique_slug" text;--> statement-breakpoint
+ALTER TABLE "organization_service" ADD CONSTRAINT "organization_service_technique_slug_technique_slug_fk" FOREIGN KEY ("technique_slug") REFERENCES "public"."technique"("slug") ON DELETE restrict ON UPDATE no action;

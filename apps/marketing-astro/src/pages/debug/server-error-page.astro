@@ -1,0 +1,31 @@
+---
+// Page-render variant of debug/server-error.ts.
+//
+// Both exist because they may not behave the same. MARKETING-2 — the real
+// production error this capture path was built for ("Unexpectedly unable to find
+// a component instance for route /404" on GET /blog/[slug]) — was thrown while
+// RENDERING A PAGE, whereas server-error.ts is an endpoint returning a Response.
+// Astro routes those through different machinery, so an endpoint throw is not
+// evidence about a page throw. A 2026-08-17 preview probe using only the
+// endpoint reached neither PostHog nor Sentry; this narrows where that breaks.
+//
+// OFF BY DEFAULT, same gate as the endpoint.
+export const prerender = false;
+
+import {
+  debugRouteDisabledResponse,
+  debugRoutesEnabled,
+} from '@/lib/debug-routes';
+
+const marker = Astro.url.searchParams.get('marker');
+
+if (!debugRoutesEnabled()) {
+  return debugRouteDisabledResponse();
+}
+
+throw new Error(
+  marker
+    ? `Test marketing SSR page error [${marker}]`
+    : 'Test marketing SSR page error (debug route)'
+);
+---

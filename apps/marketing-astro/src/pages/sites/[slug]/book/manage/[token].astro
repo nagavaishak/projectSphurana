@@ -1,0 +1,42 @@
+---
+/**
+ * The link in EVERY confirmation email. Until this route existed in marketing,
+ * it lived only in apps/app — so a customer on a clinic's own domain was sent
+ * off to app.borradh.io to cancel or move their booking.
+ *
+ * The URL IS the credential: the token proves "I hold this booking's link".
+ * That is why the page is `noindex, nofollow` and never cached, and why the
+ * token stays in the path (a query string lands in referrer headers and in
+ * server access logs).
+ */
+export const prerender = false;
+
+import { ManageBookingPage } from '@/components/booking';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+import { resolveBookingOrg } from '../../_resolve-org';
+
+const { slug: organizationSlug } = resolveBookingOrg(
+  Astro.url,
+  Astro.params.slug
+);
+const token = Astro.params.token ?? '';
+const config = getPublicConfig();
+
+Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+---
+
+{/*
+  apps/app renders `<meta name="robots">` here; BaseLayout exposes no head slot,
+  and a robots meta in the BODY is ignored by crawlers — so the `X-Robots-Tag`
+  response header above carries it instead. Same instruction, actually honoured.
+*/}
+<BaseLayout theme="light" title="Manage your booking" description="View, move or cancel your appointment.">
+  <ManageBookingPage
+    client:load
+    config={config}
+    organizationSlug={organizationSlug}
+    token={token}
+  />
+</BaseLayout>

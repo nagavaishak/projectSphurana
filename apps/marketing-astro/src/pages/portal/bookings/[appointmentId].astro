@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+
+import PortalBookingDetailPage from '@/components/portal/pages/PortalBookingDetailPage.astro';
+
+const { appointmentId } = Astro.params;
+---
+
+<PortalBookingDetailPage appointmentId={appointmentId ?? ''} />

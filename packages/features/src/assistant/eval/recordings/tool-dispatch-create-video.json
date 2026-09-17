@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-create-video",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 4,
+  "turns": [
+    {
+      "userMessage": "Make me a before-and-after video for the lip filler service.",
+      "rounds": [
+        {
+          "modelText": "Setting up the draft.",
+          "toolUses": [
+            {
+              "name": "createDraftVideo",
+              "input": {
+                "templateId": "before-after",
+                "title": "Lip filler — before and after"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-new-1",
+                  "templateId": "before-after",
+                  "variationId": "before-after-1",
+                  "status": "draft",
+                  "narrationMode": "recorded",
+                  "recommendedClipCount": 3
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Now picking the clips.",
+          "toolUses": [
+            {
+              "name": "autoSelectClips",
+              "input": {
+                "videoId": "v-new-1",
+                "serviceId": "svc-1",
+                "templateId": "before-after"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "selectedClips": [
+                    {
+                      "assetId": "a1",
+                      "name": "before.mov",
+                      "duration": 4.2,
+                      "blobUrl": null
+                    },
+                    {
+                      "assetId": "a2",
+                      "name": "middle.mov",
+                      "duration": 3.8,
+                      "blobUrl": null
+                    },
+                    {
+                      "assetId": "a3",
+                      "name": "after.mov",
+                      "duration": 5.1,
+                      "blobUrl": null
+                    }
+                  ],
+                  "totalAvailable": 8,
+                  "videoId": "v-new-1"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Drafted with three clips queued — before, middle, after. Want me to generate a script next, or pick the music first?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

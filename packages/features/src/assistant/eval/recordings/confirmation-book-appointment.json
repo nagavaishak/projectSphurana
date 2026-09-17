@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-book-appointment",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 3,
+  "turns": [
+    {
+      "userMessage": "Book Aoife Murphy in for the lip filler at 2pm on the 12th of May with Niamh.",
+      "rounds": [
+        {
+          "modelText": "Lining up the booking summary so you can sign off.",
+          "toolUses": [
+            {
+              "name": "bookAppointment",
+              "input": {
+                "leadId": "lead-1",
+                "title": "Lip filler with Niamh",
+                "startDate": "2026-05-12T14:00:00.000Z",
+                "endDate": "2026-05-12T14:30:00.000Z",
+                "practitionerId": "prac-niamh",
+                "customerDisplayName": "Aoife Murphy",
+                "serviceDisplayName": "Lip filler"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "book_appointment",
+                  "resourceId": "lead:lead-1@2026-05-12T14:00:00.000Z",
+                  "token": "synthetic-token-bookAppointment-lead:lead-1@2026-05-12T14:00:00.000Z",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Book appointment",
+                    "fields": [
+                      { "label": "Customer", "value": "Aoife Murphy" },
+                      { "label": "Service", "value": "Lip filler" },
+                      { "label": "Practitioner", "value": "prac-niamh" },
+                      { "label": "Start", "value": "2026-05-12T14:00:00.000Z" }
+                    ]
+                  },
+                  "executeToolName": "bookAppointment"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Aoife Murphy in with Niamh, lip filler, 2pm Tuesday 12 May. Confirm and I'll book it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

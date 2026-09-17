@@ -1,0 +1,34 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "emitDeclarationOnly": false,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"],
+    "composite": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"],
+  "references": [
+    {
+      "path": "../database/tsconfig.lib.json"
+    },
+    {
+      "path": "../remotion/tsconfig.lib.json"
+    },
+    {
+      "path": "../storage/tsconfig.lib.json"
+    },
+    {
+      "path": "../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../http/tsconfig.lib.json"
+    }
+  ]
+}

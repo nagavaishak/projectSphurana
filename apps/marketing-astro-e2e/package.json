@@ -1,0 +1,27 @@
+{
+  "name": "@borradh-workspace/marketing-astro-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "e2e": "npx playwright test",
+    "e2e:smoke": "npx playwright test --project=smoke-tests",
+    "e2e:booking": "npx playwright test --project=booking-tests",
+    "e2e:ui": "PW_SKIP_DEPS=1 npx playwright test --ui",
+    "e2e:headed": "npx playwright test --headed",
+    "e2e:debug": "npx playwright test --debug",
+    "e2e:report": "playwright show-report",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "e2e:portal": "npx playwright test --project=portal-tests",
+    "e2e:perf": "npx playwright test --project=perf-tests"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "dotenv": "^16.4.0",
+    "eslint": "^9.39.0",
+    "eslint-plugin-playwright": "^2.10.0",
+    "typescript": "~5.8.2",
+    "typescript-eslint": "^8.63.0"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "fixtureId": "branch-pricing-no-invented-price",
+  "recordedAt": "2026-08-27T11:28:31.850Z",
+  "skillRegistryVersion": 51,
+  "turns": [
+    {
+      "userMessage": "What does the Full Face Rejuvenation cost?",
+      "rounds": [
+        {
+          "modelText": "I don't see a \"Full Face Rejuvenation\" service in your catalogue. Let me check what you currently have listed.",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [
+                    {
+                      "id": "svc-full-face",
+                      "name": "Full Face Rejuvenation",
+                      "category": "treatment",
+                      "description": null,
+                      "isActive": true,
+                      "priceType": "poa",
+                      "priceCents": null,
+                      "priceText": null,
+                      "hasVariants": false
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Full Face Rejuvenation is set to POA — price on application. There's no set price on the system right now.\n\nWhat do you charge for it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

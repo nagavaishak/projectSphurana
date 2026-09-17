@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fixtureId": "persona-greeting",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Hi",
+      "rounds": [
+        {
+          "modelText": "Hey, I'm Claire — your assistant here at Glow Aesthetics. What can I help with today.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

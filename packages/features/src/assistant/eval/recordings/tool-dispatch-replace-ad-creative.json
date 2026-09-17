@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-replace-ad-creative",
+  "recordedAt": "2026-07-16T16:20:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Replace the creative on draft ad ad-1 with graphic g-new. Keep the copy and the other ads.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listRecentAds",
+              "input": { "status": "draft" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "ads": [
+                    {
+                      "id": "ad-1",
+                      "name": "Lip filler draft",
+                      "status": "draft",
+                      "headline": "Natural-looking results",
+                      "primaryText": "A subtle refresh, tailored to you.",
+                      "callToAction": "BOOK_NOW",
+                      "videoId": "video-old",
+                      "graphicId": null,
+                      "isImported": false
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "replaceAdCreative",
+              "input": { "adId": "ad-1", "graphicId": "g-new" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "updated",
+                  "adId": "ad-1",
+                  "status": "draft",
+                  "preview": {
+                    "variant": "draft",
+                    "adName": "Lip filler draft",
+                    "headline": "Natural-looking results",
+                    "primaryText": "A subtle refresh, tailored to you.",
+                    "callToAction": "BOOK_NOW",
+                    "graphicId": "g-new"
+                  }
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Done — I replaced that draft's creative and kept its copy and sibling ads unchanged.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

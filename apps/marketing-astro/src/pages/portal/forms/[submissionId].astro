@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+
+import PortalConsentFormPage from '@/components/portal/pages/PortalConsentFormPage.astro';
+
+const { submissionId } = Astro.params;
+---
+
+<PortalConsentFormPage submissionId={submissionId ?? ''} />

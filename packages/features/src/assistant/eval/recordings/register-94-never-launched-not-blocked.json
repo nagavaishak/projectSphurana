@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fixtureId": "register-94-never-launched-not-blocked",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Bump the daily budget on the new lip-filler campaign I just made up to $30.",
+      "rounds": [
+        {
+          "modelText": "Setting that up.",
+          "toolUses": [
+            {
+              "name": "confirmUpdateBudget",
+              "input": {
+                "metaCampaignId": "mc-1",
+                "dailyBudget": 3000,
+                "campaignName": "Lip filler"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "state": "awaiting_approval",
+                  "metaCampaignId": "mc-1",
+                  "requestedBudget": "$30.00/day",
+                  "confirmationToken": "tok"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "That campaign hasn't started delivering yet, so there's nothing holding it back — confirm and I'll set it to $30/day.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+# Squawk configuration for PostgreSQL migration linting
+# Enforces backwards-compatible migrations for safe rollbacks
+
+# Excluded rules (customize based on your needs)
+# excluded_rules = []
+
+# Rules configuration
+# These rules catch breaking changes that would prevent rollbacks
+
+[rules]
+# CRITICAL: Dropping columns breaks old code during rollback
+"ban-drop-column" = "error"
+
+# CRITICAL: Dropping tables is destructive
+"ban-drop-table" = "error"
+
+# CRITICAL: Adding NOT NULL without default breaks inserts from old code
+"adding-not-nullable-field" = "error"
+
+# CRITICAL: Changing column type can break existing data
+"changing-column-type" = "error"
+
+# CRITICAL: Renaming columns breaks old code
+"ban-drop-not-null" = "warn"
+
+# Index operations should be concurrent to avoid locks
+"require-concurrent-index-creation" = "error"
+"require-concurrent-index-deletion" = "error"
+
+# Adding unique constraint can fail if duplicates exist
+"adding-unique-constraint" = "warn"
+
+# Foreign key constraints can cause issues during deployment
+"adding-foreign-key-constraint" = "warn"
+
+# Prefer text over varchar for flexibility
+"prefer-text-field" = "warn"
+
+# Use bigint for IDs to avoid overflow
+"prefer-big-int" = "warn"
+
+# Adding primary key can lock table
+"adding-serial-primary-key-field" = "warn"

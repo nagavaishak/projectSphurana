@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "fixtureId": "mid-turn-skill-load",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Actually forget the ad — schedule a post for the lip filler video instead.",
+      "rounds": [
+        {
+          "modelText": "Right, switching to scheduling a post.",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "schedule-post" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "schedule-post",
+                  "newToolsAvailable": [
+                    "checkConnectedPages",
+                    "listRecentVideos",
+                    "listRecentPosts",
+                    "generatePostCaption",
+                    "suggestPostingTime",
+                    "createSocialPostDraft",
+                    "updateSocialPostDraft",
+                    "confirmSchedulePost",
+                    "confirmPublishNow",
+                    "executeSchedulePost",
+                    "executePublishNow"
+                  ],
+                  "promptFragment": "## Scheduling a post"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Loaded the post-scheduling skill. Which platforms do you want — Facebook, Instagram, or both — and is there a target time, or shall I suggest some windows?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-create-service-fixed-price",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Add a service called LED Light Therapy — €45, 30 minutes.",
+      "rounds": [
+        {
+          "modelText": "Adding LED Light Therapy at a fixed €45.",
+          "toolUses": [
+            {
+              "name": "createService",
+              "input": {
+                "name": "LED Light Therapy",
+                "category": "treatment",
+                "priceType": "fixed",
+                "priceCents": 4500,
+                "appointmentDurationMinutes": 30
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "create_service",
+                  "resourceId": "service:LED Light Therapy",
+                  "token": "synthetic-token-createService-led-light-therapy",
+                  "expiresAt": "2026-07-15T00:30:00.000Z",
+                  "summary": {
+                    "title": "Create service \"LED Light Therapy\"",
+                    "fields": [
+                      { "label": "Service name", "value": "LED Light Therapy" },
+                      { "label": "Price", "value": "€45" }
+                    ]
+                  },
+                  "executeToolName": "createService"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "LED Light Therapy, fixed €45, 30 minutes. Confirm and I'll add it to your catalogue.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

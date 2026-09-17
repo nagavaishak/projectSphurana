@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-pause-ad",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Pause my lip filler ad, it has done its job.",
+      "rounds": [
+        {
+          "modelText": "Pausing stops the spend straight away, so let me line it up for you to confirm.",
+          "toolUses": [
+            {
+              "name": "confirmPauseAd",
+              "input": { "adId": "ad-1" },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "pause_ad",
+                  "resourceId": "ad-1",
+                  "token": "synthetic-token-confirmPauseAd-ad-1",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Pause ad",
+                    "fields": [
+                      { "label": "Ad", "value": "Lip filler — winter promo" },
+                      { "label": "Current status", "value": "Active" },
+                      { "label": "Effect", "value": "Stops spend immediately" }
+                    ]
+                  },
+                  "executeToolName": "confirmPauseAd"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "This will pause Lip filler — winter promo and stop its spend right away. Confirm and I'll pause it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

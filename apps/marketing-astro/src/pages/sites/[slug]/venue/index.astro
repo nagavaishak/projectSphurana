@@ -1,0 +1,85 @@
+---
+/**
+ * `/sites/{org}/venue` — THE BRANCH ENTRY for the venue page.
+ *
+ * It used to render `VenuePageIsland` with only an `organizationSlug`, so the
+ * API resolved the org's PRIMARY branch and the page published one address with
+ * no indication that others existed and no way to reach them. On a three-branch
+ * clinic that is not a missing feature — it is two branches the public cannot
+ * find.
+ *
+ * So it applies the SAME three rules as `/book` (`_booking-locations.ts`, which
+ * is why that module sits one level up rather than under `book/`): two or more
+ * branches show the chooser, exactly one 302s to `/l/{branch}/venue`, none
+ * renders unscoped exactly as it does today for an org mid-onboarding.
+ *
+ * The chooser is handed `intent="venue"`, so each card goes to that branch's
+ * PAGE rather than into its booking wizard. A customer who arrived to read
+ * about a clinic and clicked a location expects to read about that location;
+ * dropping them into a wizard reads as the site jumping ahead of them. The
+ * booking CTA is one click further in, on the branch page itself.
+ *
+ * A clinic's venue page is its shop window. Keeping it identical in shape to
+ * the booking entry means one set of rules to reason about, and the branch a
+ * customer picks here is the branch they carry into the wizard.
+ */
+export const prerender = false;
+
+import { VenuePageIsland } from '@/components/venue/venue-page.island';
+import LocationChooser from '@/components/booking/location-chooser.astro';
+import { branchVenuePath } from '@/components/booking/location-chooser';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { micrositeLink } from '@/lib/microsite-org';
+import {
+  decideBookingEntry,
+  fetchBookingLocations,
+} from '../_booking-locations';
+import { resolveBookingOrg } from '../_resolve-org';
+import { humaniseSlug } from '../_humanise-slug';
+
+const { slug: organizationSlug, orgContext } = resolveBookingOrg(
+  Astro.url,
+  Astro.params.slug
+);
+
+const entry = decideBookingEntry(await fetchBookingLocations(organizationSlug));
+
+/**
+ * 302, matching `/book`. This is a fact about the org's CURRENT branch list,
+ * not a permanent move of a URL shape — an org that opens a second branch
+ * tomorrow must get a working chooser here, and a cached 301 in every visitor's
+ * browser would strand them at the first branch with nothing we could do.
+ */
+if (entry.kind === 'single') {
+  return Astro.redirect(
+    micrositeLink(orgContext, branchVenuePath(entry.branch.segment)) +
+      Astro.url.search,
+    302
+  );
+}
+
+const displayName =
+  entry.kind === 'chooser'
+    ? entry.payload.organizationName
+    : humaniseSlug(organizationSlug);
+---
+
+<BaseLayout
+  title={`${displayName} | Borradh`}
+  description={entry.kind === 'chooser'
+    ? `Choose a location to see opening hours, services and team at ${displayName}.`
+    : `Opening hours, services and team at ${displayName}.`}
+  theme="light"
+>
+  {
+    entry.kind === 'chooser' ? (
+      <LocationChooser
+        payload={entry.payload}
+        orgContext={orgContext}
+        intent="venue"
+      />
+    ) : (
+      <VenuePageIsland client:load organizationSlug={organizationSlug} />
+    )
+  }
+</BaseLayout>

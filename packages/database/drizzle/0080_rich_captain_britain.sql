@@ -1,0 +1,1 @@
+ALTER TYPE "public"."sale_item_type" ADD VALUE 'manual';

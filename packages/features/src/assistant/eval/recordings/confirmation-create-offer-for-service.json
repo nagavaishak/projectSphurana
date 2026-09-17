@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-create-offer-for-service",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Create an offer for my lip filler service.",
+      "rounds": [
+        {
+          "modelText": "Let me work out a sensible discount for lip filler first, then line it up for your sign-off.",
+          "toolUses": [
+            {
+              "name": "recommendOfferForService",
+              "input": { "serviceId": "s1" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "serviceId": "s1",
+                  "serviceName": "Lip filler",
+                  "suggestedDiscountPct": 15,
+                  "floorPrice": 200,
+                  "rationale": "A 15% intro offer stays above cost and is competitive locally."
+                }
+              }
+            },
+            {
+              "name": "createOffer",
+              "input": {
+                "service": "Lip filler",
+                "discount": "15%",
+                "validity": "2 weeks"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "create_offer",
+                  "resourceId": "offer-1",
+                  "token": "synthetic-token-createOffer-offer-1",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Create offer",
+                    "fields": [
+                      { "label": "Service", "value": "Lip filler" },
+                      { "label": "Discount", "value": "15%" },
+                      { "label": "Validity", "value": "2 weeks" }
+                    ]
+                  },
+                  "executeToolName": "createOffer"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's what I've put together: 15% off Lip filler for 2 weeks. That keeps you comfortably above cost and is competitive for your area. Confirm and I'll create it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

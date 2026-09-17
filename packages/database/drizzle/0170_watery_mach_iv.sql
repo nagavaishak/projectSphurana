@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "uq_form_org_kind_name" ON "form" USING btree ("organization_id","kind","name") WHERE "form"."deleted_at" IS NULL;

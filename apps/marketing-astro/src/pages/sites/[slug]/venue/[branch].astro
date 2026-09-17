@@ -1,0 +1,26 @@
+---
+/**
+ * 301 — `/sites/{org}/venue/{branch}` moved to `/sites/{org}/l/{branch}/venue`.
+ *
+ * Same permanent shape move as `book/l/{branch}`, and the same reason for 301
+ * rather than 302: the destination for a given branch never changes.
+ *
+ * NOTE this route is `[branch]`, so it also catches a stray `/venue/anything`.
+ * That is correct — the API is the one authority on whether a handle names a
+ * branch, and it 404s an unknown one on the destination page. A guess here
+ * would be a second authority that can disagree with the first.
+ */
+export const prerender = false;
+
+import { branchVenuePath } from '@/components/booking/location-chooser';
+import { micrositeLink } from '@/lib/microsite-org';
+import { resolveBookingOrg } from '../_resolve-org';
+
+const { orgContext } = resolveBookingOrg(Astro.url, Astro.params.slug);
+const branch = Astro.params.branch ?? '';
+
+return Astro.redirect(
+  micrositeLink(orgContext, branchVenuePath(branch)) + Astro.url.search,
+  301
+);
+---

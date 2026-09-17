@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-find-open-slots",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "When could I fit a new client in for lip filler this week?",
+      "rounds": [
+        {
+          "modelText": "Let me check your open slots for lip filler this week.",
+          "toolUses": [
+            {
+              "name": "findOpenSlots",
+              "input": { "service": "Lip filler", "window": "this_week" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "serviceName": "Lip filler",
+                  "slots": [
+                    {
+                      "start": "2026-05-13T10:00:00.000Z",
+                      "end": "2026-05-13T10:45:00.000Z",
+                      "practitionerLabel": "Niamh"
+                    },
+                    {
+                      "start": "2026-05-14T15:30:00.000Z",
+                      "end": "2026-05-14T16:15:00.000Z",
+                      "practitionerLabel": "Aoife"
+                    }
+                  ],
+                  "totalFound": 2
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You've two open slots for lip filler this week: Wednesday at 10:00 with Niamh, and Thursday at 15:30 with Aoife. Want me to book one of those in for the client?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

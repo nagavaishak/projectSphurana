@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ShopDetail } from '@/components/shop/public-shop';
+import { resolveUpstreamApiUrl } from '@/lib/config';
+const slug = Astro.params.slug ?? ''; const productId = Astro.params.productId ?? '';
+const response = await fetch(`${resolveUpstreamApiUrl()}/public/shop/${encodeURIComponent(slug)}/${encodeURIComponent(productId)}`);
+if (!response.ok) { Astro.response.status = response.status; }
+const data = response.ok ? await response.json() : null;
+---
+<BaseLayout title={data?.product?.name ?? 'Product'} description="Shop product" theme="light">{data ? <ShopDetail client:load product={data.product} currency={data.organization.currency ?? 'EUR'} organizationName={data.organization.name ?? 'Shop'} slug={slug} basePath={`/sites/${slug}`} /> : <main class="mx-auto max-w-5xl p-8">Product not found.</main>}</BaseLayout>

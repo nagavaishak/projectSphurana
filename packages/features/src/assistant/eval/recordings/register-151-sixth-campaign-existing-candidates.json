@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "fixtureId": "register-151-sixth-campaign-existing-candidates",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Create another lip filler campaign.",
+      "rounds": [
+        {
+          "modelText": "Let me set that up.",
+          "toolUses": [
+            {
+              "name": "createCampaign",
+              "input": { "name": "Lip filler campaign" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "existing_candidates",
+                  "title": "You may already have this campaign",
+                  "message": "You created 3 similar campaigns recently. Do you want to reuse one of those, or create a brand-new campaign anyway? I will not create a duplicate unless you say so.",
+                  "proposedName": "Lip filler campaign",
+                  "existingCandidates": [
+                    {
+                      "id": "meta-camp-3",
+                      "name": "Lip filler — launch offer",
+                      "createdAt": "2026-07-30T06:00:00.000Z",
+                      "matchReasons": [
+                        "similar name",
+                        "same objective",
+                        "same service"
+                      ]
+                    },
+                    {
+                      "id": "meta-camp-2",
+                      "name": "Lip filler special",
+                      "createdAt": "2026-07-30T03:00:00.000Z",
+                      "matchReasons": ["similar name", "same service"]
+                    },
+                    {
+                      "id": "meta-camp-1",
+                      "name": "Lip filler promo",
+                      "createdAt": "2026-07-30T01:00:00.000Z",
+                      "matchReasons": ["similar name", "same objective"]
+                    }
+                  ]
+                },
+                "presentation": {
+                  "type": "existing_candidates",
+                  "kind": "campaign",
+                  "proposedName": "Lip filler campaign",
+                  "candidates": [
+                    {
+                      "id": "meta-camp-3",
+                      "name": "Lip filler — launch offer",
+                      "createdAt": "2026-07-30T06:00:00.000Z",
+                      "matchReasons": [
+                        "similar name",
+                        "same objective",
+                        "same service"
+                      ]
+                    },
+                    {
+                      "id": "meta-camp-2",
+                      "name": "Lip filler special",
+                      "createdAt": "2026-07-30T03:00:00.000Z",
+                      "matchReasons": ["similar name", "same service"]
+                    },
+                    {
+                      "id": "meta-camp-1",
+                      "name": "Lip filler promo",
+                      "createdAt": "2026-07-30T01:00:00.000Z",
+                      "matchReasons": ["similar name", "same objective"]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Before I make another one — you already have 3 very similar lip filler campaigns from the last few hours (\"Lip filler — launch offer\", \"Lip filler special\", and \"Lip filler promo\"). Do you want to reuse one of those, or should I create a brand-new campaign anyway?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

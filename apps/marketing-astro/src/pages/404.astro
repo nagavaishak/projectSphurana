@@ -1,0 +1,11 @@
+---
+import { NotFoundPage } from '@/components/pages/not-found';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout title="Page not found | Borradh">
+  <NotFoundPage client:load config={config} />
+</BaseLayout>

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fixtureId": "persona-out-of-scope",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "My accountant just left me and I need help filing my Irish corporate tax return.",
+      "rounds": [
+        {
+          "modelText": "That's outside my scope — corporate tax filings need a qualified accountant, and I'm not the right person for that. I'd start with the Revenue's list of registered tax advisors or ask another clinic owner for a referral. Once you're back to clinic operations or marketing, I'm here.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

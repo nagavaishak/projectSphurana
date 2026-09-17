@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-list-open-conversations",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 5,
+  "turns": [
+    {
+      "userMessage": "What customer messages are open right now?",
+      "rounds": [
+        {
+          "modelText": "Pulling the open inbox.",
+          "toolUses": [
+            {
+              "name": "listOpenConversations",
+              "input": { "limit": 20, "offset": 0 },
+              "result": {
+                "ok": true,
+                "data": {
+                  "conversations": [
+                    {
+                      "id": "conv-1",
+                      "externalUserId": "u-1",
+                      "externalUserName": "Sarah Murphy",
+                      "platform": "whatsapp",
+                      "status": "agent_handling",
+                      "assignedToId": null,
+                      "lastMessageContent": "Can I book Tuesday at 10am?",
+                      "lastMessageRole": "user",
+                      "lastMessageAt": "2026-04-25T09:00:00.000Z",
+                      "createdAt": "2026-04-24T14:00:00.000Z"
+                    },
+                    {
+                      "id": "conv-2",
+                      "externalUserId": "u-2",
+                      "externalUserName": "Liam OBrien",
+                      "platform": "facebook_messenger",
+                      "status": "bot_handling",
+                      "assignedToId": null,
+                      "lastMessageContent": "Thanks, will think about it",
+                      "lastMessageRole": "user",
+                      "lastMessageAt": "2026-04-25T08:15:00.000Z",
+                      "createdAt": "2026-04-24T11:30:00.000Z"
+                    }
+                  ],
+                  "pageCount": 2,
+                  "total": 2,
+                  "limit": 20,
+                  "offset": 0
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Two open threads. Sarah Murphy on WhatsApp asked about Tuesday at 10am — that one's with you (agent_handling). Liam OBrien on Messenger said he'd think about it; the bot's still handling that one. Want a summary on either?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

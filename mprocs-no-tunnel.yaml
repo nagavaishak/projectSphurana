@@ -1,0 +1,33 @@
+procs:
+  docker:
+    cmd: ["docker", "compose", "up"]
+    cwd: .
+    stop: { send-keys: ["<C-c>"] }
+
+  packages:
+    cmd: ["pnpm", "turbo", "watch", "dev:packages", "--filter=./packages/*", "--concurrency=30"]
+    cwd: .
+
+  api:
+    cmd: ["pnpm", "exec", "nodemon"]
+    cwd: apps/api
+    env:
+      FORCE_COLOR: "1"
+
+  app:
+    cmd: ["pnpm", "exec", "vite"]
+    cwd: apps/app
+    env:
+      FORCE_COLOR: "1"
+
+  marketing:
+    cmd: ["pnpm", "exec", "astro", "dev", "--port", "3002"]
+    cwd: apps/marketing-astro
+    env:
+      FORCE_COLOR: "1"
+
+  video-worker:
+    cmd: ["pnpm", "exec", "tsx", "watch", "--env-file=../../.env", "src/main.ts"]
+    cwd: apps/video-worker
+    env:
+      FORCE_COLOR: "1"

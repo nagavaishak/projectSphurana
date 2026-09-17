@@ -1,0 +1,335 @@
+@import "tailwindcss";
+/*
+ * The ported app surfaces (booking, venue, the customer portal) use shadcn
+ * components that ask for `animate-in`, `fade-in`, `zoom-in-95` and
+ * `slide-in-from-*`. Those utilities ship in tw-animate-css, not in Tailwind
+ * itself — without this import every one of them compiles to nothing and the
+ * whole flow snaps between states. `apps/app/src/styles.css` imports it for
+ * exactly the same components.
+ */
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * THE APP PALETTE — copied verbatim from `apps/app/src/styles.css`.
+ *
+ * Booking, the venue page and the customer portal were ported out of apps/app.
+ * They are app surfaces that happen to be served from this deployment, so they
+ * must read the app's tokens, and these are kept byte-identical to that file so
+ * the two can be diffed.
+ *
+ * On `:root` rather than a scope attribute on purpose. These pages are React
+ * islands with no shared wrapper, and any scope requires every island to opt in
+ * — `venue-page.island.tsx`, the whole `components/portal/**` tree and
+ * `not-found.tsx` all forgot to, which left `--primary` UNDEFINED and rendered
+ * their buttons as transparent, zero-radius plain text. `:root` cannot be
+ * forgotten.
+ *
+ * Borradh's own marketing pages are unaffected: `[data-marketing]` below
+ * out-ranks `:root`, so the marketing site keeps the neutral palette it was
+ * designed with.
+ */
+:root {
+  --radius: 0.65rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --primary: oklch(0.488 0.243 264.376);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.708 0 0);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/*
+ * The dark half of the same copy. The body needs these in its own right, not
+ * just [data-marketing] below: anything transparent — the navbar and footer
+ * both are — shows the body through, so without a `.dark` background the page
+ * chrome stays white while <main> goes dark.
+ */
+.dark {
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.546 0.245 262.881);
+  --primary-foreground: oklch(0.97 0.014 254.604);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.552 0.016 285.938);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.546 0.245 262.881);
+  --sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * Marketing theme tokens.
+ * Scoped to [data-marketing] to match the apps/web pattern.
+ */
+[data-marketing] {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+
+  --shadow-brand-var:
+    -82px 54px 27px 0px rgba(0, 0, 0, 0.01),
+    -52px 35px 25px 0px rgba(0, 0, 0, 0.04),
+    -29px 19px 21px 0px rgba(0, 0, 0, 0.15),
+    -13px 9px 16px 0px rgba(0, 0, 0, 0.25), -3px 2px 9px 0px rgba(0, 0, 0, 0.29);
+}
+
+.dark [data-marketing] {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+
+  /*
+   * Shadows get darker in dark mode, not lighter. Inverting the colour to
+   * white — which is what this was — turns a drop shadow into a halo, because
+   * light does not pool underneath an object. The alphas are raised instead:
+   * black over a near-black background needs more of it to register at all.
+   */
+  --shadow-brand-var:
+    -82px 54px 27px 0px rgba(0, 0, 0, 0.1),
+    -52px 35px 25px 0px rgba(0, 0, 0, 0.22),
+    -29px 19px 21px 0px rgba(0, 0, 0, 0.36),
+    -13px 9px 16px 0px rgba(0, 0, 0, 0.46),
+    -3px 2px 9px 0px rgba(0, 0, 0, 0.55);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  /* Sidebar tokens come with the copied app palette. Nothing here renders a
+   * sidebar today, but keeping the mapping means the two sheets stay diffable
+   * and a future ported surface does not hit the undefined-token trap again. */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  /* Borradh brand blue (from the logo icon). Used for CTAs, stat numbers,
+   * the Claire hub diagram, and key accents across the marketing site. */
+  --color-brand: #255ff6;
+  --color-brand-foreground: #ffffff;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --shadow-brand: var(--shadow-brand-var);
+}
+
+/*
+ * The default border colour — the last piece copied from
+ * `apps/app/src/styles.css`.
+ *
+ * Tailwind v4's preflight resets every element to `border: 0 solid` and leaves
+ * the COLOUR alone, so a bare `border` utility paints in `currentColor`. On
+ * these pages currentColor is the body foreground, i.e. near-black: the cart
+ * panel, the wizard header rule and the round nav buttons all carry a bare
+ * `border` and were rendering with hard black hairlines instead of the soft
+ * token. apps/app never showed this because it sets the default globally, as
+ * below — the ported components were written against that assumption.
+ *
+ * Marketing is unaffected: every border on those pages already names its colour
+ * explicitly (measured — 0 elements change on / and /pricing).
+ */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+}
+
+/*
+ * Long-form legal documents (privacy policy, terms).
+ *
+ * These pages render trusted first-party HTML via dangerouslySetInnerHTML, so
+ * the markup carries no utility classes of its own. Styling it with Tailwind
+ * arbitrary variants (`[&_h2]:text-xl`) proved unreliable — only some of the
+ * candidates were emitted — so the element styles live here as plain CSS.
+ */
+.legal-doc {
+  line-height: 1.7;
+  color: var(--foreground);
+}
+
+.legal-doc h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+}
+
+.legal-doc h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  scroll-margin-top: 6rem;
+}
+
+.legal-doc h3 {
+  font-size: 1.075rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .legal-doc h1 {
+    font-size: 2.25rem;
+  }
+  .legal-doc h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.legal-doc p {
+  margin: 1rem 0;
+}
+
+.legal-doc ul,
+.legal-doc ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.legal-doc ul {
+  list-style: disc;
+}
+.legal-doc ol {
+  list-style: decimal;
+}
+.legal-doc li {
+  margin: 0.5rem 0;
+}
+
+.legal-doc strong {
+  font-weight: 600;
+}
+
+.legal-doc a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  overflow-wrap: break-word;
+}
+
+.legal-doc hr {
+  margin: 2rem 0;
+  border-color: var(--border);
+}
+
+/* Tables carry the US state-privacy disclosures; they must scroll rather than
+ * force the page into horizontal overflow on mobile. */
+.legal-doc table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+}
+
+.legal-doc th,
+.legal-doc td {
+  border: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+.legal-doc th {
+  text-align: left;
+  font-weight: 600;
+}

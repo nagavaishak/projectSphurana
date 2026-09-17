@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-escalate-to-human",
+  "recordedAt": "2026-06-03T10:21:48.598Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Sarah on conv-1 is getting frustrated — escalate this to a human.",
+      "rounds": [
+        {
+          "modelText": "I'll escalate this conversation to a human for you.",
+          "toolUses": [
+            {
+              "name": "confirmEscalateToHuman",
+              "input": {
+                "conversationId": "conv-1"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "escalate_conversation",
+                  "resourceId": "conv-1",
+                  "token": "synthetic-token-confirmEscalateToHuman-conv-1",
+                  "expiresAt": "2026-06-03T10:51:45.789Z",
+                  "summary": {
+                    "title": "Escalate to a human",
+                    "fields": [
+                      {
+                        "label": "Customer",
+                        "value": "Sarah Murphy"
+                      },
+                      {
+                        "label": "Channel",
+                        "value": "WhatsApp"
+                      },
+                      {
+                        "label": "Effect",
+                        "value": "Pauses the bot; a teammate takes over"
+                      }
+                    ]
+                  },
+                  "executeToolName": "confirmEscalateToHuman"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "**Escalate to a human**\n\n- **Customer:** Sarah Murphy\n- **Channel:** WhatsApp\n- **Effect:** Pauses the bot; a teammate takes over\n\nShould I go ahead and escalate this to your team?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

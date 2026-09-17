@@ -1,0 +1,11 @@
+---
+export const prerender = false;
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ShopGrid } from '@/components/shop/public-shop';
+import { resolveUpstreamApiUrl } from '@/lib/config';
+const slug = Astro.params.slug ?? '';
+const response = await fetch(`${resolveUpstreamApiUrl()}/public/shop/${encodeURIComponent(slug)}`);
+if (!response.ok) { Astro.response.status = response.status; }
+const data = response.ok ? await response.json() : { organization: { currency: 'EUR' }, products: [] };
+---
+<BaseLayout title="Shop" description="Shop retail products" theme="light"><ShopGrid client:load products={data.products} currency={data.organization.currency ?? 'EUR'} organizationName={data.organization.name ?? 'Shop'} basePath={`/sites/${slug}`} /></BaseLayout>

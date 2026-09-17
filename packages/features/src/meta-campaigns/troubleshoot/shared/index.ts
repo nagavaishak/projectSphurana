@@ -1,0 +1,15 @@
+export {
+  HIGH_INTENT_STAGES,
+  MIN_ENGAGED_USER_MESSAGES,
+  SPEND_THRESHOLD_EUR,
+  SPEND_THRESHOLD_USD_CENTS,
+  hasSpentEnough,
+  describeHighIntent,
+  isHighIntentConversation,
+  getHighIntentConversationStats,
+  getAttributedConversationSignals,
+  type ConversationIntentSignal,
+  type AttributedConversationSignal,
+  type HighIntentStats,
+  type GetHighIntentConversationStatsInput,
+} from './high-intent.js';

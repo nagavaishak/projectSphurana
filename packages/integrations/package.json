@@ -1,0 +1,126 @@
+{
+  "name": "@borradh-workspace/integrations",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json"],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./facebook": {
+      "types": "./dist/facebook/index.d.ts",
+      "import": "./dist/facebook/index.js",
+      "default": "./dist/facebook/index.js"
+    },
+    "./email": {
+      "types": "./dist/email/index.d.ts",
+      "import": "./dist/email/index.js",
+      "default": "./dist/email/index.js"
+    },
+    "./sms": {
+      "types": "./dist/sms/index.d.ts",
+      "import": "./dist/sms/index.js",
+      "default": "./dist/sms/index.js"
+    },
+    "./whatsapp": {
+      "types": "./dist/whatsapp/index.d.ts",
+      "import": "./dist/whatsapp/index.js",
+      "default": "./dist/whatsapp/index.js"
+    },
+    "./voice": {
+      "types": "./dist/voice/index.d.ts",
+      "import": "./dist/voice/index.js",
+      "default": "./dist/voice/index.js"
+    },
+    "./encryption": {
+      "types": "./dist/encryption/index.d.ts",
+      "import": "./dist/encryption/index.js",
+      "default": "./dist/encryption/index.js"
+    },
+    "./meta-ads": {
+      "types": "./dist/meta-ads/index.d.ts",
+      "import": "./dist/meta-ads/index.js",
+      "default": "./dist/meta-ads/index.js"
+    },
+    "./meta-capi": {
+      "types": "./dist/meta-capi/index.d.ts",
+      "import": "./dist/meta-capi/index.js",
+      "default": "./dist/meta-capi/index.js"
+    },
+    "./meta-domains": {
+      "types": "./dist/meta-domains/index.d.ts",
+      "import": "./dist/meta-domains/index.js",
+      "default": "./dist/meta-domains/index.js"
+    },
+    "./meta-contract": {
+      "types": "./dist/meta-contract/index.d.ts",
+      "import": "./dist/meta-contract/index.js",
+      "default": "./dist/meta-contract/index.js"
+    },
+    "./meta-messaging": {
+      "types": "./dist/meta-messaging/index.d.ts",
+      "import": "./dist/meta-messaging/index.js",
+      "default": "./dist/meta-messaging/index.js"
+    },
+    "./stripe": {
+      "types": "./dist/stripe/index.d.ts",
+      "import": "./dist/stripe/index.js",
+      "default": "./dist/stripe/index.js"
+    },
+    "./loops": {
+      "types": "./dist/loops/index.d.ts",
+      "import": "./dist/loops/index.js",
+      "default": "./dist/loops/index.js"
+    },
+    "./notion": {
+      "types": "./dist/notion/index.d.ts",
+      "import": "./dist/notion/index.js",
+      "default": "./dist/notion/index.js"
+    },
+    "./shared": {
+      "types": "./dist/shared/index.d.ts",
+      "import": "./dist/shared/index.js",
+      "default": "./dist/shared/index.js"
+    },
+    "./domains": {
+      "types": "./dist/vercel-domains/index.d.ts",
+      "import": "./dist/vercel-domains/index.js",
+      "default": "./dist/vercel-domains/index.js"
+    },
+    "./webhooks": {
+      "types": "./dist/webhooks/index.d.ts",
+      "import": "./dist/webhooks/index.js",
+      "default": "./dist/webhooks/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev": "tsc --build tsconfig.lib.json --watch --preserveWatchOutput",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "test": "vitest run",
+    "lint": "biome check src/ --write"
+  },
+  "dependencies": {
+    "@borradh-workspace/env": "workspace:*",
+    "@borradh-workspace/http": "workspace:*",
+    "@borradh-workspace/labels": "workspace:*",
+    "@borradh-workspace/observability": "workspace:*",
+    "@aws-sdk/client-ses": "^3.699.0",
+    "@aws-sdk/client-sns": "^3.699.0",
+    "@notionhq/client": "^2.2.15",
+    "loops": "^4.0.0",
+    "sharp": "^0.33.5",
+    "stripe": "^17.5.0",
+    "tslib": "^2.3.0",
+    "zod": "^3.23.8"
+  }
+}

@@ -1,0 +1,4 @@
+# k6 run artifacts — regenerated on every run (handleSummary in helpers/summary.js)
+summary.json
+summary.md
+summary-metrics.json

@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "../../packages/observability" },
+    { "path": "../../packages/redis" },
+    { "path": "./tsconfig.app.json" }
+  ]
+}

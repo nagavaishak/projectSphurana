@@ -1,0 +1,41 @@
+procs:
+  docker:
+    cmd: ["docker", "compose", "up"]
+    cwd: .
+    stop: { send-keys: ["<C-c>"] }
+
+  packages:
+    cmd: ["pnpm", "turbo", "watch", "dev:packages", "--filter=./packages/*", "--concurrency=30"]
+    cwd: .
+
+  api:
+    cmd: ["pnpm", "exec", "nodemon"]
+    cwd: apps/api
+    env:
+      FORCE_COLOR: "1"
+
+  app:
+    cmd: ["pnpm", "exec", "vite"]
+    cwd: apps/app
+    env:
+      FORCE_COLOR: "1"
+
+  video-worker:
+    cmd: ["pnpm", "exec", "tsx", "watch", "--env-file=../../.env", "src/main.ts"]
+    cwd: apps/video-worker
+    env:
+      FORCE_COLOR: "1"
+
+  tunnel:
+    cmd:
+      [
+        "pnpm",
+        "exec",
+        "env-cmd",
+        "-f",
+        ".env",
+        "sh",
+        "-c",
+        'cloudflared tunnel run "$TUNNEL_NAME"',
+      ]
+    cwd: .

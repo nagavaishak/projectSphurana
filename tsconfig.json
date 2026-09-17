@@ -1,0 +1,55 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/api-e2e"
+    },
+    {
+      "path": "./apps/api"
+    },
+    {
+      "path": "./packages/database"
+    },
+    {
+      "path": "./packages/env"
+    },
+    {
+      "path": "./packages/auth"
+    },
+    {
+      "path": "./packages/observability"
+    },
+    {
+      "path": "./packages/features"
+    },
+    {
+      "path": "./packages/email"
+    },
+    {
+      "path": "./packages/api-client"
+    },
+    {
+      "path": "./packages/testing"
+    },
+    {
+      "path": "./packages/redis"
+    },
+    {
+      "path": "./packages/storage"
+    },
+    {
+      "path": "./packages/remotion"
+    },
+    {
+      "path": "./packages/video-processing"
+    },
+    {
+      "path": "./apps/video-worker"
+    },
+    {
+      "path": "./packages/integrations"
+    }
+  ]
+}

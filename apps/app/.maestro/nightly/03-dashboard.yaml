@@ -1,0 +1,28 @@
+# NIGHTLY-ONLY (not a per-PR gate). Mirrors apps/app-e2e/src/dashboard.spec.ts:
+# after sign-in the bare user lands on /dashboard/home with a "Welcome back, …"
+# greeting.
+#
+# Why nightly, not per-PR: the heavy HomeNew render repeatedly crashes the app
+# on the software-GPU CI emulator even at 8GB RAM (logcat: lmkd memory pressure
+# + RescueParty repeated-crash escalation; the app vanishes to the launcher).
+# Lightweight flows (01-boot, 02-sign-in) are stable per-PR; heavy renders like
+# this belong on a real device / device farm (Firebase Test Lab). Parked here
+# so it runs nightly without blocking PRs and is ready to move to the farm tier.
+#
+# Each flow runs in its own isolated, logged-out session (the CI wrapper
+# pm-clears before every flow), so we reuse the login via runFlow rather than
+# duplicating it — 02-sign-in leaves the app authenticated on the landing page.
+#
+# androidWebViewHierarchy: devtools — required (WebView DOM; see
+# scripts/maestro-android.sh, which waits for the DevTools socket).
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# Path is relative to this file (in .maestro/nightly/) → the shared login flow.
+- runFlow: ../02-sign-in.yaml
+# HomeNew greeting heading — the bare user's landing surface. Generous wait
+# covers the post-auth redirect + HomeNew data load.
+- extendedWaitUntil:
+    visible: 'Welcome back'
+    timeout: 30000
+- takeScreenshot: dashboard-home

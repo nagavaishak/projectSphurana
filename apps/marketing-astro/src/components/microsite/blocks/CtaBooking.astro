@@ -1,0 +1,111 @@
+---
+import { BLOCK_VARIANTS } from '@borradh-workspace/web-shared';
+import type { CtaBookingProps } from '@borradh-workspace/web-shared';
+import { resolveVariant, type MicrositeData } from '../data';
+import { editableAttrs } from '../edit/editable';
+
+const VARIANTS = BLOCK_VARIANTS['cta_booking'];
+
+/**
+ * The primary conversion. The href is NEVER built from a config URL here — it
+ * comes from `data.bookingUrl`, resolved once by the page.
+ */
+interface Props {
+  props: CtaBookingProps;
+  variant: string;
+  data: MicrositeData;
+  /** True ONLY on a token-gated draft preview. Never on a published render. */
+  editable?: boolean;
+  blockId?: string;
+}
+
+const { props, variant, data, editable = false, blockId } = Astro.props;
+
+/** §2: headline, subtext, buttonLabel. The HREF is not editable copy. */
+const attrs = (field: string) =>
+  editableAttrs(editable, blockId, 'cta_booking', field);
+const v = resolveVariant(variant, VARIANTS);
+
+const headline = props?.headline?.trim() ?? '';
+const subtext = props?.subtext?.trim();
+const buttonLabel = props?.buttonLabel?.trim() || 'Book now';
+const href = data.bookingUrl;
+---
+
+{
+  (headline || href) && (
+    <section class:list={['ms-section', 'ms-cta', `ms-cta--${v}`]}>
+      <div class="ms-container ms-cta__inner">
+        {headline && <h2 class="ms-cta__headline" {...attrs('headline')}>
+            {headline}
+          </h2>}
+        {subtext && <p class="ms-cta__subtext" {...attrs('subtext')}>
+            {subtext}
+          </p>}
+        {href && (
+          <a class="ms-button ms-cta__button" href={href} {...attrs('buttonLabel')}>
+            {buttonLabel}
+          </a>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .ms-cta {
+    background: var(--brand-primary);
+    color: var(--brand-on-primary);
+  }
+
+  .ms-cta__inner {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .ms-cta__headline {
+    color: var(--brand-on-primary);
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  }
+
+  .ms-cta__subtext {
+    max-width: 48ch;
+    color: color-mix(in srgb, var(--brand-on-primary) 85%, transparent);
+  }
+
+  /*
+   * On the primary fill the themed button would be primary-on-primary, so the
+   * CTA button inverts: surface fill, primary text. Still var-only.
+   */
+  .ms-cta__button {
+    margin-top: 0.75rem;
+    background: var(--brand-surface);
+    border-color: var(--brand-surface);
+    color: var(--brand-primary);
+  }
+
+  /* panel: a contained card on the surface rather than a full-width band. */
+  .ms-cta--panel {
+    background: var(--brand-surface);
+    color: var(--brand-neutral);
+  }
+
+  .ms-cta--panel .ms-cta__inner {
+    padding: calc(var(--ms-section-y) * 0.75) 1.5rem;
+    border-radius: var(--ms-radius);
+    background: var(--brand-accent);
+    color: var(--brand-on-primary);
+  }
+
+  .ms-cta--panel .ms-cta__headline {
+    color: var(--brand-on-primary);
+  }
+
+  .ms-cta--panel .ms-cta__button {
+    background: var(--brand-surface);
+    border-color: var(--brand-surface);
+    color: var(--brand-accent);
+  }
+</style>

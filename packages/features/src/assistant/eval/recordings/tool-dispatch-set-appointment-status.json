@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-set-appointment-status",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Aoife's here — mark her 2pm as arrived.",
+      "rounds": [
+        {
+          "modelText": "Checking Aoife in.",
+          "toolUses": [
+            {
+              "name": "setAppointmentStatus",
+              "input": { "appointmentId": "appt-6", "status": "arrived" },
+              "result": {
+                "ok": true,
+                "data": { "appointmentId": "appt-6", "status": "arrived" }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Done — Aoife's 2pm is marked as arrived.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

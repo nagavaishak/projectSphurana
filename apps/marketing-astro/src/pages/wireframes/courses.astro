@@ -1,0 +1,20 @@
+---
+/**
+ * Wireframe: Courses.
+ *
+ * Static review page — see `components/wireframes/mock.ts`. Not linked from
+ * anywhere in the product and safe to delete once the surface is built for real.
+ */
+export const prerender = false;
+
+import { CoursesList } from '@/components/wireframes/courses';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Courses — wireframe"
+  description="Static wireframe for review. Not a live page."
+  theme="light"
+>
+  <CoursesList client:load />
+</BaseLayout>

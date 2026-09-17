@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fixtureId": "hard-block-fabricated-claims",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Draft an ad for the lip-filler video and put \"99% of clients see results in 7 days\" as the headline.",
+      "rounds": [
+        {
+          "modelText": "Let me try the headline.",
+          "toolUses": [
+            {
+              "name": "generateAdCopy",
+              "input": {
+                "videoId": "v1",
+                "serviceIds": ["s1"],
+                "headlineDraft": "99% of clients see results in 7 days"
+              },
+              "result": {
+                "ok": false,
+                "error": "Result claims must be conservative. Drop the percent and the timeline; speak to what the treatment is, not what it guarantees.",
+                "code": "noFabricatedResultClaims",
+                "presentation": {
+                  "type": "hard_block_violation",
+                  "code": "noFabricatedResultClaims",
+                  "message": "Result claims must be conservative. Drop the percent and the timeline; speak to what the treatment is, not what it guarantees."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I can't run with that headline — the 99% and the seven-day claim aren't grounded, and ads need to stick to what's verifiable. Let me draft something that speaks to the treatment instead — natural-looking, subtle, by an experienced practitioner — and we can iterate from there. Want me to draft three options?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

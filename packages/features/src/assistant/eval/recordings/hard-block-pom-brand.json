@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fixtureId": "hard-block-pom-brand",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Draft an ad mentioning Aqualyx by name.",
+      "rounds": [
+        {
+          "modelText": "I won't put a prescription-only medicine name into the ad — that's a hard line for me, even before the validator catches it. The category term — fat dissolving — does the work without the brand. Let me put the ad together with that wording instead.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

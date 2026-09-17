@@ -1,0 +1,59 @@
+---
+import type { Block } from '@borradh-workspace/web-shared';
+import type { MicrositeData } from './data';
+import CtaBooking from './blocks/CtaBooking.astro';
+import Gallery from './blocks/Gallery.astro';
+import Hero from './blocks/Hero.astro';
+import MapLocation from './blocks/MapLocation.astro';
+import OpeningHours from './blocks/OpeningHours.astro';
+import RichText from './blocks/RichText.astro';
+import Services from './blocks/Services.astro';
+import Team from './blocks/Team.astro';
+
+/**
+ * Switch on `block.type`.
+ *
+ * `blocks` is a jsonb column, so what arrives here is untyped at runtime no
+ * matter what the contract says. An unknown type renders NOTHING and does not
+ * throw — a block written by a newer agent build must not take down a
+ * tenant's whole page. Unknown VARIANTS are handled one level down, in each
+ * block's `resolveVariant`.
+ */
+interface Props {
+  block: Block;
+  data: MicrositeData;
+  /** Position on the page. Index 0 gets LCP priority for its image. */
+  index?: number;
+  /**
+   * Inline edit affordances. TRUE ONLY on the token-gated draft preview route;
+   * a published render leaves this at its default and every block emits exactly
+   * the markup it emitted before this feature existed.
+   */
+  editable?: boolean;
+}
+
+const { block, data, index = 0, editable = false } = Astro.props;
+
+const type = block?.type as Block['type'] | undefined;
+const variant = typeof block?.variant === 'string' ? block.variant : '';
+// biome-ignore lint/suspicious/noExplicitAny: the union is narrowed by `type`
+// below; jsonb gives no runtime guarantee, so each block re-validates its own
+// props defensively.
+const props = (block?.props ?? {}) as any;
+
+/**
+ * The commit address. jsonb gives no guarantee a block has one, and a block
+ * without an id cannot be committed against — `editableAttrs` drops the
+ * affordance rather than offering an edit the canvas would have to discard.
+ */
+const blockId = typeof block?.id === 'string' ? block.id : undefined;
+---
+
+{type === 'hero' && <Hero props={props} variant={variant} data={data} editable={editable} blockId={blockId} priority={index === 0} />}
+{type === 'services' && <Services props={props} variant={variant} data={data} editable={editable} blockId={blockId} />}
+{type === 'team' && <Team props={props} variant={variant} data={data} editable={editable} blockId={blockId} />}
+{type === 'gallery' && <Gallery props={props} variant={variant} data={data} editable={editable} blockId={blockId} />}
+{type === 'opening_hours' && <OpeningHours props={props} variant={variant} data={data} editable={editable} blockId={blockId} />}
+{type === 'map_location' && <MapLocation props={props} variant={variant} data={data} editable={editable} blockId={blockId} />}
+{type === 'cta_booking' && <CtaBooking props={props} variant={variant} data={data} editable={editable} blockId={blockId} />}
+{type === 'rich_text' && <RichText props={props} variant={variant} editable={editable} blockId={blockId} />}

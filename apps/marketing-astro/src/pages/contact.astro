@@ -1,0 +1,14 @@
+---
+import { ContactPage } from '@/components/pages/contact';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="Contact Us | Borradh"
+  description="Get in touch with the Borradh team. Book a demo, ask questions, or learn how we can help your clinic grow."
+>
+  <ContactPage client:load config={config} />
+</BaseLayout>

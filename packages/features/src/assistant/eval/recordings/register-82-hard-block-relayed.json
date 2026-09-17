@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fixtureId": "register-82-hard-block-relayed",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Bump the daily budget on the winter campaign up to $40 a day.",
+      "rounds": [
+        {
+          "modelText": "Let me set that budget change up.",
+          "toolUses": [
+            {
+              "name": "confirmUpdateBudget",
+              "input": {
+                "metaCampaignId": "mc-1",
+                "dailyBudget": 4000,
+                "campaignName": "Winter promo"
+              },
+              "result": {
+                "ok": false,
+                "error": "That campaign is still in Meta's learning phase (day 4 of 10). Scaling it now resets the algorithm.",
+                "code": "noScalingBeforeLearningExits",
+                "presentation": {
+                  "type": "hard_block_violation",
+                  "code": "noScalingBeforeLearningExits",
+                  "message": "That campaign is still in Meta's learning phase (day 4 of 10). Scaling it now resets the algorithm — let's wait until day 10 and revisit."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I can't raise that budget right now — the campaign is still in Meta's learning phase (day 4 of 10), and scaling it now would reset the algorithm's progress. Let's revisit once it exits, around day 10, and I'll bump it to $40/day then.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

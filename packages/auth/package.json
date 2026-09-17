@@ -1,0 +1,59 @@
+{
+  "name": "@borradh-workspace/auth",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json"],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js",
+      "default": "./dist/server.js"
+    },
+    "./patient": {
+      "types": "./dist/patient.d.ts",
+      "import": "./dist/patient.js",
+      "default": "./dist/patient.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js",
+      "default": "./dist/client.js"
+    },
+    "./magic-link-binding": {
+      "types": "./dist/magic-link-binding.d.ts",
+      "import": "./dist/magic-link-binding.js",
+      "default": "./dist/magic-link-binding.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev": "tsc --build tsconfig.lib.json --watch --preserveWatchOutput",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "lint": "biome check src/ --write",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@borradh-workspace/database": "workspace:*",
+    "@borradh-workspace/email": "workspace:*",
+    "@borradh-workspace/env": "workspace:*",
+    "@borradh-workspace/observability": "workspace:*",
+    "@borradh-workspace/redis": "workspace:*",
+    "@upstash/redis": "^1.35.7",
+    "better-auth": "1.4.7"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}

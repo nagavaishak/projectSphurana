@@ -1,0 +1,39 @@
+{
+  "name": "@borradh-workspace/video-worker",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file=../../.env src/main.ts",
+    "dev:video-worker": "tsx watch --env-file=../../.env src/main.ts",
+    "build": "tsup src/main.ts src/asset-analysis-processor.ts src/graphic-render-processor.ts --format esm --target node20 --outDir dist --sourcemap",
+    "start": "node dist/main.js",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit --incremental --tsBuildInfoFile dist/typecheck.tsbuildinfo"
+  },
+  "dependencies": {
+    "@borradh-workspace/ai": "workspace:*",
+    "@borradh-workspace/database": "workspace:*",
+    "@borradh-workspace/env": "workspace:*",
+    "@borradh-workspace/features": "workspace:*",
+    "@borradh-workspace/http": "workspace:*",
+    "@borradh-workspace/integrations": "workspace:*",
+    "@borradh-workspace/observability": "workspace:*",
+    "@borradh-workspace/redis": "workspace:*",
+    "@borradh-workspace/storage": "workspace:*",
+    "@borradh-workspace/video-processing": "workspace:*",
+    "@borradh-workspace/video-templates": "workspace:*",
+    "bullmq": "^5.34.8",
+    "drizzle-orm": "0.45.2",
+    "expo-server-sdk": "^3.13.0"
+  },
+  "optionalDependencies": {
+    "@img/sharp-libvips-linux-x64": "1.0.4",
+    "@img/sharp-linux-x64": "0.33.5"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "tsx": "^4.0.0",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2"
+  }
+}

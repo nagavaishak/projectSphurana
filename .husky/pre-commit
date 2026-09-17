@@ -1,0 +1,56 @@
+#!/bin/sh
+# Refuse direct commits to protected branches.
+# All changes to main and staging must go through a pull request.
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+if [ "$branch" = "main" ] || [ "$branch" = "staging" ]; then
+  echo "Refusing commit on protected branch: $branch"
+  echo "Create a feature branch first: git checkout -b feat/your-branch"
+  exit 1
+fi
+
+# Refuse schema/migration commits if origin/staging isn't an ancestor of HEAD.
+# Forces a rebase before `pnpm db:generate` so the snapshot chain stays
+# linear instead of forking — the rot we lived through pre-squash.
+#
+# Skip during merges: a merge commit *brings* staging in, so by definition
+# staging will be an ancestor after the commit. The staleness check would
+# false-positive on merge commits that include staging's own schema changes.
+schema_changes=$(git diff --cached --name-only | grep -E '^packages/database/(src/schema/|drizzle/)' || true)
+gitdir=$(git rev-parse --git-dir)
+if [ -n "$schema_changes" ] && [ ! -f "$gitdir/MERGE_HEAD" ]; then
+  if ! git ls-remote --exit-code --heads origin staging >/dev/null 2>&1; then
+    :
+  elif ! git fetch --quiet origin staging 2>/dev/null; then
+    echo "warning: could not fetch origin/staging — skipping ancestor check"
+  elif ! git merge-base --is-ancestor origin/staging HEAD; then
+    echo "Refusing schema/migration commit: origin/staging is not an ancestor of HEAD."
+    echo
+    echo "Generating against a stale base produces a forked snapshot chain."
+    echo "Rebase first, then re-run pnpm db:generate:"
+    echo
+    echo "  git fetch origin staging"
+    echo "  git rebase origin/staging"
+    echo "  pnpm db:generate --name=<your-feature>"
+    echo
+    echo "Files that triggered this check:"
+    echo "$schema_changes" | sed 's/^/  /'
+    exit 1
+  fi
+fi
+
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm_cmd="pnpm"
+elif command -v pnpm.CMD >/dev/null 2>&1; then
+  pnpm_cmd="pnpm.CMD"
+elif [ -n "$LOCALAPPDATA" ] && [ -f "$LOCALAPPDATA/pnpm/pnpm.CMD" ]; then
+  pnpm_cmd="$LOCALAPPDATA/pnpm/pnpm.CMD"
+elif command -v corepack >/dev/null 2>&1; then
+  pnpm_cmd="corepack pnpm"
+else
+  echo "pnpm is required for pre-commit checks but was not found on PATH."
+  echo "Install pnpm or enable it with: corepack enable"
+  exit 127
+fi
+
+$pnpm_cmd exec lint-staged
+$pnpm_cmd turbo run test

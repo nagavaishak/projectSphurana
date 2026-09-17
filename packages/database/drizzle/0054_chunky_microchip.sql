@@ -1,0 +1,1 @@
+ALTER TABLE "graphic" ADD COLUMN "template_slug" text;

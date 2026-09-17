@@ -1,0 +1,67 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "useDefineForClassFields": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@borradh-workspace/api-client": [
+        "../../packages/api-client/src/index.ts"
+      ],
+      "@borradh-workspace/api-client/*": [
+        "../../packages/api-client/src/*/index.ts"
+      ],
+      "@borradh-workspace/contracts": ["../../packages/contracts/src/index.ts"],
+      "@borradh-workspace/contracts/*": [
+        "../../packages/contracts/src/*/index.ts"
+      ],
+      "@borradh-workspace/env": ["../../packages/env/src/index.ts"],
+      "@borradh-workspace/env/*": ["../../packages/env/src/*.ts"],
+      "@borradh-workspace/features": ["../../packages/features/src/index.ts"],
+      "@borradh-workspace/features/*": [
+        "../../packages/features/src/*/index.ts"
+      ],
+      "@borradh-workspace/features/auth/schemas": [
+        "../../packages/features/src/auth/schemas.ts"
+      ],
+      "@borradh-workspace/features/campaigns/content": [
+        "../../packages/features/src/campaigns/_shared/campaign-content.ts"
+      ],
+      "@borradh-workspace/features/organizations/schemas": [
+        "../../packages/features/src/organizations/schemas.ts"
+      ],
+      "@borradh-workspace/web-shared": [
+        "../../packages/web-shared/src/index.ts"
+      ]
+    },
+    "types": ["node", "vite/client", "google.maps"],
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "ios",
+    "android",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ],
+  "references": [
+    { "path": "../../packages/api-client" },
+    { "path": "../../packages/contracts" },
+    { "path": "../../packages/features" },
+    { "path": "../../packages/web-shared" }
+  ]
+}

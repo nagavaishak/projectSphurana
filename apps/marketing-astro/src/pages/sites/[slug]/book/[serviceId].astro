@@ -1,0 +1,103 @@
+---
+/**
+ * `/sites/{org}/book/{serviceId}` — THE LEGACY SERVICE DEEP LINK.
+ *
+ * This shape predates branches: it is in ads, in Claire's replies, in emails
+ * and on microsite CTAs, so it keeps working forever. What it can no longer do
+ * is drop the customer straight into the wizard, because that wizard would
+ * silently be scoped to the org's primary branch.
+ *
+ * So it behaves exactly like `/book` — same three outcomes, same module — with
+ * the SERVICE CARRIED THROUGH THE PICK: every chooser CTA points at
+ * `/l/{branch}/book/{serviceId}`, and a single-branch org 302s straight to that
+ * same URL. The customer never loses the thing they clicked.
+ *
+ * It is deliberately NOT a redirect to `/book?service=…`. A redirect would
+ * change the URL under an ad click before the page rendered (breaking
+ * click-through attribution on the destination URL that was submitted), and it
+ * would put the service in a query string that `/l/{branch}/book/{serviceId}`
+ * does not read.
+ */
+export const prerender = false;
+
+import { BookingWizardPage } from '@/components/booking';
+import LocationChooser from '@/components/booking/location-chooser.astro';
+import {
+  BRANCH_SEGMENT,
+  branchBookingPath,
+} from '@/components/booking/location-chooser';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+import { micrositeLink } from '@/lib/microsite-org';
+import {
+  decideBookingEntry,
+  fetchBookingLocations,
+} from '../_booking-locations';
+import { resolveBookingOrg } from '../_resolve-org';
+import { humaniseSlug } from '../_humanise-slug';
+
+const { slug: organizationSlug, orgContext } = resolveBookingOrg(
+  Astro.url,
+  Astro.params.slug
+);
+const serviceId = Astro.params.serviceId ?? '';
+const config = getPublicConfig();
+
+/**
+ * `/book/l` with no branch after it matches this route with `serviceId === 'l'`
+ * — a service that cannot exist, because `l` is the reserved branch segment.
+ * Send it to the chooser rather than letting the wizard hunt for a service by
+ * that id and render "not found".
+ */
+const chooserUrl = micrositeLink(orgContext, '/book') + Astro.url.search;
+if (serviceId === BRANCH_SEGMENT) {
+  return Astro.redirect(chooserUrl, 302);
+}
+
+const entry = decideBookingEntry(await fetchBookingLocations(organizationSlug));
+
+// 302 for the same reason as `/book` — this is a fact about the org's current
+// branch list, not a permanent move of the URL shape.
+const redirectTo =
+  entry.kind === 'single'
+    ? micrositeLink(
+        orgContext,
+        branchBookingPath(entry.branch.segment, serviceId)
+      ) + Astro.url.search
+    : null;
+
+if (redirectTo) {
+  return Astro.redirect(redirectTo, 302);
+}
+
+const displayName =
+  entry.kind === 'chooser'
+    ? entry.payload.organizationName
+    : humaniseSlug(organizationSlug);
+---
+
+<BaseLayout
+  title={`Book a treatment at ${displayName}`}
+  description={entry.kind === 'chooser'
+    ? `Choose a location to book your treatment at ${displayName}.`
+    : `Book your treatment at ${displayName}. Pick a time that suits you.`}
+  theme="light"
+>
+  {
+    entry.kind === 'chooser' ? (
+      <LocationChooser
+        payload={entry.payload}
+        orgContext={orgContext}
+        serviceId={serviceId}
+      />
+    ) : (
+      <BookingWizardPage
+        client:load
+        config={config}
+        organizationSlug={organizationSlug}
+        orgContext={orgContext}
+        initialServiceId={serviceId}
+      />
+    )
+  }
+</BaseLayout>

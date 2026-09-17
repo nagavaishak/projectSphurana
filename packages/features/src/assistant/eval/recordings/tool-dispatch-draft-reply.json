@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-draft-reply",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 5,
+  "turns": [
+    {
+      "userMessage": "Draft a reply to Sarah on conv-1 confirming Tuesday at 10am.",
+      "rounds": [
+        {
+          "modelText": "Drafting the confirmation.",
+          "toolUses": [
+            {
+              "name": "draftReply",
+              "input": {
+                "conversationId": "conv-1",
+                "intent": "confirm Tuesday at 10am",
+                "messageLimit": 10
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "conversationId": "conv-1",
+                  "draft": "Hi Sarah, Tuesday at 10am works grand. I'll see you then — pop a reply if anything changes.",
+                  "customerName": "Sarah Murphy",
+                  "platform": "whatsapp",
+                  "suggestedSendAction": "send_message"
+                },
+                "presentation": {
+                  "type": "draft_reply",
+                  "conversationId": "conv-1",
+                  "draft": "Hi Sarah, Tuesday at 10am works grand. I'll see you then — pop a reply if anything changes.",
+                  "customerName": "Sarah Murphy",
+                  "platform": "whatsapp",
+                  "suggestedSendAction": "send_message"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Here's the draft for Tuesday at 10am — review it on the card and hit Send when you're happy. Edit if you want to change the wording.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

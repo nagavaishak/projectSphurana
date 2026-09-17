@@ -1,0 +1,272 @@
+{
+  "version": 1,
+  "fixtureId": "cross-feature-weekly-review",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 7,
+  "turns": [
+    {
+      "userMessage": "Give me my weekly read.",
+      "rounds": [
+        {
+          "modelText": "Pulling the picture across leads, ads, customer chats, and the book.",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "manage-leads" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "manage-leads",
+                  "newToolsAvailable": [
+                    "listLeads",
+                    "searchLeads",
+                    "getLeadStats",
+                    "summariseRecentLeads"
+                  ],
+                  "promptFragment": "## Working with leads"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "summariseRecentLeads",
+              "input": { "timeframe": "this_week" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "timeframe": "this_week",
+                  "windowStart": "2026-04-18T00:00:00.000Z",
+                  "windowEnd": "2026-04-25T00:00:00.000Z",
+                  "totalLeads": 18,
+                  "previousLeads": 14,
+                  "deltaPercent": 28,
+                  "byStatus": {
+                    "new": 8,
+                    "contacted": 6,
+                    "qualified": 3,
+                    "won": 1,
+                    "lost": 0
+                  },
+                  "bySource": { "facebook": 11, "instagram": 5, "website": 2 },
+                  "topLeads": [
+                    {
+                      "id": "lead-aoife",
+                      "firstName": "Aoife",
+                      "lastName": "Kennedy",
+                      "email": "aoife@example.com",
+                      "phone": null,
+                      "status": "qualified",
+                      "source": "facebook",
+                      "createdAt": "2026-04-24T11:00:00.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "optimise-ads" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "optimise-ads",
+                  "newToolsAvailable": [
+                    "checkMetaIntegration",
+                    "listCampaigns",
+                    "listRecentAds",
+                    "getAdInsights",
+                    "getCampaignInsights",
+                    "suggestAdOptimizations",
+                    "confirmPauseAd",
+                    "executePauseAd",
+                    "confirmUpdateBudget",
+                    "executeUpdateBudget"
+                  ],
+                  "promptFragment": "## Reviewing and optimising ads"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "suggestAdOptimizations",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "timeframe": "last_7_days",
+                  "activeCampaigns": 3,
+                  "totals": {
+                    "spend": 1260,
+                    "leads": 30,
+                    "cplAverage": 42
+                  },
+                  "recommendations": [
+                    {
+                      "adId": "ad-lip-filler-1",
+                      "adName": "Lip filler — winter",
+                      "kind": "creative_refresh",
+                      "reason": "Frequency 4.2; CTR fell from 1.8% to 0.9% week-over-week.",
+                      "severity": "high"
+                    }
+                  ],
+                  "warnings": []
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "manage-customer-chats" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "manage-customer-chats",
+                  "newToolsAvailable": [
+                    "listOpenConversations",
+                    "summariseConversation",
+                    "summariseConversationsThisWeek",
+                    "draftReply",
+                    "confirmEscalateToHuman",
+                    "executeEscalateToHuman",
+                    "confirmAssignConversation",
+                    "executeAssignConversation"
+                  ],
+                  "promptFragment": "## Working with customer conversations"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "summariseConversationsThisWeek",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "timeframe": {
+                    "since": "2026-04-18T00:00:00.000Z",
+                    "until": "2026-04-25T00:00:00.000Z"
+                  },
+                  "counts": {
+                    "totalThreads": 14,
+                    "openThreads": 5,
+                    "escalatedThreads": 1,
+                    "closedThreads": 8
+                  },
+                  "byChannel": {
+                    "whatsapp": 6,
+                    "facebook_messenger": 5,
+                    "instagram_dm": 3
+                  },
+                  "topIntents": [],
+                  "responseTime": { "p50Ms": 720000, "p95Ms": 9000000 },
+                  "oldestPending": {
+                    "conversationId": "conv-stale-james",
+                    "customerName": "James Carter",
+                    "channel": "facebook_messenger",
+                    "hoursPending": 30
+                  }
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "meta_loadSkill",
+              "input": { "skillId": "manage-appointments" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "loaded": true,
+                  "skillId": "manage-appointments",
+                  "newToolsAvailable": [
+                    "findOpenSlots",
+                    "listAppointments",
+                    "summariseUpcomingDay",
+                    "bookAppointment",
+                    "rescheduleAppointment",
+                    "cancelAppointment"
+                  ],
+                  "promptFragment": "## Appointments"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "summariseUpcomingDay",
+              "input": { "date": "2026-04-26" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "date": "2026-04-26",
+                  "totalScheduled": 5,
+                  "totalCancelled": 0,
+                  "totalCompleted": 0,
+                  "totalNoShow": 0,
+                  "byPractitioner": [
+                    {
+                      "practitionerLabel": "Niamh",
+                      "appointmentCount": 4,
+                      "earliest": "2026-04-26T09:00:00.000Z",
+                      "latest": "2026-04-26T15:30:00.000Z"
+                    },
+                    {
+                      "practitionerLabel": "Aoife",
+                      "appointmentCount": 1,
+                      "earliest": "2026-04-26T11:00:00.000Z",
+                      "latest": "2026-04-26T11:30:00.000Z"
+                    }
+                  ],
+                  "upcoming": []
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "**Leads** — 18 this week, up 28% from last. 11 from Facebook, 5 Instagram, 2 website. Aoife Kennedy is the freshest qualified one.\n\n**Ads** — 3 active campaigns, €1,260 spend, 30 leads, CPL €42 average. The lip-filler ad pushed past frequency 4 and CTR halved week-over-week — fatigue.\n\n**Customer chats** — 14 threads, 5 still open, p50 response 12 minutes. One thread is 30 hours stale: James Carter on Messenger.\n\n**Appointments** — 5 booked tomorrow across Niamh and Aoife.\n\nI'd refresh creative on the lip-filler ad this week. Frequency over 4 with a CTR drop is the textbook fatigue signal, and a fresh hook usually pulls CPL back inside seven days.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

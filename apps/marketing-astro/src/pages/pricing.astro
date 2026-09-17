@@ -1,0 +1,14 @@
+---
+import { PricingPage } from '@/components/pages/pricing';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="Pricing | Borradh"
+  description="Simple, transparent pricing for Borradh. One plan that includes content creation, Meta ads, lead follow-up, and more."
+>
+  <PricingPage client:load config={config} />
+</BaseLayout>

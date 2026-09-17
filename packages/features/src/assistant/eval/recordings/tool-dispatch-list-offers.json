@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-list-offers",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "What offers do I have running right now?",
+      "rounds": [
+        {
+          "modelText": "Let me pull your active offers.",
+          "toolUses": [
+            {
+              "name": "listOffers",
+              "input": { "activeOnly": true },
+              "result": {
+                "ok": true,
+                "data": {
+                  "offers": [
+                    {
+                      "id": "offer-1",
+                      "serviceName": "Lip filler",
+                      "discount": "15%",
+                      "validUntil": "2026-05-09",
+                      "isActive": true
+                    },
+                    {
+                      "id": "offer-2",
+                      "serviceName": "Skin booster",
+                      "discount": "€30 off",
+                      "validUntil": "2026-05-01",
+                      "isActive": true
+                    }
+                  ],
+                  "total": 2
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You've got two offers live: 15% off Lip filler (running until 9 May) and €30 off Skin booster (until 1 May). Want me to extend either of them or set up a new one?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

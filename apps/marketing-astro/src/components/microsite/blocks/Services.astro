@@ -1,0 +1,202 @@
+---
+import { BLOCK_VARIANTS } from '@borradh-workspace/web-shared';
+import type { ServicesProps } from '@borradh-workspace/web-shared';
+import { asset, resolveVariant, type MicrositeData } from '../data';
+import { editableAttrs } from '../edit/editable';
+
+const VARIANTS = BLOCK_VARIANTS['services'];
+
+/**
+ * DATA-BOUND. `props` holds the QUERY (which categories, how many, whether to
+ * show prices); the services themselves come from `data`, fetched once by the
+ * page. Never denormalise a service into `props` — the whole point is that a
+ * price edit in the dashboard shows here without a republish.
+ */
+interface Props {
+  props: ServicesProps;
+  variant: string;
+  data: MicrositeData;
+  /** True ONLY on a token-gated draft preview. Never on a published render. */
+  editable?: boolean;
+  blockId?: string;
+}
+
+const { props, variant, data, editable = false, blockId } = Astro.props;
+
+/**
+ * §2: `title` and `intro` only. The SERVICE NAME, price and duration below are
+ * data-bound to `organization_service` and get no affordance at all — editing
+ * them here would either drift from the record or silently rewrite business
+ * data from a website editor.
+ */
+const attrs = (field: string) => editableAttrs(editable, blockId, 'services', field);
+const v = resolveVariant(variant, VARIANTS);
+
+const categoryNames = Array.isArray(props?.categoryNames)
+  ? props.categoryNames
+  : [];
+const limit =
+  typeof props?.limit === 'number' && props.limit > 0 ? props.limit : undefined;
+
+const services = (data.services ?? [])
+  .filter(
+    (s) =>
+      !categoryNames.length ||
+      (s.categoryName ? categoryNames.includes(s.categoryName) : false)
+  )
+  .slice(0, limit);
+
+const showPrices = props?.showPrices !== false;
+const title = props?.title?.trim();
+const intro = props?.intro?.trim();
+---
+
+{/* An org with no services renders nothing at all — not a heading over a void. */}
+{
+  services.length > 0 && (
+    <section class:list={['ms-section', 'ms-services', `ms-services--${v}`]}>
+      <div class="ms-container">
+        {(title || intro) && (
+          <header class="ms-services__header">
+            {title && <h2 {...attrs('title')}>{title}</h2>}
+            {intro && <p class="ms-eyebrow" {...attrs('intro')}>
+                {intro}
+              </p>}
+          </header>
+        )}
+
+        <ul class="ms-services__list">
+          {services.map((service) => {
+            const image = asset(data, service.imageAssetId);
+            return (
+              <li class="ms-service">
+                {v === 'cards' && image && (
+                  <img
+                    class="ms-service__image"
+                    src={image.url}
+                    alt={image.alt ?? service.name}
+                    width={image.width ?? 640}
+                    height={image.height ?? 420}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+                <div class="ms-service__body">
+                  <div class="ms-service__row">
+                    <h3 class="ms-service__name">{service.name}</h3>
+                    {showPrices && service.priceLabel && (
+                      <span class="ms-service__price">{service.priceLabel}</span>
+                    )}
+                  </div>
+                  {service.durationLabel && (
+                    <p class="ms-service__meta">{service.durationLabel}</p>
+                  )}
+                  {service.description && (
+                    <p class="ms-service__desc">{service.description}</p>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .ms-services {
+    background: var(--brand-surface);
+  }
+
+  .ms-services__header {
+    margin-bottom: calc(var(--ms-gap) * 1.5);
+  }
+
+  .ms-services__header h2 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .ms-services__header .ms-eyebrow {
+    margin-top: 0.75rem;
+    max-width: 60ch;
+  }
+
+  .ms-services__list {
+    display: grid;
+    gap: var(--ms-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ms-service {
+    border: 1px solid var(--brand-border);
+    border-radius: var(--ms-radius);
+    background: var(--brand-surface);
+    overflow: hidden;
+  }
+
+  .ms-service__image {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .ms-service__body {
+    padding: 1.25rem;
+  }
+
+  .ms-service__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .ms-service__name {
+    font-size: 1.0625rem;
+  }
+
+  .ms-service__price {
+    color: var(--brand-accent);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .ms-service__meta,
+  .ms-service__desc {
+    margin-top: 0.375rem;
+    color: var(--brand-muted);
+    font-size: 0.9375rem;
+  }
+
+  /* list / price-menu: rows with a hairline, no card chrome. */
+  .ms-services--list .ms-service,
+  .ms-services--price-menu .ms-service {
+    border: 0;
+    border-bottom: 1px solid var(--brand-border);
+    border-radius: 0;
+  }
+
+  .ms-services--list .ms-service__body,
+  .ms-services--price-menu .ms-service__body {
+    padding-inline: 0;
+  }
+
+  .ms-services--price-menu .ms-service__desc {
+    display: none;
+  }
+
+  @media (min-width: 40rem) {
+    .ms-services--cards .ms-services__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .ms-services--cards .ms-services__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

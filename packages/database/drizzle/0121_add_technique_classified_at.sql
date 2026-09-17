@@ -1,0 +1,1 @@
+ALTER TABLE "organization_service" ADD COLUMN "technique_classified_at" timestamp;

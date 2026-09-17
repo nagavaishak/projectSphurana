@@ -1,0 +1,58 @@
+# Fly config for the dedicated load-test API target (borradh-api-loadtest).
+#
+# MIRRORS apps/api/fly.toml — same image, same NODE_ENV=production, same /health
+# checks, same machine size — so the load-test target is byte-for-byte the api
+# the rest of the pipeline ships, just on its own app + Neon `loadtest` branch.
+# See apps/load-tests/LOADTEST-TARGET.md for the full provision runbook.
+#
+# Differences from apps/api/fly.toml are intentional and called out inline:
+#   - min_machines_running stays 1 + auto_stop off, so the daily soak/wedge cron
+#     always has a warm target (no cold-start skew in the trend).
+#   - NO autoscale / extra machines: the wedge scenarios are meant to saturate a
+#     SINGLE prod-representative instance (max=10 remote DB conns per client.ts),
+#     not to be absorbed by horizontal scale-out. One machine is the point.
+#
+# `app` is intentionally omitted — set per-deploy via `--app borradh-api-loadtest`
+# (same convention as apps/api/fly.toml, which is deployed under several names).
+
+primary_region = "lhr"
+
+[build]
+  # Reuse the api image. Deploys pass --image registry.fly.io/...:<tree-hash>
+  # (a pre-built build-artifacts image); this dockerfile path is the fallback for
+  # a direct `flyctl deploy` build. Path is relative to this config's --config dir,
+  # so point at the api Dockerfile in the repo root tree.
+  dockerfile = "../api/Dockerfile"
+
+[env]
+  # Keep NODE_ENV=production: this is what makes the global throttler the real
+  # 600/min limit (apps/api/src/app/app.module.ts:108) instead of the dev
+  # 10_000/min — the rate-limit-burst wedge scenario depends on it.
+  NODE_ENV = "production"
+  PORT = "3000"
+  LOG_LEVEL = "info"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  # Warm target for the daily cron — never stop the machine.
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "30s"
+  method = "GET"
+  path = "/health/live"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "1gb"

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-dispatch-tour",
+  "recordedAt": "2026-06-03T10:22:59.276Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "I'm new here — show me around and give me a quick tour.",
+      "rounds": [
+        {
+          "modelText": "I'll get you oriented. Give me a second to pull up the tour.",
+          "toolUses": [
+            {
+              "name": "meta_dispatchTour",
+              "input": {},
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "tour_dispatch",
+                  "tourKind": "",
+                  "navigateTo": "/"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Tour's launching now. It'll walk you through the main bits — where things live, what you can do, and how I can help. Takes about two minutes. I'll be here when you're done if you've got questions.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

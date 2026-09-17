@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-reschedule-appointment",
+  "recordedAt": "2026-07-15T00:00:00.000Z",
+  "skillRegistryVersion": 32,
+  "turns": [
+    {
+      "userMessage": "Move Aoife Murphy's lip filler from Thursday 3pm to Friday at 11am.",
+      "rounds": [
+        {
+          "modelText": "Lining up the move to Friday 11am.",
+          "toolUses": [
+            {
+              "name": "rescheduleAppointment",
+              "input": {
+                "appointmentId": "appt-2",
+                "newStartDate": "2026-05-15T11:00:00.000Z",
+                "newEndDate": "2026-05-15T11:30:00.000Z",
+                "oldStartDate": "2026-05-14T15:00:00.000Z",
+                "oldEndDate": "2026-05-14T15:30:00.000Z",
+                "customerDisplayName": "Aoife Murphy",
+                "sendRescheduleEmail": true
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "reschedule_appointment",
+                  "resourceId": "appt-2",
+                  "token": "synthetic-token-rescheduleAppointment-appt-2",
+                  "expiresAt": "2026-07-15T00:30:00.000Z",
+                  "summary": {
+                    "title": "Reschedule appointment",
+                    "fields": [
+                      { "label": "Customer", "value": "Aoife Murphy" },
+                      { "label": "From", "value": "2026-05-14T15:00:00.000Z" },
+                      {
+                        "label": "To",
+                        "value": "2026-05-15T11:00:00.000Z → 2026-05-15T11:30:00.000Z"
+                      },
+                      {
+                        "label": "Email customer",
+                        "value": "Yes — booking system will send"
+                      }
+                    ]
+                  },
+                  "executeToolName": "rescheduleAppointment"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Aoife Murphy's lip filler, Thursday 3pm → Friday 11am. Confirm and I'll move it; the booking system will email her.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

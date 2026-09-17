@@ -1,0 +1,27 @@
+---
+/**
+ * 301 — `/sites/{org}/book/l/{branch}` moved to `/sites/{org}/l/{branch}/book`.
+ *
+ * The segment became a PREFIX so one convention covers booking and the venue
+ * page alike. This shape shipped, so it is in ads, in Claire's replies and in
+ * customer emails; those links keep working.
+ *
+ * 301, unlike the entry redirects in `/book` and `/venue`: this is a permanent
+ * move of a URL SHAPE and will never become a different answer, whereas those
+ * are facts about an org's current branch list that change when it opens a
+ * second branch.
+ */
+export const prerender = false;
+
+import { branchBookingPath } from '@/components/booking/location-chooser';
+import { micrositeLink } from '@/lib/microsite-org';
+import { resolveBookingOrg } from '../../../_resolve-org';
+
+const { orgContext } = resolveBookingOrg(Astro.url, Astro.params.slug);
+const branch = Astro.params.branch ?? '';
+
+return Astro.redirect(
+  micrositeLink(orgContext, branchBookingPath(branch)) + Astro.url.search,
+  301
+);
+---

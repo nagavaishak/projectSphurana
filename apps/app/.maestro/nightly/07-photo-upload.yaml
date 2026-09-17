@@ -1,0 +1,82 @@
+# NIGHTLY-ONLY (not a per-PR gate). Native gap: photo-library picker → upload
+# (Linear ENG-30 — iOS PHPhotosError).
+#
+# ENG-30 is the failure when the user picks an image from the photo library and
+# the upload pipeline chokes on the picker's PHAsset URL (iOS PHPhotosError /
+# Android content:// resolution). The browser app-e2e suite never hits this: in
+# a desktop browser the <input type="file"> opens an OS file chooser, not the
+# native Capacitor photo-library picker, and the asset URL shape differs. Only
+# the native WebView boot path reproduces ENG-30.
+#
+# WHY NIGHTLY + WHY THIS IS A SCAFFOLD, NOT A GREEN PER-PR GATE — two hard
+# dependencies the per-PR Android emulator does not satisfy:
+#
+#   1. ENTRY POINT (ENG-7 dependency). The media-picker UI lives in the mobile
+#      create-content wizard at /dashboard/socials/new (ContentMobileMediaStep,
+#      src/routes/_authed/dashboard/socials/new/-components/content-mobile-media-
+#      step.tsx). As of this branch NOTHING in the app navigates to that route
+#      (grep for '/dashboard/socials/new' finds only the route definition), so
+#      there is no stable tap-path to the picker. A testID'd "create content"
+#      entry on the mobile socials surface is required (ENG-7 handoff). Until
+#      then this flow cannot deterministically REACH the picker.
+#
+#   2. SEEDED GALLERY. Completing the picker needs an image in the emulator
+#      photo library. The CI emulator boots with an empty gallery, so even once
+#      the picker opens, "select a photo" has nothing to select. The runner must
+#      `adb push` a fixture image into /sdcard/Pictures and trigger a media scan
+#      BEFORE this flow (a CI prerequisite step — handoff). On iOS the simulator
+#      needs `xcrun simctl addmedia`.
+#
+# What this flow DOES, faithfully, once both deps are met: reach the media step,
+# tap the upload control (aria-label="Upload content"), handle the NATIVE photo
+# picker (outside the WebView → default hierarchy), and assert the success toast
+# ("Content uploaded", emitted by handleFileChange on a successful upload).
+#
+# androidWebViewHierarchy: devtools — required for the WebView DOM steps; the
+# native picker steps below run against the default (native) hierarchy.
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# Path is relative to this file (.maestro/nightly/) → the shared login flow.
+- runFlow: ../02-sign-in.yaml
+# Reach the create-content wizard's media step. The launchApp deep link below is
+# the placeholder for the missing in-app entry (ENG-7): a stable navigation to
+# /dashboard/socials/new. NOTE: a Capacitor SPA serves from capacitor://localhost
+# with a history-based router, so this deep link is NOT guaranteed to route — it
+# documents intent and is the explicit reason this flow is parked nightly until
+# the testID'd entry point lands.
+- launchApp:
+    stopApp: false
+    arguments:
+      route: '/dashboard/socials/new'
+# Media step rendered: heading "Select content" + the upload button
+# (aria-label="Upload content").
+- extendedWaitUntil:
+    visible: 'Select content'
+    timeout: 20000
+- takeScreenshot: media-step
+# Tap the blue "+" upload control, selected by its stable
+# data-testid="content-media-upload-button" (ENG-7); see
+# src/routes/_authed/dashboard/socials/new/-components/content-mobile-media-step.tsx.
+# This calls fileInputRef.current.click() (the hidden <input type="file"> carries
+# data-testid="content-media-file-input"), which on native opens the
+# photo-library picker.
+- tapOn:
+    id: 'content-media-upload-button'
+- takeScreenshot: native-picker-open
+# Pick the first seeded image from the NATIVE picker. This is the native gallery
+# UI (outside the WebView), matched against the default hierarchy. Selectors are
+# device/OS-picker-specific — these are reasonable defaults for the Android photo
+# picker and MUST be confirmed against a real emulator with a seeded gallery
+# (handoff). Optional so a missing label doesn't mask the real assertion below.
+- tapOn:
+    text: 'Photos'
+    optional: true
+- tapOn:
+    point: '50%,40%'
+# Upload success: handleFileChange awaits upload + createAsset then toasts
+# "Content uploaded". Generous timeout for the real upload round-trip.
+- extendedWaitUntil:
+    visible: 'Content uploaded'
+    timeout: 60000
+- takeScreenshot: upload-complete

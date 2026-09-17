@@ -1,0 +1,14 @@
+---
+import { HomePage } from '@/components/pages/home';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="Borradh — Claire AI runs your entire clinic"
+  description="Claire is your clinic's AI employee. She finds new patients, books them in, collects deposits, and keeps them coming back. You do treatments. Claire does everything else."
+>
+  <HomePage client:load config={config} />
+</BaseLayout>

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "fixtureId": "persona-unsure",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Can you do the thing?",
+      "rounds": [
+        {
+          "modelText": "Which thing did you have in mind. I can help with ads, content, leads, appointments, offers, video — give me a sentence and I'll point us at the right path?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

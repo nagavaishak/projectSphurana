@@ -1,0 +1,42 @@
+#!/bin/sh
+if command -v pnpm >/dev/null 2>&1; then
+  pnpm_cmd="pnpm"
+elif command -v pnpm.CMD >/dev/null 2>&1; then
+  pnpm_cmd="pnpm.CMD"
+elif [ -n "$LOCALAPPDATA" ] && [ -f "$LOCALAPPDATA/pnpm/pnpm.CMD" ]; then
+  pnpm_cmd="$LOCALAPPDATA/pnpm/pnpm.CMD"
+elif command -v corepack >/dev/null 2>&1; then
+  pnpm_cmd="corepack pnpm"
+else
+  echo "pnpm is required for pre-push checks but was not found on PATH."
+  echo "Install pnpm or enable it with: corepack enable"
+  exit 127
+fi
+
+$pnpm_cmd turbo run typecheck --filter=...[origin/main]
+
+# Schema drift check — only when the push includes changes under
+# packages/database/src/schema, packages/database/drizzle, or labels.
+# Runs `pnpm db:check`, which executes both:
+#   1. snapshot superset check (Python, sub-second)
+#   2. `db:generate` is a no-op (drizzle-kit, ~10s)
+# Same checks fire in CI (.github/workflows/migration-no-drift.yml +
+# the superset step in migration-ordering.yml) — this gate just shifts
+# the feedback loop left so a broken schema state doesn't waste a push.
+#
+# Gate range: the commits actually being pushed. We compare against
+# the upstream tracking branch when set; fall back to origin/main so
+# first-push branches still trigger correctly.
+upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null || echo 'origin/main')
+range="${upstream}..HEAD"
+
+schema_changes=$(git diff --name-only "$range" 2>/dev/null \
+  | grep -E '^packages/database/(src/schema/|drizzle/)|^packages/labels/src/' \
+  || true)
+
+if [ -n "$schema_changes" ]; then
+  echo "Schema changes detected vs $upstream — running pnpm db:check"
+  echo "$schema_changes" | sed 's/^/  /'
+  echo ""
+  $pnpm_cmd db:check
+fi

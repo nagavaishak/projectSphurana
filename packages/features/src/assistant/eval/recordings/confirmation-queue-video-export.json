@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "fixtureId": "confirmation-queue-video-export",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 4,
+  "turns": [
+    {
+      "userMessage": "Render the lip-filler before/after video I just drafted.",
+      "rounds": [
+        {
+          "modelText": "Lining up the render summary so you can sign off.",
+          "toolUses": [
+            {
+              "name": "queueVideoExport",
+              "input": {
+                "videoId": "v-new-1",
+                "summary": "Before/after lip filler video, three clips, Disco Divas track."
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "queue_video_export",
+                  "resourceId": "v-new-1",
+                  "token": "synthetic-token-queueVideoExport-v-new-1",
+                  "expiresAt": "2026-04-25T00:30:00.000Z",
+                  "summary": {
+                    "title": "Render video",
+                    "fields": [
+                      { "label": "Template", "value": "Before / After" },
+                      { "label": "Clips", "value": "3 clips selected" },
+                      { "label": "Music", "value": "Disco Divas (123 BPM)" }
+                    ]
+                  },
+                  "executeToolName": "queueVideoExport"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Before/after, three clips, Disco Divas backing — about 20 seconds in total. Confirm and I'll send it to render.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

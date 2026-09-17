@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "fixtureId": "persona-not-found",
+  "recordedAt": "2026-06-03T10:31:33.280Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Show me the details for the cryo-facial service, svc-999.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "getServiceDetails",
+              "input": {
+                "serviceId": "svc-999"
+              },
+              "result": {
+                "ok": false,
+                "error": "Service not found",
+                "code": "NOT_FOUND"
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "That service ID doesn't exist in the system. Let me pull your full service catalogue so we can find what you're after.",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": false,
+                "error": "No stub registered for tool \"listServices\".",
+                "code": "STUB_MISSING"
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "The service ID svc-999 isn't in your catalogue. Based on your business context, your current services are:\n\n- Lip filler\n- Anti-wrinkle treatment\n- Skin booster\n- PRP facial\n\nIf you're looking to add a cryo-facial service, I can help you create it. Or if you meant one of the existing services, let me know which one and I'll walk you through it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

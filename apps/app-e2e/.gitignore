@@ -1,0 +1,8 @@
+playwright-report/
+test-results/
+.auth/
+.env.test
+.env.staging
+# Local runs against a deployed PR preview — holds the CI seed token + the
+# seeded bare user's credentials.
+.env.preview

@@ -1,0 +1,1 @@
+ALTER TABLE "meta_pending_connection" ADD COLUMN "granted_scopes" jsonb DEFAULT '[]'::jsonb NOT NULL;

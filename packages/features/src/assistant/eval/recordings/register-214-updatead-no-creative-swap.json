@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "fixtureId": "register-214-updatead-no-creative-swap",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "On draft ad ad-1, change the headline to 'Winter glow refresh' and swap the image to the new one.",
+      "rounds": [
+        {
+          "modelText": "Updating the headline on that draft now.",
+          "toolUses": [
+            {
+              "name": "updateAd",
+              "input": { "adId": "ad-1", "headline": "Winter glow refresh" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "updated",
+                  "title": "Updated draft ad: Lip filler draft",
+                  "adId": "ad-1",
+                  "name": "Lip filler draft",
+                  "status": "draft",
+                  "updated": ["headline"],
+                  "creative": "unchanged",
+                  "preview": {
+                    "variant": "draft",
+                    "adName": "Lip filler draft",
+                    "headline": "Winter glow refresh"
+                  }
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Done — the headline now reads \"Winter glow refresh\". I couldn't do the picture from here though: the image is unchanged. If you want a different picture on this ad, say the word and I'll replace the creative separately.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-video-status",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 4,
+  "turns": [
+    {
+      "userMessage": "Is my video ready yet?",
+      "rounds": [
+        {
+          "modelText": "Checking the render now.",
+          "toolUses": [
+            {
+              "name": "getVideoStatus",
+              "input": { "videoId": "v-new-1" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-new-1",
+                  "status": "ready",
+                  "progress": 100,
+                  "title": "Lip filler — before and after",
+                  "blobUrl": "https://cdn.borradh.io/videos/v-new-1.mp4",
+                  "thumbnailUrl": "https://cdn.borradh.io/videos/v-new-1.jpg",
+                  "durationMs": 22500
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "It's ready — 22 seconds long. Want me to schedule it as a post or send it to ads?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

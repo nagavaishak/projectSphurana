@@ -1,0 +1,52 @@
+---
+export const prerender = false;
+
+import { BlogPostPage } from '@/components/pages/blog-post';
+import { NotFoundPage } from '@/components/pages/not-found';
+import type { CMSPost } from '@/features/blog/types';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { fetchEntryBySlug } from '@/lib/cms';
+import { getPublicConfig } from '@/lib/config';
+
+const { slug } = Astro.params;
+const post = slug ? await fetchEntryBySlug<CMSPost>('blogPost', slug) : null;
+const config = getPublicConfig();
+
+/**
+ * `Astro.rewrite('/404')` throws `ForbiddenRewrite` here: `/404` is
+ * prerendered (a static page baked at build time), so it has no entry in the
+ * on-demand route map this SSR route runs under —
+ * `astro/dist/core/app/pipeline.js`'s `getModuleForRoute` cannot find a
+ * component instance for it, there is no `500.astro` to catch the throw, and
+ * the visitor got a blank 500 instead of a 404 (ENG-850).
+ *
+ * The fix is to stay ON this on-demand route and render the same not-found
+ * layout inline with an explicit 404 status, mirroring the inline 404 in
+ * `src/pages/sites/[slug]/[...path].astro`. `no-store` matches that
+ * precedent too: a 404 must not be cached past the moment the post is
+ * (re)published under this slug.
+ */
+if (!post) {
+  Astro.response.status = 404;
+  Astro.response.headers.set('Cache-Control', 'no-store');
+}
+
+const seoTitle = post ? post.seoTitle || post.title : undefined;
+const seoDescription = post ? post.seoDescription || post.excerpt || '' : undefined;
+---
+
+{
+  post ? (
+    <BaseLayout
+      title={`${seoTitle} | Borradh`}
+      description={seoDescription}
+      ogType="article"
+    >
+      <BlogPostPage client:load config={config} post={post} />
+    </BaseLayout>
+  ) : (
+    <BaseLayout title="Page not found | Borradh">
+      <NotFoundPage client:load config={config} />
+    </BaseLayout>
+  )
+}

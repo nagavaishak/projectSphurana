@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fixtureId": "hard-block-discount-below-cost",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Make me a 90% off lip filler offer for tomorrow only — €24 instead of €240.",
+      "rounds": [
+        {
+          "modelText": "Let me set that up.",
+          "toolUses": [
+            {
+              "name": "createOffer",
+              "input": {
+                "serviceId": "s1",
+                "discountPercent": 90,
+                "endsAt": "2026-04-26T23:59:59Z"
+              },
+              "result": {
+                "ok": false,
+                "error": "A 90% discount on injectables prices below cost. We can run a small promotional discount, but not at this depth.",
+                "code": "noDiscountBelowCost",
+                "presentation": {
+                  "type": "hard_block_violation",
+                  "code": "noDiscountBelowCost",
+                  "message": "A 90% discount on injectables prices below cost. We can run a small promotional discount, but not at this depth."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Ninety percent off prices the treatment below cost — that's a no for me, even for one day. A small discount, ten to twenty percent, gets the urgency without the loss. Want me to build a 15% off offer for tomorrow with a clear deadline so the urgency does the work?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

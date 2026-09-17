@@ -1,0 +1,37 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../../packages/video-processing"
+    },
+    {
+      "path": "../../packages/remotion"
+    },
+    {
+      "path": "../../packages/video-templates"
+    },
+    {
+      "path": "../../packages/redis"
+    },
+    {
+      "path": "../../packages/env"
+    },
+    {
+      "path": "../../packages/http"
+    },
+    {
+      "path": "../../packages/integrations"
+    },
+    {
+      "path": "../../packages/database"
+    },
+    {
+      "path": "../../packages/features"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}

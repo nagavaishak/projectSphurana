@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-lead-stats",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 3,
+  "turns": [
+    {
+      "userMessage": "How are my leads doing overall?",
+      "rounds": [
+        {
+          "modelText": "Reading the org-wide totals.",
+          "toolUses": [
+            {
+              "name": "getLeadStats",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "totalLeads": 124,
+                  "newLeads": 38,
+                  "contactedLeads": 41,
+                  "qualifiedLeads": 22,
+                  "bookedLeads": 11,
+                  "wonLeads": 9,
+                  "lostLeads": 3,
+                  "conversionRate": 7.3
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "124 leads in total: 38 new, 41 contacted, 22 qualified, 11 booked, 9 won, 3 lost. Conversion rate sits at 7.3%. Strong pipeline depth — the bottleneck looks to be moving from 'contacted' to 'qualified' if you want to lift that rate.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "consent_form_submission" ADD COLUMN "pdf_generation_attempts" integer DEFAULT 0 NOT NULL;

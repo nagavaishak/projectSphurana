@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../redis"
+    },
+    {
+      "path": "../env"
+    },
+    {
+      "path": "../email"
+    },
+    {
+      "path": "../database"
+    },
+    {
+      "path": "../observability"
+    },
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
+}

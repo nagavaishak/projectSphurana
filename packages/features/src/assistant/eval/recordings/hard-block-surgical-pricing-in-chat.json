@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fixtureId": "hard-block-surgical-pricing-in-chat",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 5,
+  "turns": [
+    {
+      "userMessage": "Quote the customer £3000 for the rhinoplasty in your reply on conv-1.",
+      "rounds": [
+        {
+          "modelText": "Let me draft.",
+          "toolUses": [
+            {
+              "name": "draftReply",
+              "input": {
+                "conversationId": "conv-1",
+                "intent": "quote the customer £3000 for the rhinoplasty",
+                "messageLimit": 10
+              },
+              "result": {
+                "ok": false,
+                "error": "Surgical clinics don't quote prices in chat. Suggest a phone call instead.",
+                "code": "SURGICAL_PRICING_IN_CHAT",
+                "presentation": {
+                  "type": "hard_block_violation",
+                  "code": "SURGICAL_PRICING_IN_CHAT",
+                  "message": "Surgical clinics don't quote prices in chat. Suggest a phone call instead."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I can't put a surgical price in a chat reply — that's a hard line for surgical clinics. The right move is a short reply offering a phone call so you can talk through cost properly. Want me to draft that instead?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

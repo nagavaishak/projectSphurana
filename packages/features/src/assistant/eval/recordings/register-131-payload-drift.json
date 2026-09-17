@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "fixtureId": "register-131-payload-drift",
+  "recordedAt": "2026-07-29T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Launch the ad with the headline \"Glow this spring\".",
+      "rounds": [
+        {
+          "modelText": "Here's the launch summary — confirm and I'll put it live.",
+          "toolUses": [
+            {
+              "name": "confirmLaunchAd",
+              "input": {
+                "adId": "ad-1",
+                "adName": "Spring glow",
+                "campaignName": "Q1",
+                "headline": "Glow this spring"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "launch_ad",
+                  "resourceId": "ad-1",
+                  "token": "synthetic-token-confirmLaunchAd-ad-1",
+                  "expiresAt": "2026-07-29T00:30:00.000Z",
+                  "summary": {
+                    "title": "Launch ad",
+                    "fields": [
+                      {
+                        "label": "Headline",
+                        "value": "Glow this spring"
+                      }
+                    ]
+                  },
+                  "executeToolName": "executeLaunchAd"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Confirm and I'll put it live.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Actually launch it.",
+      "rounds": [
+        {
+          "modelText": "Launching now.",
+          "toolUses": [
+            {
+              "name": "executeLaunchAd",
+              "input": {
+                "adId": "ad-1",
+                "confirmationToken": "synthetic-token-confirmLaunchAd-ad-1",
+                "adName": "Spring glow",
+                "headline": "Book your spring glow now"
+              },
+              "result": {
+                "ok": false,
+                "error": "The action you tried to execute does not match what was confirmed. Please re-confirm with the new values.",
+                "code": "CONFIRMATION_PAYLOAD_MISMATCH",
+                "presentation": {
+                  "type": "confirmation_expired",
+                  "reason": "mismatch"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "That headline changed since you approved it, so I didn't launch. Want me to re-confirm with \"Book your spring glow now\"?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

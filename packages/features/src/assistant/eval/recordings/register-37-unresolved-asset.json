@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "fixtureId": "register-37-unresolved-asset",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 37,
+  "turns": [
+    {
+      "userMessage": "Run my Endosphere photo as the ad.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "checkMetaIntegration",
+              "input": {},
+              "result": { "ok": true, "data": { "connected": true } }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listCampaigns",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "campaigns": [
+                    {
+                      "id": "camp-1",
+                      "metaCampaignId": "camp-1",
+                      "name": "Endosphere — July"
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createDraftAd",
+              "input": {
+                "metaCampaignId": "camp-1",
+                "name": "Endosphere photo ad",
+                "assetRef": "Endosphere photo",
+                "targeting": {},
+                "serviceIds": ["svc-1"]
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "assetUnresolved": {
+                    "assetRef": "Endosphere photo",
+                    "candidates": [
+                      {
+                        "id": "asset-1",
+                        "name": "Endosphere before",
+                        "thumbnailUrl": null,
+                        "blobUrl": null
+                      },
+                      {
+                        "id": "asset-2",
+                        "name": "Endosphere after",
+                        "thumbnailUrl": null,
+                        "blobUrl": null
+                      }
+                    ]
+                  },
+                  "message": "I found more than one asset that could be \"Endosphere photo\": \"Endosphere before\", \"Endosphere after\". Which one should I use?"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "You've got a couple that match — \"Endosphere before\" and \"Endosphere after\". Which one should I use for the ad?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

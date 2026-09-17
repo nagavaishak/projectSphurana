@@ -1,0 +1,35 @@
+---
+/**
+ * `/sites/{org}/l/{branch}/venue` — ONE BRANCH's public venue page.
+ *
+ * A venue IS a location, which is why this route exists at all: the bare
+ * `/venue` resolved the org's primary branch and offered no way to reach any
+ * other, so a three-branch clinic published one address and hid two.
+ *
+ * Same `l/{branch}` segment as the booking wizard beside it, and the same
+ * `slug ?? id` handle, so a customer can move between a branch's venue page and
+ * its booking flow without the scope changing under them.
+ */
+export const prerender = false;
+
+import { VenuePageIsland } from '@/components/venue/venue-page.island';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { humaniseSlug } from '../../_humanise-slug';
+
+const organizationSlug = Astro.params.slug ?? '';
+const branch = Astro.params.branch ?? '';
+
+const displayName = humaniseSlug(organizationSlug);
+---
+
+<BaseLayout
+  title={`${displayName} | Borradh`}
+  description={`Opening hours, services and team at ${displayName}.`}
+  theme="light"
+>
+  <VenuePageIsland
+    client:load
+    organizationSlug={organizationSlug}
+    locationSlug={branch}
+  />
+</BaseLayout>

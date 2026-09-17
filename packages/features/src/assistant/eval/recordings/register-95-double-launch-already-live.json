@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "fixtureId": "register-95-double-launch-already-live",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Launch that Botox ad again.",
+      "rounds": [
+        {
+          "modelText": "Let me check that ad's status with Meta.",
+          "toolUses": [
+            {
+              "name": "executeLaunchAd",
+              "input": { "adId": "ad-1", "adName": "Botox winter promo" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "uiState": "created",
+                  "title": "Ad already live: Botox winter promo",
+                  "adId": "ad-1",
+                  "name": "Botox winter promo",
+                  "launchState": "already_live",
+                  "alreadyLive": true,
+                  "launchStateDetail": "This ad was already launched — no new ad was created and no extra budget was spent. Verified with Meta: the ad is active and its campaign is delivering.",
+                  "message": "This ad was already launched — no new ad was created and no extra budget was spent. Verified with Meta: the ad is active and its campaign is delivering."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "That ad is already live — it's been running since you launched it, so I didn't create anything new and no extra budget was spent. Want me to pull its performance so far?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "off"
+      },
+      "a11y": {
+        "useSemanticElements": "off"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "include": ["apps/api/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useImportType": "off"
+          }
+        }
+      }
+    },
+    {
+      "include": ["**/components/ui/**", "**/components/kibo-ui/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          },
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          },
+          "a11y": {
+            "useSemanticElements": "off",
+            "useAltText": "off",
+            "useMediaCaption": "off"
+          }
+        }
+      }
+    }
+  ],
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  },
+  "files": {
+    "ignore": [
+      "**/routeTree.gen.ts",
+      "**/contracts/src/generated/**",
+      "**/src/generated/**",
+      "**/*.astro",
+      "**/dist",
+      "**/node_modules",
+      "**/.next",
+      "**/.vercel",
+      "**/coverage",
+      "**/test-output",
+      "**/test-results",
+      "**/.auth",
+      "**/vite.config.*.timestamp*",
+      "**/vitest.config.*.timestamp*",
+      "**/.expo",
+      "**/payload-types.ts",
+      "**/cms/migrations/**",
+      "**/drizzle/meta/**",
+      "**/icon-paths.json"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "appointment" ADD COLUMN "allow_double_booking" boolean DEFAULT false NOT NULL;

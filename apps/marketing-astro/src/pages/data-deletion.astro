@@ -1,0 +1,14 @@
+---
+import { DataDeletionPage } from '@/components/pages/data-deletion';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="Data Deletion | Borradh"
+  description="Learn how to request deletion of your data from Borradh. We respect your privacy and make data removal straightforward."
+>
+  <DataDeletionPage client:load config={config} />
+</BaseLayout>

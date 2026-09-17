@@ -1,0 +1,18 @@
+---
+/** 301 — see `index.astro` beside this, with the service carried through. */
+export const prerender = false;
+
+import { branchBookingPath } from '@/components/booking/location-chooser';
+import { micrositeLink } from '@/lib/microsite-org';
+import { resolveBookingOrg } from '../../../_resolve-org';
+
+const { orgContext } = resolveBookingOrg(Astro.url, Astro.params.slug);
+const branch = Astro.params.branch ?? '';
+const serviceId = Astro.params.serviceId ?? '';
+
+return Astro.redirect(
+  micrositeLink(orgContext, branchBookingPath(branch, serviceId)) +
+    Astro.url.search,
+  301
+);
+---

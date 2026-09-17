@@ -1,0 +1,1 @@
+ALTER TABLE "organization" ADD COLUMN "privacy_policy_url" text;

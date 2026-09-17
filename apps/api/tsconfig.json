@@ -1,0 +1,52 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../../packages/contracts"
+    },
+    {
+      "path": "../../packages/ai"
+    },
+    {
+      "path": "../../packages/http"
+    },
+    {
+      "path": "../../packages/integrations"
+    },
+    {
+      "path": "../../packages/labels"
+    },
+    {
+      "path": "../../packages/storage"
+    },
+    {
+      "path": "../../packages/redis"
+    },
+    {
+      "path": "../../packages/observability"
+    },
+    {
+      "path": "../../packages/features"
+    },
+    {
+      "path": "../../packages/env"
+    },
+    {
+      "path": "../../packages/email"
+    },
+    {
+      "path": "../../packages/database"
+    },
+    {
+      "path": "../../packages/auth"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

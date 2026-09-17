@@ -1,0 +1,162 @@
+---
+import { BLOCK_VARIANTS } from '@borradh-workspace/web-shared';
+import type { TeamProps } from '@borradh-workspace/web-shared';
+import { asset, resolveVariant, type MicrositeData } from '../data';
+import { editableAttrs } from '../edit/editable';
+
+const VARIANTS = BLOCK_VARIANTS['team'];
+
+/** DATA-BOUND. `props` selects practitioners; `data.practitioners` is the truth. */
+interface Props {
+  props: TeamProps;
+  variant: string;
+  data: MicrositeData;
+  /** True ONLY on a token-gated draft preview. Never on a published render. */
+  editable?: boolean;
+  blockId?: string;
+}
+
+const { props, variant, data, editable = false, blockId } = Astro.props;
+
+/** §2: `title` and `intro`. Practitioner names and bios are data-bound. */
+const attrs = (field: string) => editableAttrs(editable, blockId, 'team', field);
+const v = resolveVariant(variant, VARIANTS);
+
+const ids = Array.isArray(props?.practitionerIds) ? props.practitionerIds : [];
+const members = (data.practitioners ?? []).filter(
+  (p) => !ids.length || ids.includes(p.id)
+);
+
+const showBios = props?.showBios !== false;
+const title = props?.title?.trim();
+const intro = props?.intro?.trim();
+---
+
+{
+  members.length > 0 && (
+    <section class:list={['ms-section', 'ms-team', `ms-team--${v}`]}>
+      <div class="ms-container">
+        {(title || intro) && (
+          <header class="ms-team__header">
+            {title && <h2 {...attrs('title')}>{title}</h2>}
+            {intro && <p class="ms-eyebrow" {...attrs('intro')}>
+                {intro}
+              </p>}
+          </header>
+        )}
+
+        <ul class="ms-team__list">
+          {members.map((member) => {
+            const image = asset(data, member.imageAssetId);
+            return (
+              <li class="ms-member">
+                {image ? (
+                  <img
+                    class="ms-member__photo"
+                    src={image.url}
+                    alt={image.alt ?? member.name}
+                    width={image.width ?? 480}
+                    height={image.height ?? 480}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div class="ms-member__photo ms-member__photo--placeholder" aria-hidden="true">
+                    {member.name.slice(0, 1).toUpperCase()}
+                  </div>
+                )}
+                <h3 class="ms-member__name">{member.name}</h3>
+                {member.role && <p class="ms-member__role">{member.role}</p>}
+                {showBios && member.bio && (
+                  <p class="ms-member__bio">{member.bio}</p>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .ms-team {
+    background: var(--brand-subtle);
+  }
+
+  .ms-team__header {
+    margin-bottom: calc(var(--ms-gap) * 1.5);
+  }
+
+  .ms-team__header h2 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .ms-team__header .ms-eyebrow {
+    margin-top: 0.75rem;
+    max-width: 60ch;
+  }
+
+  .ms-team__list {
+    display: grid;
+    gap: var(--ms-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ms-member__photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--ms-radius);
+    object-fit: cover;
+  }
+
+  .ms-member__photo--placeholder {
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--brand-primary) 10%, var(--brand-surface));
+    color: var(--brand-primary);
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .ms-member__name {
+    margin-top: 0.875rem;
+    font-size: 1.0625rem;
+  }
+
+  .ms-member__role {
+    margin-top: 0.125rem;
+    color: var(--brand-accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .ms-member__bio {
+    margin-top: 0.5rem;
+    color: var(--brand-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 40rem) {
+    .ms-team__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .ms-team--grid .ms-team__list {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* row: one horizontal scroller on small screens, even columns on large. */
+  @media (min-width: 64rem) {
+    .ms-team--row .ms-team__list {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-template-columns: none;
+    }
+  }
+</style>

@@ -1,0 +1,33 @@
+# EAS Build - exclude files unnecessary for mobile builds
+# This file extends .gitignore (EAS respects .gitignore by default)
+
+# Other apps not needed for mobile build
+apps/api/
+
+# Infrastructure
+infra/
+
+# Build caches
+.turbo/
+packages/*/dist/
+
+# Claude/AI tooling
+.claude/
+.auth/
+
+# Scripts not needed for build
+scripts/
+
+# Documentation
+docs/
+*.md
+
+# Test fixtures and output
+coverage/
+test-output/
+**/__tests__/
+**/*.test.ts
+**/*.spec.ts
+
+# Husky git hooks
+.husky/

@@ -1,0 +1,81 @@
+# NIGHTLY-ONLY (not a per-PR gate). Native gap: deep-link / external-URL open
+# (Linear MOBILE-1).
+#
+# Why nightly, not per-PR: this flow signs in and then navigates via the
+# "Personal area" header avatar, which means it transits the post-login HomeNew
+# render — the same heavy render that crashes the software-GPU CI emulator (see
+# 03-dashboard.yaml). Until HomeNew is stable on the emulator OR a lighter
+# post-login landing / testID'd mobile nav lands (ENG-7), these settings-hub
+# flows live nightly with 03/07. 01-boot + 02-sign-in remain the per-PR gate.
+#
+# In the browser app-e2e suite Capacitor.isNativePlatform()===false, so every
+# "open an external URL" path takes the window.location branch — it never
+# exercises the native @capacitor/browser `Browser.open()` system-browser
+# (Chrome Custom Tab) path that production phones hit. MOBILE-1 is the class of
+# bug that only shows up there (plugin not registered, Custom Tab fails to
+# launch, the WebView is left in a bad state). This flow drives the most
+# per-PR-safe external-URL trigger reachable on the BARE org with no Meta/
+# WhatsApp connection: the Integrations screen's "Connect" buttons, which call
+# openIntegrationOAuth → Browser.open (see src/lib/open-integration-oauth.ts and
+# src/features/integrations-dashboard/components/integrations-grid.tsx).
+#
+# WHY THIS IS A PROBE, NOT A FULL ASSERTION:
+# Browser.open launches a Chrome Custom Tab OUTSIDE the Capacitor WebView, so
+# the `androidWebViewHierarchy: devtools` driver (which inspects the WebView
+# DOM) cannot see the Custom Tab's content. We assert the IN-APP precondition
+# (the Integrations screen + a tappable Connect control rendered, the tap does
+# not crash/white-screen the WebView, and no error toast fires) rather than the
+# external page. Asserting the Custom Tab itself needs the NATIVE hierarchy and
+# a device that can actually reach the OAuth host — parked for the device farm
+# (see the iOS nightly variant + CONNECTED-ISOLATION handoff). Instagram is the
+# chosen provider: its Connect calls openIntegrationOAuth directly (no feature
+# flag, no WhatsApp "connect a Facebook Page first" gating).
+#
+# androidWebViewHierarchy: devtools — required (the whole UI is a WebView whose
+# a11y nodes are important-for-accessibility=false; see scripts/maestro-android.sh
+# which waits for the DevTools socket before Maestro runs).
+appId: com.borradh.mobile
+androidWebViewHierarchy: devtools
+---
+# Reuse the shared login: 02-sign-in leaves the app authenticated on the bare
+# user's landing screen (/dashboard/home), where the mobile header is shown.
+# Path is relative to this file (.maestro/nightly/) → the shared login flow.
+- runFlow: ../02-sign-in.yaml
+# Open the mobile "Personal area" hub via the header avatar. Selector = the
+# avatar link's stable data-testid="mobile-header-user-menu" (ENG-7); see
+# src/features/mobile-dashboard-header/mobile-header-user-menu.tsx.
+- tapOn:
+    id: 'mobile-header-user-menu'
+# /dashboard/account renders labelled menu links. Select the Integrations row by
+# its stable data-testid (ENG-7) → the settings/integrations screen; see
+# src/routes/_authed/dashboard/account.tsx (MenuLink testId prop).
+- extendedWaitUntil:
+    visible:
+      id: 'account-menu-integrations'
+    timeout: 20000
+- tapOn:
+    id: 'account-menu-integrations'
+# The Integrations grid renders a card per provider with a "Connect" button for
+# disconnected providers (src/components/ui/integration-provider-card.tsx).
+# On the bare org Instagram is disconnected → its card shows "Connect".
+- extendedWaitUntil:
+    visible: 'Instagram'
+    timeout: 20000
+- takeScreenshot: integrations-screen
+# Tap Instagram's Connect, selected by its provider-keyed stable testid
+# (data-testid="integration-connect-instagram", ENG-7) — there are multiple
+# "Connect" buttons on the grid, so text alone is ambiguous. On native this
+# calls openIntegrationOAuth('integrations/instagram/auth') → CapacitorHttp →
+# Browser.open (system browser). We can't assert the Custom Tab's contents from
+# the WebView devtools hierarchy, so we assert the WebView survived (the
+# Integrations screen is still rendered) and no failure toast surfaced — the
+# openIntegrationOAuth error path toasts "Could not start the connection flow." /
+# "Please sign in again...".
+- tapOn:
+    id: 'integration-connect-instagram'
+- takeScreenshot: after-connect-tap
+- assertNotVisible: 'Could not start the connection flow'
+- assertNotVisible: 'Please sign in again to connect this integration'
+# WebView did not white-screen / boot-loop: the Integrations heading is still
+# present (the native Custom Tab opens over the app; the WebView stays mounted).
+- assertVisible: 'Instagram'

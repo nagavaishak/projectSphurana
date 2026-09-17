@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "fixtureId": "classifier-leads",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Show me my leads from this week.",
+      "classifierResponse": {
+        "skillIds": ["manage-leads"],
+        "confidence": 0.84
+      },
+      "rounds": [
+        {
+          "modelText": "On it — I'll pull the leads from the last seven days. The leads tools aren't fully wired yet on this build, so I can't list them straight away. Once they're available I'll bring back the count and the source breakdown.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

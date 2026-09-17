@@ -1,0 +1,212 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "concurrency": "20",
+  // `scripts/lint/**` holds standalone lint gates invoked from package `lint`
+  // scripts (currently no-implicit-timezone.mjs, run by @borradh-workspace/api
+  // and .../features). They live outside every package dir, so without this a
+  // change to a RULE is invisible to the cache and every package reports a
+  // stale HIT — the gate silently stops running on exactly the commit that
+  // changed it.
+  "globalDependencies": [
+    ".env",
+    "tsconfig.base.json",
+    ".turbo-cache-epoch",
+    "scripts/lint/**"
+  ],
+  "globalPassThroughEnv": [
+    "CI",
+    "VERCEL",
+    "VERCEL_ENV",
+    "VERCEL_GIT_PULL_REQUEST_ID",
+    "VERCEL_GIT_COMMIT_REF",
+    "NODE_ENV",
+    "API_URL",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "AWS_REGION",
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "STRIPE_PRICE_ID_PRO",
+    "STRIPE_PRICE_ID_PRO_EUR",
+    "STRIPE_PRICE_ID_PRO_GBP",
+    "STRIPE_PRICE_ID_CREDITS_500",
+    "STRIPE_PRICE_ID_CREDITS_1000",
+    "STRIPE_PRICE_ID_CREDITS_2500",
+    "STRIPE_INCLUDED_CREDITS",
+    "STRIPE_TRIAL_DAYS"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      // These inputs are the COMPLETE set of files that can change a build's
+      // output. Anything missing here is invisible to the cache, so a change to
+      // it produces a cache HIT and ships a STALE artifact.
+      //
+      // The bundler-app entries are the easy ones to lose: a Vite app's entry
+      // HTML, its stylesheets, its `public/` assets and its bundler config are
+      // all real build inputs, but none of them match `src/**/*.ts(x)`. Without
+      // them a CSS-only / favicon / `index.html` / `vite.config.ts` change
+      // rebuilds nothing and redeploys the previous bundle
+      // (apps/video-template-editor is exactly this shape). Same reasoning for
+      // `tsup.config.*` (apps/video-worker, apps/webhook-router).
+      //
+      // Do NOT trim these back. Do NOT widen to `**/*` either — that pulls in
+      // READMEs and editor droppings and busts the cache for nothing.
+      //
+      // A package may override this list in its own turbo.json: apps/app uses
+      // `$TURBO_DEFAULT$` (already covers all of the above) and
+      // apps/marketing-astro declares its own set.
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.css",
+        "index.html",
+        "public/**",
+        "vite.config.*",
+        "tsup.config.*",
+        "postcss.config.*",
+        "tailwind.config.*",
+        "tsconfig.json",
+        "tsconfig.*.json",
+        "package.json",
+        "next.config.*",
+        "!src/**/*.test.ts",
+        "!src/**/*.spec.ts"
+      ],
+      // VERCEL_ENV changes WHAT the build emits (sourcemaps are Vercel-
+      // production-only — see apps/app/vite.config.ts), so it has to be part of
+      // the hash. `globalPassThroughEnv` does NOT contribute to the hash, which
+      // would let a preview build restore a production artifact and vice versa.
+      "env": ["VERCEL_ENV"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "cache": true,
+      "outputLogs": "new-only"
+    },
+    "dev:packages": {
+      "dependsOn": [],
+      "inputs": [
+        "src/**/*.ts",
+        "!src/**/*.test.ts",
+        "!src/**/*.spec.ts",
+        "tsconfig.json",
+        "tsconfig.*.json"
+      ],
+      "outputs": ["dist/**"],
+      "cache": false,
+      "persistent": true,
+      "interruptible": true
+    },
+    "dev:api": {
+      "dependsOn": ["^dev:packages"],
+      "cache": false,
+      "persistent": true,
+      "interruptible": true
+    },
+    "dev:video-worker": {
+      "dependsOn": ["^dev:packages"],
+      "cache": false,
+      "persistent": true,
+      "interruptible": true
+    },
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true,
+      "interruptible": true
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": [],
+      "cache": true,
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "eslint.config.*",
+        "biome.json",
+        "../../biome.json"
+      ]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "tsconfig.json",
+        "tsconfig.*.json"
+      ],
+      "outputs": ["dist/**/*.tsbuildinfo", "out-tsc/**/*.tsbuildinfo"]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**", "test-output/**"],
+      "cache": true,
+      // `env`, NOT `globalPassThroughEnv` — deliberately, and for the same
+      // reason the build task pins VERCEL_ENV above: passThroughEnv reaches the
+      // task but does NOT contribute to the hash.
+      //
+      // The gated vendor suites (elevenlabs-tts.integration.test.ts,
+      // dispatch-fcm.integration.test.ts) self-skip when their credential is
+      // absent. Without the value in the hash, running `turbo test` once without
+      // the credential would cache a green "skipped", and the next run WITH it
+      // would restore that cache and never make the real calls — green, and
+      // testing nothing. Hashing it means unset -> set busts the cache.
+      //
+      // CI does not rely on this: .github/workflows/vendor-contract.yml runs
+      // those two files through vitest directly, off the always-on gate, so a
+      // vendor outage cannot redden an unrelated PR. This entry is what protects
+      // a developer running `pnpm turbo test` locally with the key exported.
+      "env": [
+        "ELEVENLABS_API_KEY",
+        "FCM_SERVICE_ACCOUNT_BASE64",
+        "FCM_TEST_DEVICE_TOKEN"
+      ],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/test/**",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "jest.config.ts"
+      ]
+    },
+    "test:isolation": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/test/**",
+        "vite.config.ts",
+        "vitest.config.ts"
+      ]
+    },
+    "e2e": {
+      "dependsOn": [],
+      "outputs": ["playwright-report/**", "test-results/**"],
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

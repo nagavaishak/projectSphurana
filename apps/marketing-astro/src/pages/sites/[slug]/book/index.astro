@@ -1,0 +1,86 @@
+---
+/**
+ * `/sites/{org}/book` — THE BRANCH CHOOSER (plan §0).
+ *
+ * This route used to render the wizard directly, which meant a customer was
+ * silently assumed into the org's primary branch: a Cork customer was shown
+ * Dublin's hours and their booking landed on Dublin's diary. The customer here
+ * has NOT chosen a branch and cannot be assumed into one, so the all-locations
+ * view is the ENTRY POINT — and the moment they pick, the branch is in the URL
+ * and everything downstream is scoped to it.
+ *
+ * The three outcomes and the reasoning behind each are in `_booking-locations.ts`;
+ * this route only spends them. In short: two or more addressable branches show
+ * the chooser, exactly one 302s straight through, none renders the wizard
+ * unscoped exactly as it does today.
+ *
+ * The payload is fetched HERE, server-side, and handed to a plain `.astro`
+ * component with no `client:*` — see the header of `location-chooser.astro`.
+ */
+// SSR: organization slugs are unbounded, so /book routes render on demand.
+export const prerender = false;
+
+import { BookingWizardPage } from '@/components/booking';
+import LocationChooser from '@/components/booking/location-chooser.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+import { micrositeLink } from '@/lib/microsite-org';
+import { branchBookingPath } from '@/components/booking/location-chooser';
+import {
+  decideBookingEntry,
+  fetchBookingLocations,
+} from '../_booking-locations';
+import { resolveBookingOrg } from '../_resolve-org';
+import { humaniseSlug } from '../_humanise-slug';
+
+const { slug: organizationSlug, orgContext } = resolveBookingOrg(
+  Astro.url,
+  Astro.params.slug
+);
+const config = getPublicConfig();
+
+const entry = decideBookingEntry(await fetchBookingLocations(organizationSlug));
+
+/**
+ * 302, not 301. The venue redirect beside this one is permanent because a URL
+ * SHAPE moved and those links are in the wild forever; this is a fact about the
+ * org's current branch list. An org that opens a second branch tomorrow must
+ * get a working chooser at `/book`, and a cached 301 in every visitor's browser
+ * would strand them at the first branch with nothing we can do about it.
+ */
+const redirectTo =
+  entry.kind === 'single'
+    ? micrositeLink(orgContext, branchBookingPath(entry.branch.segment)) +
+      Astro.url.search
+    : null;
+
+if (redirectTo) {
+  return Astro.redirect(redirectTo, 302);
+}
+
+const displayName =
+  entry.kind === 'chooser'
+    ? entry.payload.organizationName
+    : humaniseSlug(organizationSlug);
+---
+
+<BaseLayout
+  title={`Book at ${displayName}`}
+  description={entry.kind === 'chooser'
+    ? `Choose a location to book your appointment at ${displayName}.`
+    : `Book an appointment at ${displayName}.`}
+  theme="light"
+>
+  {
+    entry.kind === 'chooser' ? (
+      <LocationChooser payload={entry.payload} orgContext={orgContext} />
+    ) : (
+      <BookingWizardPage
+        client:load
+        config={config}
+        organizationSlug={organizationSlug}
+        orgContext={orgContext}
+      />
+    )
+  }
+</BaseLayout>

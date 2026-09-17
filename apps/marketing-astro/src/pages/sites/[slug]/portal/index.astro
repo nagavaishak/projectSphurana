@@ -1,0 +1,19 @@
+---
+/**
+ * PATH TIER — `www.borradh.io/sites/{slug}/portal`.
+ *
+ * This is the tier that works today (plan §9): it depends on nothing but a
+ * deploy, whereas the host tiers need DNS, a Vercel domain and a certificate.
+ *
+ * These files must exist even though `[...path].astro` sits alongside them:
+ * that catch-all renders published microsite documents, so without a more
+ * specific route it would treat `/sites/{slug}/portal` as a missing CMS page
+ * and 404. A static segment beats a rest param in Astro's route ranking, so
+ * these win.
+ */
+export const prerender = false;
+
+import PortalHomePage from '@/components/portal/pages/PortalHomePage.astro';
+---
+
+<PortalHomePage />

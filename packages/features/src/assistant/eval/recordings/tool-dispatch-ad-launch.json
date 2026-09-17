@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-ad-launch",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Launch the lip-filler video ad I drafted.",
+      "rounds": [
+        {
+          "modelText": "I'll check Meta is connected first.",
+          "toolUses": [
+            {
+              "name": "checkMetaIntegration",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "connected": true,
+                  "hasAdAccount": true,
+                  "hasFacebookPage": true,
+                  "configurationComplete": true
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Connected. Let me find the lip-filler video.",
+          "toolUses": [
+            {
+              "name": "listRecentVideos",
+              "input": { "status": "ready" },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videos": [
+                    {
+                      "id": "v1",
+                      "title": "Lip filler — winter promo",
+                      "status": "ready",
+                      "createdAt": "2026-04-20T09:00:00Z"
+                    },
+                    {
+                      "id": "v2",
+                      "title": "Anti-wrinkle quick result",
+                      "status": "ready",
+                      "createdAt": "2026-04-18T09:00:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Found two ready videos. \"Lip filler — winter promo\" looks like the right one — shall I use that, or did you have a different draft in mind?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

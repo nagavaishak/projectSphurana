@@ -1,0 +1,1 @@
+ALTER TABLE "stock_clip" ALTER COLUMN "source" SET DEFAULT 'provider';

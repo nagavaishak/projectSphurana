@@ -1,0 +1,48 @@
+{
+  "name": "@borradh-workspace/contracts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json"],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "development": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./ports": {
+      "development": "./src/ports/index.ts",
+      "types": "./dist/ports/index.d.ts",
+      "import": "./dist/ports/index.js",
+      "default": "./dist/ports/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc --build tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -b tsconfig.lib.json tsconfig.spec.json",
+    "test": "vitest run",
+    "lint": "biome check src/ --write",
+    "contracts:generate": "tsx scripts/generate-contracts.ts",
+    "contracts:check": "tsx scripts/generate-contracts.ts --check"
+  },
+  "dependencies": {
+    "@borradh-workspace/labels": "workspace:*",
+    "tslib": "^2.3.0",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@borradh-workspace/database": "workspace:*",
+    "@types/node": "^20.0.0",
+    "drizzle-orm": "0.45.2",
+    "drizzle-zod": "0.8.3",
+    "tsx": "^4.0.0",
+    "vitest": "^3.0.0"
+  }
+}

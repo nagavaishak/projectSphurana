@@ -1,0 +1,43 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "../ai"
+    },
+    {
+      "path": "../redis"
+    },
+    {
+      "path": "../observability"
+    },
+    {
+      "path": "../integrations"
+    },
+    {
+      "path": "../database"
+    },
+    {
+      "path": "../contracts"
+    },
+    {
+      "path": "../auth"
+    },
+    {
+      "path": "../testing"
+    },
+    {
+      "path": "../http"
+    },
+    {
+      "path": "../web-shared"
+    },
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

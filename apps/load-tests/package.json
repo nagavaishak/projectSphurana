@@ -1,0 +1,14 @@
+{
+  "name": "@borradh-workspace/load-tests",
+  "version": "0.0.1",
+  "private": true,
+  "description": "k6 load testing scripts for the Borradh API",
+  "scripts": {
+    "smoke": "k6 run scripts/smoke.js",
+    "load": "k6 run scripts/load.js",
+    "stress": "k6 run scripts/stress.js",
+    "soak": "k6 run scripts/soak.js",
+    "wedge": "k6 run scripts/wedge.js",
+    "backlog": "k6 run scripts/backlog.js"
+  }
+}

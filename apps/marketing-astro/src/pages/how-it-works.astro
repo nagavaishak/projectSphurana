@@ -1,0 +1,14 @@
+---
+import { HowItWorksPage } from '@/components/pages/how-it-works';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="How It Works | Borradh"
+  description="See how Borradh works in 3 simple steps: upload your footage, let AI create content and ads, and watch appointments roll in."
+>
+  <HowItWorksPage client:load config={config} />
+</BaseLayout>

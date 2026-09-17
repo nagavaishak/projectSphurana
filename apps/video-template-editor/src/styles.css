@@ -1,0 +1,181 @@
+:root {
+  color-scheme: dark;
+  --bg: #0c0d10;
+  --bg-elev: #14161b;
+  --bg-elev-2: #1c1f25;
+  --border: #2a2e36;
+  --fg: #e6e8ec;
+  --fg-muted: #8a909a;
+  --accent: #6aa9ff;
+  --error: #ff6a6a;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+button {
+  cursor: pointer;
+}
+button:hover {
+  background: var(--bg-elev);
+}
+textarea {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 1px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.editor-shell {
+  display: grid;
+  /* outline | resizer | preview | resizer | inspector. The actual column
+     widths are written inline by useResizableColumns so they're user-resizable;
+     this default is overridden but kept as a sensible fallback. */
+  grid-template-columns: 260px 4px 1fr 4px 340px;
+  grid-template-rows: 1fr 200px;
+  height: 100vh;
+  background: var(--border);
+}
+
+.pane {
+  background: var(--bg-elev);
+  overflow: auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.pane-outline {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+}
+.pane-preview {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+}
+.pane-inspector {
+  grid-column: 5;
+  grid-row: 1 / span 2;
+}
+.pane-timeline {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+/* The two vertical resizer gutters live at columns 2 and 4 of the grid. */
+.column-resizer:nth-of-type(1) {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+.column-resizer:nth-of-type(2) {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+}
+
+.pane-header {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-muted);
+  position: sticky;
+  top: 0;
+  background: var(--bg-elev);
+  z-index: 1;
+}
+
+.toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  background: var(--bg-elev-2);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* ─── M3 W-Pol — polish ────────────────────────────────────────────────── */
+
+/* Matched header heights across all panes. The toolbar in the preview pane
+   sits in this same row, so its padding is tuned to land at 33px too. */
+.pane-header {
+  height: 33px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+/* Soft glow on the selected outline row. Targeted via attribute selector so
+   we don't have to touch outline-pane.tsx; it already paints
+   background:var(--bg-elev-2) when selected, and that's a stable hook. */
+.pane-outline [role="button"][style*="--bg-elev-2"] {
+  box-shadow: 0 0 0 1px rgba(106, 169, 255, 0.18), 0 0 12px
+    rgba(106, 169, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* Vertical column resize handle. Sits between two panes; thin gutter that
+   widens its hit area on hover. */
+.column-resizer {
+  width: 4px;
+  cursor: col-resize;
+  background: var(--border);
+  position: relative;
+  user-select: none;
+  flex-shrink: 0;
+}
+.column-resizer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -3px;
+  right: -3px;
+}
+.column-resizer:hover,
+.column-resizer:active {
+  background: var(--accent);
+}
+
+/* Validation banner has its own opinionated inline styles; this class is
+   left as a hook for future theming overrides. */
+.validation-banner {
+  z-index: 2;
+}

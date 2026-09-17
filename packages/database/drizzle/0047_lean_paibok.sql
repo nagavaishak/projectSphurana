@@ -1,0 +1,1 @@
+ALTER TABLE "org_defaults" ADD COLUMN "ad_area_type" text;

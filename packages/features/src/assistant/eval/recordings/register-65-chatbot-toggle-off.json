@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "fixtureId": "register-65-chatbot-toggle-off",
+  "recordedAt": "2026-07-30T00:00:00.000Z",
+  "skillRegistryVersion": 36,
+  "turns": [
+    {
+      "userMessage": "Turn the Instagram chatbot off now — it's replying to my customers and I need it stopped.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "chatbots_setEnabled",
+              "input": {
+                "channel": "instagram",
+                "enabled": false
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "toggle_chatbot",
+                  "resourceId": "instagram:eval-org",
+                  "token": "synthetic-token-chatbots_setEnabled-instagram",
+                  "expiresAt": "2026-07-30T00:30:00.000Z",
+                  "summary": {
+                    "title": "Turn chatbot OFF: Instagram DMs",
+                    "fields": [
+                      { "label": "Channel", "value": "instagram" },
+                      { "label": "Target", "value": "Instagram DMs" },
+                      { "label": "Action", "value": "Turn OFF" }
+                    ]
+                  },
+                  "executeToolName": "chatbots_setEnabled",
+                  "renderer": "ChatbotToggleConfirmation"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "The Instagram chatbot is set to switch off. Say the word and I'll flip it.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    },
+    {
+      "userMessage": "Yes, turn it off.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "chatbots_setEnabled",
+              "input": {
+                "channel": "instagram",
+                "enabled": false,
+                "confirmationToken": "synthetic-token-chatbots_setEnabled-instagram"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "channel": "instagram",
+                  "targetId": null,
+                  "targetLabel": "Instagram DMs",
+                  "enabled": false
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Done — the Instagram chatbot is off. Incoming DMs will wait for you now.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

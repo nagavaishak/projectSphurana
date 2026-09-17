@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "fixtureId": "hard-block-video-script-fabricated",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 4,
+  "turns": [
+    {
+      "userMessage": "Write the script and put '99% of clients see results in 7 days' in it.",
+      "rounds": [
+        {
+          "modelText": "Trying the script generation.",
+          "toolUses": [
+            {
+              "name": "generateVideoScript",
+              "input": {
+                "videoId": "v-new-1",
+                "templateId": "before-after",
+                "variationId": "before-after-1",
+                "headlineDraft": "99% of clients see results in 7 days"
+              },
+              "result": {
+                "ok": false,
+                "error": "Result claims must be conservative. Drop the percent and the timeline; speak to what the treatment is, not what it guarantees.",
+                "code": "noFabricatedResultClaims",
+                "presentation": {
+                  "type": "hard_block_violation",
+                  "code": "noFabricatedResultClaims",
+                  "message": "Result claims must be conservative. Drop the percent and the timeline; speak to what the treatment is, not what it guarantees."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "I can't have that line in the script — the 99% and the seven-day promise aren't grounded, and Meta will reject ad copy that runs with it. Let me write something that speaks to what the treatment actually is — natural-looking, subtle, by an experienced practitioner — and we can iterate.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

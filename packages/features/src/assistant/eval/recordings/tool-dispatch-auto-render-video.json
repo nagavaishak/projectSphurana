@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-auto-render-video",
+  "recordedAt": "2026-06-03T10:30:20.352Z",
+  "skillRegistryVersion": 21,
+  "turns": [
+    {
+      "userMessage": "Create AND render an organic caption-tease video for lip filler now.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listServices",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "services": [
+                    {
+                      "id": "s1",
+                      "name": "Lip filler",
+                      "category": "injectables",
+                      "description": null,
+                      "isActive": true,
+                      "priceText": "From €240"
+                    },
+                    {
+                      "id": "s2",
+                      "name": "Anti-wrinkle treatment",
+                      "category": "injectables",
+                      "description": null,
+                      "isActive": true,
+                      "priceText": "From €180"
+                    }
+                  ],
+                  "total": 2
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "createDraftVideo",
+              "input": {
+                "format": "caption_tease",
+                "serviceId": "s1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-new-1",
+                  "templateId": "caption_tease",
+                  "variationId": "caption-tease-1",
+                  "status": "draft",
+                  "narrationMode": "text_only",
+                  "recommendedClipCount": 3
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "executeVideoExport",
+              "input": {
+                "videoId": "v-new-1"
+              },
+              "result": {
+                "ok": true,
+                "presentation": {
+                  "type": "confirmation_required",
+                  "action": "queue_video_export",
+                  "resourceId": "v-new-1",
+                  "token": "synthetic-token-executeVideoExport-v-new-1",
+                  "expiresAt": "2026-06-03T11:00:16.270Z",
+                  "summary": {
+                    "title": "Render video",
+                    "fields": [
+                      {
+                        "label": "Template",
+                        "value": "Caption tease"
+                      }
+                    ]
+                  },
+                  "executeToolName": "executeVideoExport"
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "executeVideoExport",
+              "input": {
+                "videoId": "v-new-1",
+                "confirmationToken": "synthetic-token-executeVideoExport-v-new-1"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "videoId": "v-new-1",
+                  "status": "queued",
+                  "message": "Render's in flight — usually 2–3 min."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "Render's in flight — usually 2–3 min.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

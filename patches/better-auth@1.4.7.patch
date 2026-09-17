@@ -1,0 +1,11 @@
+diff --git a/dist/plugins/admin/admin.mjs b/dist/plugins/admin/admin.mjs
+--- a/dist/plugins/admin/admin.mjs
++++ b/dist/plugins/admin/admin.mjs
+@@ -34,6 +34,6 @@
+ 				session: { create: { async before(session, ctx) {
+ 					if (!ctx) return;
+ 					const user = await ctx.context.internalAdapter.findUserById(session.userId);
+-					if (user.banned) {
++					if (user?.banned) {
+ 						if (user.banExpires && new Date(user.banExpires).getTime() < Date.now()) {
+ 							await ctx.context.internalAdapter.updateUser(session.userId, {

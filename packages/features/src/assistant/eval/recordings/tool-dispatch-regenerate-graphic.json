@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "fixtureId": "tool-dispatch-regenerate-graphic",
+  "recordedAt": "2026-06-11T17:00:00.000Z",
+  "skillRegistryVersion": 30,
+  "turns": [
+    {
+      "userMessage": "Make the lip filler graphic brighter.",
+      "rounds": [
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "listRecentGraphics",
+              "input": {},
+              "result": {
+                "ok": true,
+                "data": {
+                  "graphics": [
+                    {
+                      "id": "g-lip-1",
+                      "title": "Lip filler tips",
+                      "status": "ready",
+                      "usageType": "organic",
+                      "kind": "single",
+                      "serviceId": "s-lip",
+                      "topicSummary": "Lip filler aftercare",
+                      "aspectRatio": "4:5",
+                      "thumbnailUrl": "https://cdn/g-lip-1-thumb.png",
+                      "imageUrl": "https://cdn/g-lip-1.png",
+                      "slideCount": 1,
+                      "createdAt": "2026-06-10T00:00:00.000Z"
+                    }
+                  ],
+                  "total": 1
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "",
+          "toolUses": [
+            {
+              "name": "regenerateGraphic",
+              "input": {
+                "graphicId": "g-lip-1",
+                "refinementInstruction": "make it brighter"
+              },
+              "result": {
+                "ok": true,
+                "data": {
+                  "graphicId": "g-lip-2",
+                  "status": "rendering",
+                  "scope": "all",
+                  "uiState": "created",
+                  "title": "Lip filler tips (edited)",
+                  "message": "Regenerating — it will appear in the card shortly."
+                }
+              }
+            }
+          ],
+          "stopReason": "tool_use"
+        },
+        {
+          "modelText": "On it — the brighter version will appear in a few seconds.",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

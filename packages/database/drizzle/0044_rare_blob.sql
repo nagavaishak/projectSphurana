@@ -1,0 +1,1 @@
+ALTER TABLE "organization" ADD COLUMN "brand_font_image_url" text;

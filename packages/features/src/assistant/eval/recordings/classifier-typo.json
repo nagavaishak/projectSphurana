@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "fixtureId": "classifier-typo",
+  "recordedAt": "2026-04-25T00:00:00.000Z",
+  "skillRegistryVersion": 1,
+  "turns": [
+    {
+      "userMessage": "Helpe me lanuch a new ad pls",
+      "classifierResponse": { "skillIds": ["create-ad"], "confidence": 0.72 },
+      "rounds": [
+        {
+          "modelText": "Grand — let's get an ad up. First thing is checking Meta is connected and finding a video to run with. Which service is the ad for, and is there a video already drafted?",
+          "toolUses": [],
+          "stopReason": "end_turn"
+        }
+      ]
+    }
+  ]
+}

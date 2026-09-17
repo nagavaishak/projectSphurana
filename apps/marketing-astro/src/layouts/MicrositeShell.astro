@@ -1,0 +1,245 @@
+---
+import {
+  META_DOMAIN_VERIFY_TAG_NAME,
+  type MicrositeSeo,
+  type MicrositeTheme,
+} from '@borradh-workspace/web-shared';
+import MicrositeAnalytics from '@/components/microsite/analytics/MicrositeAnalytics.astro';
+import type { MicrositeAnalyticsConfig } from '@/components/microsite/analytics/consent';
+import { themeCssText } from '@/components/microsite/theme';
+
+/**
+ * The microsite page shell.
+ *
+ * This is the ONLY place colour enters the page. The theme is emitted once as
+ * `--brand-*` / `--ms-*` custom properties on `:root`; every block reads them
+ * with `var()` and hardcodes nothing. That is what stops the agent producing
+ * an off-brand page.
+ *
+ * Deliberately does NOT extend BaseLayout: BaseLayout carries Borradh's own
+ * marketing chrome, favicons and dark-mode toggle. A tenant microsite is a
+ * different site that happens to share a deployment.
+ */
+
+interface Props {
+  theme: MicrositeTheme;
+  /** Page title. `seo.title` wins when present. */
+  title: string;
+  seo?: MicrositeSeo;
+  /** Resolved from `seo.ogImageAssetId` by the page — the shell resolves no assets. */
+  ogImageUrl?: string | null;
+  /** Absolute canonical URL. Defaults to the current request URL. */
+  canonical?: string;
+  /** Draft previews must never be indexed. */
+  noindex?: boolean;
+  lang?: string;
+  bodyClass?: string;
+  /**
+   * Meta pixel + consent, or nothing.
+   *
+   * Built by `resolveMicrositeAnalytics()` in the PAGE, which returns `null`
+   * for a microsite with no pixel configured — and `null` here means this shell
+   * renders exactly what it rendered before this prop existed: no banner, no
+   * script, no third-party origin touched. Most tenants will be in that state
+   * for a long time, so it is the default, not a special case.
+   *
+   * The page resolves it (rather than the shell minting one) because
+   * `pageViewEventId` must ALSO be the id the server sends to CAPI for this
+   * same page view. See `components/microsite/analytics/index.ts`.
+   */
+  analytics?: MicrositeAnalyticsConfig | null;
+  /** Linked from the consent banner. Ignored without `analytics`. */
+  privacyHref?: string | null;
+  /** Named in the consent banner copy. Ignored without `analytics`. */
+  businessName?: string | null;
+  /**
+   * Meta's domain-verification token for THIS host, or nothing.
+   *
+   * Without the tag in the head Meta never verifies the tenant's domain, and an
+   * unverified domain makes the pixel near-useless for iOS traffic — the whole
+   * point of §9.4 was that because WE render the page this is automatic rather
+   * than a support ticket asking a salon owner to edit their HTML.
+   *
+   * Resolved SERVER-SIDE and passed in: this app never reads the database. It
+   * rides on the document response the page already fetches, so it costs no
+   * extra round trip. Null on `{slug}.borradh.io` — that apex is ours, and a
+   * token there would verify nothing for the tenant.
+   */
+  metaDomainVerifyToken?: string | null;
+}
+
+const {
+  theme,
+  title,
+  seo,
+  ogImageUrl = null,
+  canonical,
+  noindex = false,
+  lang = 'en',
+  bodyClass = '',
+  analytics = null,
+  privacyHref = null,
+  businessName = null,
+  metaDomainVerifyToken = null,
+} = Astro.props;
+
+const pageTitle = seo?.title?.trim() || title;
+const description = seo?.description?.trim();
+const canonicalUrl = canonical ?? Astro.url.href;
+const logoUrl = theme?.logo?.assetUrl ?? null;
+const themeVars = themeCssText(theme);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
+    <title>{pageTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {logoUrl && <link rel="icon" href={logoUrl} />}
+
+    {
+      metaDomainVerifyToken && (
+        <meta
+          name={META_DOMAIN_VERIFY_TAG_NAME}
+          content={metaDomainVerifyToken}
+        />
+      )
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalUrl} />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta
+      name="twitter:card"
+      content={ogImageUrl ? 'summary_large_image' : 'summary'}
+    />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+    {/*
+      Theme tokens, and the shell's own baseline styles. Inlined rather than
+      imported so the tokens land in the first response with no extra round
+      trip — the LCP budget is 2.0s on 4G (plan §9). Values are allowlisted in
+      `theme.ts`, so an author cannot close the rule and inject CSS.
+    */}
+    <style is:inline set:html={`:root{${themeVars}}`}></style>
+
+    <style is:global>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body.microsite {
+        margin: 0;
+        background: var(--brand-surface);
+        color: var(--brand-neutral);
+        font-family:
+          ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-size: var(--ms-font-size);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body.microsite h1,
+      body.microsite h2,
+      body.microsite h3,
+      body.microsite h4 {
+        margin: 0;
+        color: var(--brand-primary);
+        font-family: var(--ms-heading-family);
+        font-weight: var(--ms-heading-weight);
+        letter-spacing: var(--ms-heading-tracking);
+        line-height: 1.15;
+      }
+
+      body.microsite p {
+        margin: 0;
+      }
+
+      body.microsite a {
+        color: var(--brand-accent);
+      }
+
+      body.microsite img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
+      /* Every block sits in one of these. */
+      body.microsite .ms-section {
+        padding-block: var(--ms-section-y);
+        padding-inline: 1.25rem;
+      }
+
+      body.microsite .ms-container {
+        width: 100%;
+        max-width: var(--ms-max-width);
+        margin-inline: auto;
+      }
+
+      /* The one button treatment, driven by `theme.buttonStyle`. */
+      body.microsite .ms-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.8125rem 1.75rem;
+        border: 1px solid var(--ms-button-border);
+        border-radius: var(--ms-button-radius);
+        background: var(--ms-button-bg);
+        color: var(--ms-button-fg);
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-decoration: none;
+        cursor: pointer;
+        transition: opacity 120ms ease;
+      }
+
+      body.microsite .ms-button:hover {
+        opacity: 0.88;
+      }
+
+      body.microsite .ms-eyebrow {
+        color: var(--brand-muted);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        body.microsite * {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+    </style>
+
+    <slot name="head" />
+  </head>
+  <body class:list={['microsite', bodyClass]}>
+    <slot />
+    {
+      analytics && (
+        <MicrositeAnalytics
+          config={analytics}
+          privacyHref={privacyHref}
+          businessName={businessName}
+        />
+      )
+    }
+  </body>
+</html>

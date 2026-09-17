@@ -1,0 +1,1 @@
+DROP TABLE "admin_graphic_template" CASCADE;

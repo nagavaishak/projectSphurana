@@ -1,0 +1,61 @@
+{
+  "name": "@borradh-workspace/remotion",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist", "package.json", "public"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js",
+      "default": "./dist/types/index.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js",
+      "default": "./dist/components/index.js"
+    },
+    "./package.json": "./package.json",
+    "./entry": {
+      "types": "./dist/remotion-entry.d.ts",
+      "import": "./dist/remotion-entry.js",
+      "default": "./dist/remotion-entry.js"
+    },
+    "./Root": {
+      "types": "./dist/Root.d.ts",
+      "import": "./dist/Root.js",
+      "default": "./dist/Root.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.lib.json",
+    "clean": "rimraf dist",
+    "dev": "tsc --build tsconfig.lib.json --watch --preserveWatchOutput",
+    "dev:packages": "tsc -p tsconfig.lib.json --watch --preserveWatchOutput",
+    "studio": "remotion studio src/remotion-entry.ts --no-open",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "lint": "biome check src/ --write"
+  },
+  "dependencies": {
+    "@borradh-workspace/video-templates": "workspace:*",
+    "@remotion/google-fonts": "4.0.386",
+    "@remotion/player": "4.0.386",
+    "remotion": "4.0.386",
+    "tslib": "^2.3.0",
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.386"
+  }
+}

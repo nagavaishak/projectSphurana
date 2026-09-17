@@ -1,0 +1,1 @@
+ALTER TABLE "stripe_connect_integration" ADD CONSTRAINT "stripe_connect_integration_stripe_account_id_unique" UNIQUE("stripe_account_id");

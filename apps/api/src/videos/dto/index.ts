@@ -1,0 +1,10 @@
+export { CreateVideoDto } from './create-video.dto.js';
+export { UpdateVideoDto } from './update-video.dto.js';
+export { AddVideoClipDto } from './add-video-clip.dto.js';
+export { GenerateVideoScriptDto } from './generate-video-script.dto.js';
+export { GenerateOrganicCopyDto } from './generate-organic-copy.dto.js';
+export { TranscribeVideoDto } from './transcribe-video.dto.js';
+export { AddDraftClipDto } from './add-draft-clip.dto.js';
+export { UpdateDraftClipsDto } from './update-draft-clips.dto.js';
+export { PatchDraftConfigDto } from './patch-draft-config.dto.js';
+export { AddDraftClipsBatchDto } from './add-draft-clips-batch.dto.js';

@@ -1,0 +1,1 @@
+ALTER TABLE "device_push_token" ADD COLUMN "token_type" text DEFAULT 'expo' NOT NULL;

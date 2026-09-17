@@ -1,0 +1,41 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "bundler",
+    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "useDefineForClassFields": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@borradh-workspace/remotion": ["../../packages/remotion/src/index.ts"],
+      "@borradh-workspace/remotion/components": [
+        "../../packages/remotion/src/components/index.ts"
+      ],
+      "@borradh-workspace/remotion/types": [
+        "../../packages/remotion/src/types/index.ts"
+      ],
+      "@borradh-workspace/video-templates": [
+        "../../packages/video-templates/src/index.ts"
+      ],
+      "@borradh-workspace/video-templates/music-registry": [
+        "../../packages/video-templates/src/music-registry.ts"
+      ]
+    },
+    "types": ["node", "vite/client"],
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "dist"],
+  "references": [
+    { "path": "../../packages/remotion" },
+    { "path": "../../packages/video-templates" }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "watch": [
+    "src",
+    "../../packages/ai/dist",
+    "../../packages/database/dist",
+    "../../packages/features/dist",
+    "../../packages/auth/dist",
+    "../../packages/email/dist",
+    "../../packages/redis/dist",
+    "../../packages/storage/dist",
+    "../../packages/env/dist",
+    "../../packages/observability/dist",
+    "../../packages/integrations/dist"
+  ],
+  "ext": "ts,js,json",
+  "ignore": ["**/*.spec.ts", "**/*.test.ts", "node_modules"],
+  "exec": "env-cmd -f ../../.env --no-override --fallback -- nest start",
+  "legacyWatch": true,
+  "delay": 500
+}

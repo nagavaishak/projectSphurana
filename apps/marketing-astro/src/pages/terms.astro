@@ -1,0 +1,14 @@
+---
+import { TermsPage } from '@/components/pages/terms';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getPublicConfig } from '@/lib/config';
+
+const config = getPublicConfig();
+---
+
+<BaseLayout
+  title="Terms of Service | Borradh"
+  description="Borradh Terms of Service. Read the terms and conditions that govern your use of the Borradh platform."
+>
+  <TermsPage client:load config={config} />
+</BaseLayout>

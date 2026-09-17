@@ -42,39 +42,41 @@ jobs:
         shell: bash
         run: |
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            echo "TURBO_FILTER=[${{ github.event.pull_request.base.sha }}]" >> "$GITHUB_ENV"
+            changed_workspaces="$({ git diff --name-only "${{ github.event.pull_request.base.sha }}"...HEAD; } | awk -F/ '($1 == "apps" || $1 == "packages") && NF >= 2 { print "./" $1 "/" $2 }' | sort -u | tr '\n' ' ')"
+            echo "Changed workspaces: ${changed_workspaces:-none}"
+            echo "TURBO_FILTERS=${changed_workspaces}" >> "$GITHUB_ENV"
           else
-            echo "TURBO_FILTER=" >> "$GITHUB_ENV"
+            echo "TURBO_FILTERS=" >> "$GITHUB_ENV"
           fi
 
       - name: Lint
         run: |
-          if [[ -n "${TURBO_FILTER:-}" ]]; then
-            pnpm exec turbo run lint --filter="$TURBO_FILTER"
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run lint ${TURBO_FILTERS}
           else
             pnpm lint
           fi
 
       - name: Type-check
         run: |
-          if [[ -n "${TURBO_FILTER:-}" ]]; then
-            pnpm exec turbo run typecheck --filter="$TURBO_FILTER"
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run typecheck ${TURBO_FILTERS}
           else
             pnpm typecheck
           fi
 
       - name: Test
         run: |
-          if [[ -n "${TURBO_FILTER:-}" ]]; then
-            pnpm exec turbo run test --filter="$TURBO_FILTER"
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run test ${TURBO_FILTERS}
           else
             pnpm test
           fi
 
       - name: Build
         run: |
-          if [[ -n "${TURBO_FILTER:-}" ]]; then
-            pnpm exec turbo run build --filter="$TURBO_FILTER"
+          if [[ -n "${TURBO_FILTERS:-}" ]]; then
+            pnpm exec turbo run build ${TURBO_FILTERS}
           else
             pnpm build
           fi
